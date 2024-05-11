@@ -5,6 +5,13 @@ module.exports = {
   darkMode: ["class"],
   safelist: ["dark"],
   prefix: "",
+
+  safelist: [
+    {
+        pattern:
+            /(red|green|blue|yellow|purple|pink|white|orange|black)(-foreground)?/,
+    },
+],
   
   theme: {
     container: {
@@ -49,6 +56,42 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        black: {
+          DEFAULT: 'hsl(var(--black))',
+          foreground: 'hsl(var(--black-foreground))',
+      },
+      white: {
+          DEFAULT: 'hsl(var(--white))',
+          foreground: 'hsl(var(--white-foreground))',
+      },
+      yellow: {
+          DEFAULT: 'hsl(var(--yellow))',
+          foreground: 'hsl(var(--yellow-foreground))',
+      },
+      orange: {
+          DEFAULT: 'hsl(var(--orange))',
+          foreground: 'hsl(var(--orange-foreground))',
+      },
+      red: {
+          DEFAULT: 'hsl(var(--red))',
+          foreground: 'hsl(var(--red-foreground))',
+      },
+      pink: {
+          DEFAULT: 'hsl(var(--pink))',
+          foreground: 'hsl(var(--pink-foreground))',
+      },
+      purple: {
+          DEFAULT: 'hsl(var(--purple))',
+          foreground: 'hsl(var(--purple-foreground))',
+      },
+      blue: {
+          DEFAULT: 'hsl(var(--blue))',
+          foreground: 'hsl(var(--blue-foreground))',
+      },
+      green: {
+          DEFAULT: 'hsl(var(--green))',
+          foreground: 'hsl(var(--green-foreground))',
+      },
       },
       borderRadius: {
       	xl: "calc(var(--radius) + 4px)",

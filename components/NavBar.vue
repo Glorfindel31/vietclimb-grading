@@ -23,7 +23,7 @@
                                                             </NuxtLink>
                                                   </NavigationMenuItem>
                                                   <NavigationMenuItem>
-                                                            <NuxtLink to="/">
+                                                            <NuxtLink to="/about">
                                                                       <NavigationMenuLink
                                                                                 :class="navigationMenuTriggerStyle()">
                                                                                 About
@@ -31,7 +31,7 @@
                                                             </NuxtLink>
                                                   </NavigationMenuItem>
                                                   <NavigationMenuItem>
-                                                            <NuxtLink to="/">
+                                                            <NuxtLink to="/public">
                                                                       <NavigationMenuLink
                                                                                 :class="navigationMenuTriggerStyle()">
                                                                                 Public Stats

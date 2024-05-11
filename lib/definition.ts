@@ -1,4 +1,4 @@
-import {Route} from '@/components/tableGrad/columns';
+import type {Route} from '@/components/tableGrad/columns';
 export type RouteCount = {
     level: string;
     amount: number;
@@ -43,9 +43,7 @@ export const transformDataSetter = (incomingData: Route[]): RouteCountSetter[] =
         }
         return nameCount;
     }, data);
-    data.sort((a, b) => {
-        return Number(a.name) - Number(b.name);
-    });
+    data.sort((a, b) => b.amount - a.amount);
     return data;
 };
 export const formatDate = (date: Date) =>
