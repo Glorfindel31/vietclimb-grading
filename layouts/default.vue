@@ -4,7 +4,7 @@
 
 <template>
           <main
-                    class="w-screen h-screen bg-gradient-to-t from-primary from-0% to-background to-50% flex flex-col justify-between">
+                    class="w-screen min-h-screen bg-gradient-to-t from-primary from-0% to-background to-50% flex flex-col justify-between">
                     <div class=" bg-background w-full p-2 border">
                               <NavBar />
                     </div>

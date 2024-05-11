@@ -17,7 +17,8 @@
                                                             <NuxtLink to="/">
                                                                       <NavigationMenuLink
                                                                                 :class="navigationMenuTriggerStyle()">
-                                                                                Logo
+                                                                                <img src="/logo.svg" alt="logo"
+                                                                                          class="w-6 h-6" />
                                                                       </NavigationMenuLink>
                                                             </NuxtLink>
                                                   </NavigationMenuItem>
@@ -26,6 +27,14 @@
                                                                       <NavigationMenuLink
                                                                                 :class="navigationMenuTriggerStyle()">
                                                                                 About
+                                                                      </NavigationMenuLink>
+                                                            </NuxtLink>
+                                                  </NavigationMenuItem>
+                                                  <NavigationMenuItem>
+                                                            <NuxtLink to="/">
+                                                                      <NavigationMenuLink
+                                                                                :class="navigationMenuTriggerStyle()">
+                                                                                Public Stats
                                                                       </NavigationMenuLink>
                                                             </NuxtLink>
                                                   </NavigationMenuItem>
