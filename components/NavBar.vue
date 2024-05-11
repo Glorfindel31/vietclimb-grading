@@ -4,8 +4,8 @@
                     NavigationMenuItem,
                     NavigationMenuList,
                     navigationMenuTriggerStyle
-          } from '@/components/ui/navigation-menu'
-          import ToggleMode from '@/components/ui/toggleMode/ToggleMode.vue'
+          } from '@/components/ui/navigation-menu';
+          import ToggleMode from './ToggleMode.vue';
 </script>
 
 <template>
