@@ -10,26 +10,30 @@
 
 <template>
           <div>
-                    <NavigationMenu>
-                              <NavigationMenuList>
-                                        <NavigationMenuItem>
-                                                  <NuxtLink to="/">
-                                                            <NavigationMenuLink :class="navigationMenuTriggerStyle()">
-                                                                      Logo
-                                                            </NavigationMenuLink>
-                                                  </NuxtLink>
-                                        </NavigationMenuItem>
-                                        <NavigationMenuItem>
-                                                  <NuxtLink to="/">
-                                                            <NavigationMenuLink :class="navigationMenuTriggerStyle()">
-                                                                      About
-                                                            </NavigationMenuLink>
-                                                  </NuxtLink>
-                                        </NavigationMenuItem>
-                                        <NavigationMenuItem>
-                                                  <ToggleMode />
-                                        </NavigationMenuItem>
-                              </NavigationMenuList>
-                    </NavigationMenu>
+                    <ClientOnly>
+                              <NavigationMenu>
+                                        <NavigationMenuList>
+                                                  <NavigationMenuItem>
+                                                            <NuxtLink to="/">
+                                                                      <NavigationMenuLink
+                                                                                :class="navigationMenuTriggerStyle()">
+                                                                                Logo
+                                                                      </NavigationMenuLink>
+                                                            </NuxtLink>
+                                                  </NavigationMenuItem>
+                                                  <NavigationMenuItem>
+                                                            <NuxtLink to="/">
+                                                                      <NavigationMenuLink
+                                                                                :class="navigationMenuTriggerStyle()">
+                                                                                About
+                                                                      </NavigationMenuLink>
+                                                            </NuxtLink>
+                                                  </NavigationMenuItem>
+                                                  <NavigationMenuItem>
+                                                            <ToggleMode />
+                                                  </NavigationMenuItem>
+                                        </NavigationMenuList>
+                              </NavigationMenu>
+                    </ClientOnly>
           </div>
 </template>

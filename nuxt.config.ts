@@ -1,10 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    devtools: {enabled: true},
+    devtools: {enabled: false},
     colorMode: {
         classSuffix: '',
     },
-    modules: ['@nuxtjs/tailwindcss', 'shadcn-nuxt', '@nuxtjs/color-mode'],
+    modules: [
+        '@nuxtjs/tailwindcss',
+        'shadcn-nuxt',
+        '@nuxtjs/color-mode',
+        '@nuxtjs/eslint-module',
+    ],
     shadcn: {
         /**
          * Prefix for all the imported component
