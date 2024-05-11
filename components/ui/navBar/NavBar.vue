@@ -1,0 +1,35 @@
+<script setup lang="ts">
+          import {
+                    NavigationMenu,
+                    NavigationMenuItem,
+                    NavigationMenuList,
+                    navigationMenuTriggerStyle
+          } from '@/components/ui/navigation-menu'
+          import ToggleMode from '@/components/ui/toggleMode/ToggleMode.vue'
+</script>
+
+<template>
+          <div>
+                    <NavigationMenu>
+                              <NavigationMenuList>
+                                        <NavigationMenuItem>
+                                                  <NuxtLink to="/">
+                                                            <NavigationMenuLink :class="navigationMenuTriggerStyle()">
+                                                                      Logo
+                                                            </NavigationMenuLink>
+                                                  </NuxtLink>
+                                        </NavigationMenuItem>
+                                        <NavigationMenuItem>
+                                                  <NuxtLink to="/">
+                                                            <NavigationMenuLink :class="navigationMenuTriggerStyle()">
+                                                                      About
+                                                            </NavigationMenuLink>
+                                                  </NuxtLink>
+                                        </NavigationMenuItem>
+                                        <NavigationMenuItem>
+                                                  <ToggleMode />
+                                        </NavigationMenuItem>
+                              </NavigationMenuList>
+                    </NavigationMenu>
+          </div>
+</template>
