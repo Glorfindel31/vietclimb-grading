@@ -1,24 +1,25 @@
-<script setup lang="ts">
-    import { VisAxis, VisXYContainer, VisStackedBar } from '@unovis/vue';
-    import type { Route } from '@/components/tableGrad/columns';
-    import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-    import { cn } from '~/lib/utils';
-    import type { RouteCount } from '~/lib/definition';
-    import { transformData } from '~/lib/definition';
+<script setup
+        lang="ts">
+            import { VisAxis, VisXYContainer, VisStackedBar } from '@unovis/vue';
+            import type { Route } from '@/components/tableGrad/columns';
+            import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+            import { cn } from '~/lib/utils';
+            import type { RouteCount } from '~/lib/definition';
+            import { transformData } from '~/lib/definition';
 
-    const props = defineProps({
-        incomingData: {
-            type: Array as () => Route[],
-            required: true,
-        },
-        class: {
-            type: String,
-            required: false,
-            default: '',
-        },
-    });
+            const props = defineProps({
+                incomingData: {
+                    type: Array as () => Route[],
+                    required: true,
+                },
+                class: {
+                    type: String,
+                    required: false,
+                    default: '',
+                },
+            });
 
-    const data: RouteCount[] = transformData(props.incomingData);
+            const data: RouteCount[] = transformData(props.incomingData);
 </script>
 
 <template>

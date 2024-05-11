@@ -1,19 +1,19 @@
 <script setup lang="ts">
-          import NavBar from '~/components/NavBar.vue';
+import NavBar from '~/components/NavBar.vue'
 </script>
 
 <template>
-          <main
-                    class="w-screen min-h-screen bg-gradient-to-t from-primary from-0% to-background to-50% flex flex-col justify-between">
-                    <div class=" bg-background w-full p-2 border">
-                              <NavBar />
-                    </div>
-                    <div>
-                              <slot />
-                    </div>
-                    <footer class="flex justify-center p-2">
-                              <p>Copyright Cedric Florentin & Vietclimb 2024</p>
-                    </footer>
-          </main>
-
+  <main
+    class="w-screen min-h-screen bg-gradient-to-t from-primary from-0% to-background to-50% flex flex-col justify-between"
+  >
+    <div class=" bg-background w-full p-2 border">
+      <NavBar />
+    </div>
+    <div>
+      <slot />
+    </div>
+    <footer class="flex justify-center p-2">
+      <p>Copyright Cedric Florentin & Vietclimb 2024</p>
+    </footer>
+  </main>
 </template>
