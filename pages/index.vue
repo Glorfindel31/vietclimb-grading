@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: ["auth"]
+  // or middleware: 'auth'
+})
 import { Button } from '@/components/ui/button'
 </script>
 

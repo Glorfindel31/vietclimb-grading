@@ -1,4 +1,9 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: ["auth"]
+  // or middleware: 'auth'
+})
+
 import type { DataStructure } from '@/components/tableGrad/columns'
 import {
   transformData,

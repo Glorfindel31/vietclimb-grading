@@ -8,7 +8,8 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
     '@nuxtjs/color-mode',
-    '@nuxtjs/eslint-module'
+    '@nuxtjs/eslint-module',
+    "@nuxtjs/supabase"
   ],
   shadcn: {
     /**

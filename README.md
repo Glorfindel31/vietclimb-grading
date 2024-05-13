@@ -1,75 +1,21 @@
-# Nuxt 3 Minimal Starter
+## Todo list 
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
-
-## Setup
-
-Make sure to install the dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## [ ] Setup Superbase free tier for user authentication
+[x] Register Superbase
+[x] Configure Superbase in the project
+## [ ] Implement user registration and login
+[ ] Create a registration form
+[ ] Create a login form
+[ ] Implement registration functionality
+[ ] Implement login functionality
+## [ ] Implement route data management
+[ ] Create a db schema for routes
+[ ] Implement functionality to copy data from REST API to the DB
+[ ] Implement functionality to refresh db when it doesn't match with the REST API
+## [ ] Implement user interaction with routes 
+[ ] Allow users to mark a route as finished
+[ ] Allow users to rate a route
+[ ] Allow users to grade a route
+## [ ] Implement route details
+[ ] Display zone name, color, setter's name, and grade for each route
+[ ] Display a link to an Instagram video for each route (if available)
