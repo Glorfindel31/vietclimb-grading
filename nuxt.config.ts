@@ -8,9 +8,11 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
     '@nuxtjs/color-mode',
-    '@nuxtjs/eslint-module',
-    "@nuxtjs/supabase"
+    '@nuxtjs/supabase'
   ],
+  supabase: {
+    redirect: false,
+  },
   shadcn: {
     /**
          * Prefix for all the imported component

@@ -1,9 +1,4 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: ["auth"]
-  // or middleware: 'auth'
-})
-
 import type { DataStructure } from '@/components/tableGrad/columns'
 import {
   transformData,
@@ -18,6 +13,11 @@ import RouteList from '@/components/RouteList.vue'
 import Chart from '@/components/Chart.vue'
 import ChartRouteSetter from '@/components/ChartRouteSetter.vue'
 import SkeletonHome from '@/components/SkeletonHome.vue'
+
+definePageMeta({
+  middleware: ['auth']
+  // or middleware: 'auth'
+})
 
 const routeNumber = ref<RouteCount[] | null>(null)
 const easyRouteCount = ref<number | 0>(0)

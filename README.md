@@ -4,8 +4,8 @@
 [x] Register Superbase
 [x] Configure Superbase in the project
 ## [ ] Implement user registration and login
-[ ] Create a registration form
-[ ] Create a login form
+[x] Create a registration form
+[x] Create a login form
 [ ] Implement registration functionality
 [ ] Implement login functionality
 ## [ ] Implement route data management

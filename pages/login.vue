@@ -26,9 +26,7 @@
 
           const formSchema = toTypedSchema(z.object({
             email: z.string().email(),
-            username: z.string().min(2).max(50),
             password: z.string().min(8).max(50),
-            confirmPassword: z.string().min(8).max(50)
           }));
 
           const form = useForm({
@@ -50,15 +48,6 @@
       </CardHeader>
       <CardContent>
         <form @submit="onSubmit">
-          <FormField v-slot="{ componentField }" name="username">
-            <FormItem class="py-2">
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input type="text" placeholder="UserName" v-bind="componentField" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          </FormField>
           <FormField v-slot="{ componentField }" name="email">
             <FormItem class="py-2">
               <FormLabel>Email</FormLabel>
@@ -77,24 +66,15 @@
               <FormMessage />
             </FormItem>
           </FormField>
-          <FormField v-slot="{ componentField }" name="confirmPassword">
-            <FormItem class="py-2">
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="********" v-bind="componentField" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          </FormField>
           <Button type="submit" class="py-2">
-            Register
+            Login
           </Button>
         </form>
       </CardContent>
       <CardFooter class="py-4 flex flex-row justify-between">
-        Already have an account?
+        No Account yet?
         <Button as-child variant="secondary">
-          <NuxtLink to="/login">Login</NuxtLink>
+          <NuxtLink to="/register">Register now</NuxtLink>
         </Button>
       </CardFooter>
     </Card>

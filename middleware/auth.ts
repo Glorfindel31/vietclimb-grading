@@ -1,10 +1,9 @@
-export default defineNuxtRouteMiddleware((to, from) => {
+export default defineNuxtRouteMiddleware((to, _from) => {
 
-          const publicRoutes = ['/', '/login', '/register', '/public', '/about']
+  const publicRoutes = [ '/','/login', '/register', '/about','/public'];
+  const user = useSupabaseUser();
 
-          if (publicRoutes.includes(to.path)) {
-            return
-          }
-     
-        })
-        
+  if (!user.value && !publicRoutes.includes(to.path)) {
+    return navigateTo('/login');    
+    }
+});
