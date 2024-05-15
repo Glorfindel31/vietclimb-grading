@@ -4,6 +4,8 @@
           import { toTypedSchema } from '@vee-validate/zod'
           import * as z from 'zod'
 
+          import { Icon } from '@iconify/vue'
+
           import {
             FormControl,
             FormField,
