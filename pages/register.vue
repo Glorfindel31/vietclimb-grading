@@ -18,14 +18,6 @@
 
           import { Button } from '@/components/ui/button'
 
-          import {
-            Card,
-            CardContent,
-            CardFooter,
-            CardHeader,
-            CardTitle
-          } from '@/components/ui/card'
-
           const formSchema = toTypedSchema(z.object({
             email: z.string().email(),
             username: z.string().min(2).max(50),
@@ -101,6 +93,22 @@
               Register
             </Button>
           </form>
+          <div class="my-4">
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <span class="w-full border-t" />
+              </div>
+              <div class="relative flex justify-center text-xs uppercase">
+                <span class="bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+            <Button type="button" class="w-full mt-4">
+              <Icon icon="fa-brands:google" class="h-5 w-5 mx-2" />
+              Register with Google
+            </Button>
+          </div>
           <div class="text-primary text-sm mt-4">Already have an account?
             <NuxtLink to="/login" class="hover:underline font-bold inline">Login</NuxtLink>
           </div>

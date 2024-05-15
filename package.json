@@ -12,6 +12,7 @@
     "dependencies": {
         "@nuxt/image": "^1.7.0",
         "@nuxtjs/supabase": "^1.2.2",
+        "@supabase/gotrue-js": "^2.62.2",
         "@tanstack/vue-table": "^8.16.0",
         "@unovis/ts": "^1.4.0",
         "@unovis/vue": "^1.4.0",
