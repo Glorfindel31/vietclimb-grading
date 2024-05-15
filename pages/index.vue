@@ -8,7 +8,6 @@
             return randomIndex
           }
           const index = getRandomImage()
-
 </script>
 
 <template>

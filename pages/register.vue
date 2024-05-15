@@ -1,5 +1,6 @@
 <script setup
         lang="ts">
+          import { supabase } from '~/utils/supabase'
           import { useForm } from 'vee-validate'
           import { toTypedSchema } from '@vee-validate/zod'
           import * as z from 'zod'
@@ -30,7 +31,29 @@
           })
 
           const onSubmit = form.handleSubmit((values) => {
-            console.log('Form submitted!', values)
+            (async () => {
+              const { data, error } = await supabase.auth.signUp({
+                email: values.email,
+                password: values.password,
+              })
+
+              if (error) {
+                console.error('Error signing up:', error.message)
+                return
+              }
+
+              if (data.user) {
+                const { error } = await supabase
+                  .from('users')
+                  .insert([
+                    { id: data.user.id, email: data.user.email, display_name: values.username, role: 'user' },
+                  ])
+
+                if (error) {
+                  console.error('Error inserting user:', error.message)
+                }
+              }
+            })()
           })
 
           import { imageListLink } from '~/assets/image'
@@ -44,7 +67,8 @@
 
 <template>
   <div class="flex flex-col items-center justify-center min-h-full min-w-full p-8">
-    <div class="grid grid-cols-2  align-middle justify-center shadow-lg dark:border rounded-lg overflow-hidden max-w-7xl">
+    <div
+      class="grid grid-cols-2  align-middle justify-center shadow-lg dark:border rounded-lg overflow-hidden max-w-7xl">
       <div class="w-auto  h-[80vh]">
         <NuxtImg class="h-full w-full object-cover object-top" :src="imageListLink[index].url"
           :alt="imageListLink[index].name" />
