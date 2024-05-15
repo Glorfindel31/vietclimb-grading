@@ -40,67 +40,74 @@
           const onSubmit = form.handleSubmit((values) => {
             console.log('Form submitted!', values)
           })
+
+          import { imageListLink } from '~/assets/image'
+
+          const getRandomImage = () => {
+            const randomIndex = Math.floor(Math.random() * imageListLink.length)
+            return randomIndex
+          }
+          const index = getRandomImage()
 </script>
 
 <template>
-  <ClientOnly>
-    <Card class="max-w-96 mx-auto shadow-xl">
-      <CardHeader>
-        <CardTitle>
-          Email Registration
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form @submit="onSubmit">
-          <FormField v-slot="{ componentField }" name="username">
-            <FormItem class="py-2">
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input type="text" placeholder="UserName" v-bind="componentField" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          </FormField>
-          <FormField v-slot="{ componentField }" name="email">
-            <FormItem class="py-2">
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder="email@exemple.com" v-bind="componentField" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          </FormField>
-          <FormField v-slot="{ componentField }" name="password">
-            <FormItem class="py-2">
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="********" v-bind="componentField" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          </FormField>
-          <FormField v-slot="{ componentField }" name="confirmPassword">
-            <FormItem class="py-2">
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="********" v-bind="componentField" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          </FormField>
-          <Button type="submit" class="py-2">
-            Register
-          </Button>
-        </form>
-      </CardContent>
-      <CardFooter class="py-4 flex flex-row justify-between">
-        Already have an account?
-        <Button as-child variant="secondary">
-          <NuxtLink to="/login">Login</NuxtLink>
-        </Button>
-      </CardFooter>
-    </Card>
-  </ClientOnly>
+  <div class="flex flex-col items-center justify-center min-h-full min-w-full p-8">
+    <div class="grid grid-cols-2  align-middle justify-center border rounded-lg overflow-hidden max-w-7xl">
+      <div class="w-auto  h-[80vh]">
+        <NuxtImg class="h-full w-full object-cover object-top" :src="imageListLink[index].url"
+          :alt="imageListLink[index].name" />
+      </div>
+      <div class="flex flex-col justify-center px-10 bg-background">
+        <ClientOnly>
+          <h2 class="mb-6">Email Registration</h2>
+          <form @submit="onSubmit" class="flex flex-col gap-2">
+            <FormField v-slot="{ componentField }" name="username">
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input type="text" placeholder="User Name" v-bind="componentField" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+            <FormField v-slot="{ componentField }" name="email">
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input type="email" placeholder="email@exemple.com" v-bind="componentField" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+            <FormField v-slot="{ componentField }" name="password">
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="********" v-bind="componentField" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+            <FormField v-slot="{ componentField }" name="confirmPassword">
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="********" v-bind="componentField" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+            <Button type="submit" class="w-full mt-4">
+              Register
+            </Button>
+          </form>
+          <div class="text-primary text-sm mt-4">Already have an account?
+            <NuxtLink to="/login" class="hover:underline font-bold inline">Login</NuxtLink>
+          </div>
+        </ClientOnly>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped></style>

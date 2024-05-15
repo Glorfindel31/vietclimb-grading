@@ -8,7 +8,8 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
     '@nuxtjs/color-mode',
-    '@nuxtjs/supabase'
+    '@nuxtjs/supabase',
+    "@nuxt/image"
   ],
   supabase: {
     redirect: false,
@@ -23,5 +24,8 @@ export default defineNuxtConfig({
          * @default "./components/ui"
          */
     componentDir: './components/ui'
+  },
+  image: {
+    domains: ['utfs.io']
   }
 })
