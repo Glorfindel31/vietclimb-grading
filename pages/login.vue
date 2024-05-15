@@ -42,7 +42,8 @@
 
 <template>
   <div class="flex flex-col items-center justify-center min-h-full min-w-full p-8">
-    <div class="grid grid-cols-2  align-middle justify-center border rounded-lg overflow-hidden max-w-7xl">
+    <div
+      class="grid grid-cols-2  align-middle justify-center shadow-lg dark:border rounded-lg overflow-hidden max-w-7xl">
       <div class="w-auto  h-[80vh]">
         <NuxtImg class="h-full w-full object-cover object-top" :src="imageListLink[index].url"
           :alt="imageListLink[index].name" />
