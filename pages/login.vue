@@ -55,7 +55,8 @@
             <FormItem class="py-2">
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="email@exemple.com" v-bind="componentField" />
+                <Input type="email" placeholder="email@exemple.com" v-bind="componentField" auto-capitalize="none"
+                  auto-complete="email" auto-correct="off" />
               </FormControl>
               <FormMessage />
             </FormItem>
