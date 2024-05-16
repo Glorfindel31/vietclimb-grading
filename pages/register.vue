@@ -1,16 +1,14 @@
 <script setup
         lang="ts">
-
+          import type { Database } from '~/database.types'
           declare global {
             interface Window {
-              confetti: any; // replace 'any' with the actual type if you know it
+              confetti: Function;
             }
           }
           import { useForm } from 'vee-validate'
           import { toTypedSchema } from '@vee-validate/zod'
           import * as z from 'zod'
-
-          import { Icon } from '@iconify/vue'
 
           import {
             FormControl,
@@ -20,22 +18,15 @@
             FormMessage
           } from '@/components/ui/form'
 
-          import {
-            Dialog,
-            DialogContent,
-            DialogFooter,
-            DialogHeader,
-            DialogTitle,
-          } from '@/components/ui/dialog'
-
+          import { Icon } from '@iconify/vue'
           import { Loader2 } from 'lucide-vue-next'
 
           import { Input } from '@/components/ui/input'
 
           import { Button } from '@/components/ui/button'
-          import { imageListLink } from '~/assets/image'
+          import { imageListLink, getRandomImage } from '~/assets/image'
 
-          const client = useSupabaseClient()
+          const client = useSupabaseClient<Database>()
 
           let isLoading = ref(false)
           let isDialogOpen = ref(false)
@@ -54,36 +45,52 @@
             validationSchema: formSchema
           })
 
+          const onSubmit = form.handleSubmit(async (values) => {
+            try {
+              isLoading.value = true;
+              isDialogOpen.value = false;
 
-          const onSubmit = form.handleSubmit((values) => {
-            isLoading.value = true;
-            isDialogOpen.value = false;
-
-            (async () => {
-              const { data, error } = await client.auth.signUp({
+              const { data: signUpData, error: signUpError } = await client.auth.signUp({
                 email: values.email,
                 password: values.password,
-              })
+              });
 
-              if (error) {
-                console.error('Error signing up:', error.message)
+              if (signUpError) {
+                console.error('Error signing up:', signUpError.message);
                 isDialogOpen.value = true;
-                errorMessage.value = error.message
+                errorMessage.value = signUpError.message;
+                return;
               }
-              if (data) {
-                username.value = values.username
+
+              if (signUpData) {
+                username.value = values.username;
                 isDialogOpen.value = true;
                 isSignUpSuccess.value = true;
-                form.resetForm()
+                form.resetForm();
                 window.confetti({
                   particleCount: 100,
                   spread: 70,
                   origin: { y: 0.6 }
                 });
+
+                const { data, error } = await client
+                  .from('users')
+                  .insert([{
+                    email: values.email,
+                    display_name: values.username,
+                    UID: signUpData.user?.id as string
+                  }]);
+
+                if (error) {
+                  throw error;
+                }
               }
-              isLoading.value = false
-            })()
-          })
+            } catch (error) {
+              console.error('Error:', (error as Error).message);
+            } finally {
+              isLoading.value = false;
+            }
+          });
 
           const googleButtonHandler = () => {
             isDialogOpen.value = true;
@@ -93,37 +100,6 @@
               spread: 70,
               origin: { y: 0.6 }
             });
-            console.log('Google button clicked')
-          }
-
-          const moreConfetti = () => {
-            const duration = 10 * 500;
-            const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 200 };
-
-            function randomInRange(min: number, max: number) {
-              return Math.random() * (max - min) + min;
-            }
-
-            const interval = setInterval(() => {
-              const timeLeft = animationEnd - Date.now();
-
-              if (timeLeft <= 0) {
-                clearInterval(interval);
-                return;
-              }
-
-              const particleCount = 50 * (timeLeft / duration);
-              // since particles fall down, start a bit higher than random
-              window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
-              window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
-            }, 250);
-          }
-
-
-          const getRandomImage = () => {
-            const randomIndex = Math.floor(Math.random() * imageListLink.length)
-            return randomIndex
           }
           const index = getRandomImage()
 </script>
@@ -205,51 +181,8 @@
         </ClientOnly>
       </div>
       <div>
-        <!--Dialog success-->
-        <Dialog v-if="isSignUpSuccess" v-model:open="isDialogOpen">
-          <DialogContent class="max-w-[600px]">
-            <DialogHeader>
-              <DialogTitle class="text-2xl text-center leading-loose"><span
-                  class="text-center font-bold italic text-primary text-5xl">Success
-                  !</span> <br> Thanks for signing up <span class="font-bold capitalize">{{ username }}</span> !
-              </DialogTitle>
-            </DialogHeader>
-            <div class="flex flex-col gap-4 py-8">
-              <span class="text-center">Please verify your email address to get access to your account</span>
-              <span class="text-center font-thin italic">Thank you from <span
-                  class="text-center font-bold italic text-primary">Vietclimb team</span>, with love and finger injuries
-                free
-                wishes.</span>
-              <span class="text-muted text-sm italic text-center">More confetti? we got you! <button class="underline"
-                  @click="moreConfetti">click here</button></span>
-            </div>
-            <DialogFooter>
-              <Button class="w-full" as-child>
-                <NuxtLink to="/login">Go to Login</NuxtLink>
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-        <!--Dialog Error-->
-        <Dialog v-else v-model:open="isDialogOpen">
-          <DialogContent class="max-w-[600px]">
-            <DialogHeader>
-              <DialogTitle class="text-2xl text-center leading-loose"><span
-                  class="text-center font-bold italic text-destructive text-5xl">ERROR
-                  !</span> <br> Please try Again</DialogTitle>
-            </DialogHeader>
-            <div class="flex flex-col gap-4 py-8">
-              <span class="text-center">{{ errorMessage }}</span>
-              <span class="text-center font-thin italic">Thank you for trying! Never give up! Try
-                again!!!</span>
-            </div>
-            <DialogFooter>
-              <Button class="w-full" as-child>
-                <NuxtLink to="/login">Go to Login</NuxtLink>
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <RegistrationDialog :isDialogOpen="isDialogOpen" @update:isDialogOpen="value => isDialogOpen = value"
+          :username="username" :errorMessage="errorMessage" :isSignUpSuccess="isSignUpSuccess" />
       </div>
     </div>
   </div>

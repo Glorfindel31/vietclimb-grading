@@ -39,3 +39,8 @@ export const imageListLink: ImagesList = [
                     url: "https://utfs.io/f/d2b2eea0-077e-4208-a945-aca81787fd67-7o9s54.webp"
           },
 ]
+
+export const getRandomImage = () => {
+          const randomIndex = Math.floor(Math.random() * imageListLink.length)
+          return randomIndex
+}
