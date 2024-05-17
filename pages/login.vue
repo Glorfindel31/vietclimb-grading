@@ -13,6 +13,10 @@
 			} from '@/components/ui/form'
 			import { Input } from '@/components/ui/input'
 			import { Button } from '@/components/ui/button'
+			import { imageListLink, getRandomImage } from '~/assets/image'
+
+			const supabase = useSupabaseClient()
+			const isLoading = ref(false)
 
 			const formSchema = toTypedSchema(z.object({
 				email: z.string().email(),
@@ -23,16 +27,28 @@
 				validationSchema: formSchema
 			})
 
-			const onSubmit = form.handleSubmit((values) => {
-				console.log('Form submitted!', values)
+			const onSubmit = form.handleSubmit(async (values) => {
+				isLoading.value = true;
+				try {
+					const { data, error } = await supabase.auth.signInWithPassword({
+						email: values.email,
+						password: values.password
+					})
+					if (data) {
+						isLoading.value = false;
+						form.resetForm()
+						navigateTo('/user')
+					}
+					if (error) {
+						throw new Error('Error signing in:', error as any);
+					}
+				} catch (error) {
+					console.error(error)
+				} finally {
+					isLoading.value = false;
+				}
 			})
 
-			import { imageListLink } from '~/assets/image'
-
-			const getRandomImage = () => {
-				const randomIndex = Math.floor(Math.random() * imageListLink.length)
-				return randomIndex
-			}
 			const index = getRandomImage()
 </script>
 
@@ -45,7 +61,7 @@
 					:alt="imageListLink[index].name" />
 			</div>
 			<div class="flex flex-col justify-center px-10 bg-background">
-				<h2>Login with email or Google</h2>
+				<h2>Login with email</h2>
 				<form @submit="onSubmit">
 					<FormField v-slot="{ componentField }" name="email">
 						<FormItem class="py-2">

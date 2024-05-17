@@ -1,13 +1,13 @@
 ## Todo list 
 
-## [ ] Setup Superbase free tier for user authentication
+## [x] Setup Superbase free tier for user authentication
 [x] Register Superbase
 [x] Configure Superbase in the project
-## [ ] Implement user registration and login
+## [x] Implement user registration and login
 [x] Create a registration form
 [x] Create a login form
-[ ] Implement registration functionality
-[ ] Implement login functionality
+[x] Implement registration functionality
+[x] Implement login functionality
 ## [ ] Implement route data management
 [ ] Create a db schema for routes
 [ ] Implement functionality to copy data from REST API to the DB
