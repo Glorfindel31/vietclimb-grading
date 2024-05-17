@@ -25,6 +25,10 @@
 			import { imageListLink, getRandomImage } from '~/assets/image'
 
 			const client = useSupabaseClient<Database>()
+			const user = useSupabaseUser()
+
+			if (user) navigateTo('/user');
+
 
 			let isLoading = ref(false)
 			let isRegisterDialogOpen = ref(false)

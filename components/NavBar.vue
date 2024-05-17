@@ -21,6 +21,7 @@
 			const logOutHandler = async () => {
 				try {
 					await client.value.auth.signOut();
+
 				} catch (error) {
 					console.error('Error logging out:', error as Error);
 				}
