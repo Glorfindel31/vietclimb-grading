@@ -7,8 +7,20 @@
 				navigationMenuTriggerStyle
 			} from '@/components/ui/navigation-menu';
 
+			import {
+				Sheet,
+				SheetClose,
+				SheetContent,
+				SheetDescription,
+				SheetFooter,
+				SheetHeader,
+				SheetTitle,
+				SheetTrigger,
+			} from '@/components/ui/sheet'
+
 			import ToggleMode from './ToggleMode.vue';
 			import type { Database } from '~/database.types'
+			import { Icon } from '@iconify/vue'
 
 			let client = ref();
 			let user = ref();
@@ -30,7 +42,8 @@
 
 <template>
 	<ClientOnly>
-		<NavigationMenu class="flex flex-row justify-between min-w-full">
+		<!-- Desktop Nav -->
+		<NavigationMenu class="sm:flex flex-row justify-between min-w-full hidden">
 			<NavigationMenuList>
 				<NavigationMenuItem>
 					<NuxtLink to="/">
@@ -60,6 +73,62 @@
 				<PublicNav v-else />
 				<NavigationMenuItem>
 					<ToggleMode />
+				</NavigationMenuItem>
+			</NavigationMenuList>
+		</NavigationMenu>
+		<!-- Mobile Nav -->
+		<NavigationMenu class="sm:hidden flex flex-row justify-between min-w-full">
+			<NavigationMenuList>
+				<NavigationMenuItem>
+					<NuxtLink to="/">
+						<NavigationMenuLink :class="navigationMenuTriggerStyle()">
+							<img src="/logo-light.svg" alt="logo" class="w-6 h-6 dark:hidden block" />
+							<img src="/logo-dark.svg" alt="logo" class="w-6 h-6 dark:block hidden" />
+						</NavigationMenuLink>
+					</NuxtLink>
+				</NavigationMenuItem>
+			</NavigationMenuList>
+			<NavigationMenuList>
+				<NavigationMenuItem>
+					<Sheet>
+						<SheetTrigger as-child>
+							<Button variant="ghost" size="icon">
+								<Icon icon="radix-icons:hamburger-menu" class="h-[1.2rem] w-[1rem]" />
+							</Button>
+						</SheetTrigger>
+						<SheetContent side="top">
+							<SheetHeader>
+								<SheetDescription>
+									<ul class="flex flex-col gap-2">
+										<SheetClose>
+											<li>
+												<Button variant="link" asChild class="text-md">
+													<NuxtLink to="/about">
+														About
+													</NuxtLink>
+												</Button>
+											</li>
+											<li>
+												<Button variant="link" asChild class="text-md">
+													<NuxtLink to="/public">
+														Public Stats
+													</NuxtLink>
+												</Button>
+											</li>
+											<li>
+												<UserNav v-if="user.value" :logOutHandler="logOutHandler"
+													class="text-md" mobile />
+												<PublicNav v-else class="text-md" mobile />
+											</li>
+										</SheetClose>
+										<li>
+											<ToggleMode />
+										</li>
+									</ul>
+								</SheetDescription>
+							</SheetHeader>
+						</SheetContent>
+					</Sheet>
 				</NavigationMenuItem>
 			</NavigationMenuList>
 		</NavigationMenu>

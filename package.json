@@ -37,5 +37,8 @@
         "@nuxtjs/color-mode": "^3.4.1",
         "@nuxtjs/tailwindcss": "^6.12.0",
         "typescript": "^5.4.5"
-    }
+    },
+	"resolutions": {
+		"vue": "3.3.13"
+	}
 }
