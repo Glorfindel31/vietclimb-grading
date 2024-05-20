@@ -90,6 +90,9 @@
 			</NavigationMenuList>
 			<NavigationMenuList>
 				<NavigationMenuItem>
+					<ToggleMode />
+				</NavigationMenuItem>
+				<NavigationMenuItem>
 					<Sheet>
 						<SheetTrigger as-child>
 							<Button variant="ghost" size="icon">
@@ -98,8 +101,12 @@
 						</SheetTrigger>
 						<SheetContent side="top">
 							<SheetHeader>
-								<SheetDescription>
-									<ul class="flex flex-col gap-2">
+								<SheetTitle>Menu</SheetTitle>
+								<SheetDescription hidden>
+									Navigation menu
+								</SheetDescription>
+							</SheetHeader>
+							<ul class="flex flex-col gap-2 justify-center">
 										<SheetClose>
 											<li>
 												<Button variant="link" asChild class="text-md">
@@ -121,12 +128,7 @@
 												<PublicNav v-else class="text-md" mobile />
 											</li>
 										</SheetClose>
-										<li>
-											<ToggleMode />
-										</li>
 									</ul>
-								</SheetDescription>
-							</SheetHeader>
 						</SheetContent>
 					</Sheet>
 				</NavigationMenuItem>

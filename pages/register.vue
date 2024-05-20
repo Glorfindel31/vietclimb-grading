@@ -1,5 +1,6 @@
 <script setup
 		lang="ts">
+			
 			import type { Database } from '~/database.types'
 			declare global {
 				interface Window {
@@ -25,10 +26,6 @@
 			import { imageListLink, getRandomImage } from '~/assets/image'
 
 			const client = useSupabaseClient<Database>()
-			const user = useSupabaseUser()
-
-			if (user) navigateTo('/user');
-
 
 			let isLoading = ref(false)
 			let isRegisterDialogOpen = ref(false)
@@ -102,7 +99,7 @@
 		<div class="flex flex-col items-center justify-center min-h-full min-w-full p-8"
 			:class="{ 'blur-sm': isRegisterDialogOpen }">
 			<div
-				class="grid grid-cols-2  align-middle justify-center shadow-lg dark:border rounded-lg overflow-hidden max-w-7xl">
+				class="grid grid-rows-[20%,80%]  align-middle justify-center border rounded-lg overflow-hidden max-w-7xl max-h-[80vh] sm:grid-rows-none sm:grid-cols-2 sm:max-h-none">
 				<div class="w-auto  h-[80vh]">
 					<NuxtImg class="h-full w-full object-cover object-top" :src="imageListLink[index].url"
 						:alt="imageListLink[index].name" />
