@@ -1,6 +1,6 @@
 import { google } from "googleapis";
 
-type TransformedValue = {
+type mutatedData = {
 	name: string;
 	id: string;
 	color: string;
@@ -9,6 +9,39 @@ type TransformedValue = {
 	comment: string;
 	date: string;
 	link: string;
+};
+
+type dataMutationResult = {
+	transformedValues: mutatedData[];
+	routeNum: number;
+};
+
+type RowData = [
+	name: string,
+	id: string,
+	colorCode: string,
+	grade: string,
+	setter: string,
+	comment: string,
+	date: string,
+	link?: string
+];
+
+type Data = RowData[];
+
+type ColorCodes = 'R' | 'G' | 'BL' | 'Y' | 'PI' | 'PR' | 'BK' | 'O' | 'W';
+type ColorReplacements = Record<ColorCodes, string>;
+
+const colorReplacements: ColorReplacements = {
+	R: "red",
+	G: "green",
+	BL: "blue",
+	Y: "yellow",
+	PI: "pink",
+	PR: "purple",
+	BK: "black",
+	O: "orange",
+	W: "white",
 };
 
 const keys = {
@@ -27,9 +60,7 @@ const keys = {
 
 function convertToISODate(dateString: string): string {
 	const [day, month, year] = dateString.split("/");
-	if (day.length !== 2 || month.length !== 2 || year.length !== 4) {
-		throw new Error("Invalid date format");
-	}
+
 
 	let adjustedYear = parseInt(year, 10);
 	if (adjustedYear < 100) {
@@ -45,25 +76,17 @@ function convertToISODate(dateString: string): string {
 	return isoDate;
 }
 
-function transformData(data: any[][]): { transformedValues: TransformedValue[], routeNum: number } {
-	const colorReplacements: { [key: string]: string } = {
-		R: "red",
-		G: "green",
-		BL: "blue",
-		Y: "yellow",
-		PI: "pink",
-		PR: "purple",
-		BK: "black",
-		O: "orange",
-		W: "white",
-	};
-	const transformedValues: TransformedValue[] = data
-		.map((row: any[]) => {
+function dataMutation(data: Data): dataMutationResult {
+
+	let name: any = null;
+	const transformedValues: mutatedData[] = (data as RowData[])
+		.map((row: RowData, _index: number): mutatedData | null => {
+			row[1] === "1" ? (name = row[0]) : (name = name as any);
 			const link = row[7] || "";
 			if (!row[2]) return null;
-			const color = colorReplacements[row[2]] || row[2];
+			const color = colorReplacements[row[2] as ColorCodes] || row[2];
 			return {
-				name: row[0], // Directly assign the first row's name
+				name: name,
 				id: row[1],
 				color: color,
 				grade: row[3],
@@ -71,9 +94,9 @@ function transformData(data: any[][]): { transformedValues: TransformedValue[], 
 				comment: row[5],
 				date: convertToISODate(row[6]),
 				link: link,
-			};
+			}
 		})
-		.filter((item): item is TransformedValue => item !== null);
+		.filter((item: mutatedData | null): item is mutatedData => item !== null);
 
 	return {
 		transformedValues,
@@ -111,11 +134,10 @@ export default defineEventHandler(async (event) => {
 			throw new Error("Failed to fetch data from Google Sheets");
 		}
 
-		const transformedData = transformData(data.data.values);
-		return {
-			statusCode: 200,
-			body: JSON.stringify(transformedData),
-		};
+		const { transformedValues, routeNum } = dataMutation(data.data.values as Data);
+
+		return { transformedValues, routeNum }
+
 	} catch (error) {
 		console.error("Error:", error);
 		return {
