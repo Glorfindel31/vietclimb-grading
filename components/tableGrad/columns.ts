@@ -27,21 +27,21 @@ function formatDate(isoDate: string): string {
 }
 
 export const columns: ColumnDef<Route>[] = [
-	{
-		accessorKey: 'id',
-		header: () => {
-			return h(
-				Button,
-				{
-					variant: 'ghost',
-					class: 'w-full text-xs text-center px-0 md:text-md lg:text-lg'
-				},
-				() => ['Id']
-			)
-		},
-		cell: ({ row }) =>
-			h('div', { class: 'text-center  p-0 text-xs md:text-md' }, row.original.id)
-	},
+	// {
+	// 	accessorKey: 'id',
+	// 	header: () => {
+	// 		return h(
+	// 			Button,
+	// 			{
+	// 				variant: 'ghost',
+	// 				class: 'w-full text-xs text-center px-0 md:text-md lg:text-lg'
+	// 			},
+	// 			() => ['Id']
+	// 		)
+	// 	},
+	// 	cell: ({ row }) =>
+	// 		h('div', { class: 'text-center  p-0 text-xs md:text-md' }, row.original.id)
+	// },
 	{
 		accessorKey: 'name',
 		header: ({ column }) => {
