@@ -1,81 +1,12 @@
 <script setup lang="ts">
 import TableHead from "~/components/ui/table/TableHead.vue";
 import type { Database } from "~/database.types";
+import { formatDateString } from "~/lib/definition";
 
+// db connection
 const supabase = useSupabaseClient<Database>();
-
 const googleData = await useFetch("/api/googlesheet");
 const supabaseData = await supabase.from("routes").select("*");
-
-const googleRoutes: any | undefined = ref([]);
-if (googleData.data.value && "transformedValues" in googleData.data.value) {
-  googleRoutes.value = googleData.data.value.transformedValues;
-} else {
-  console.error("transformedValues does not exist on this type");
-}
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-based
-  const year = date.getFullYear().toString().slice(2);
-  return `${day}/${month}/${year}`;
-};
-
-const comparedData = async (
-  googleRoutesPromise: any,
-  supabaseDataPromise: any,
-) => {
-  const toUpdateData = [] as any;
-  const googleRoutes = await googleRoutesPromise;
-  const supabaseData = await supabaseDataPromise;
-  if (!supabaseData.data) {
-    console.error("Supabase data is undefined");
-    return toUpdateData;
-  }
-  googleRoutes.map((googleRoute: any) => {
-    const supabaseRoute = supabaseData.data.find(
-      (route: any) =>
-        route.RID === googleRoute.id && route.zone_name === googleRoute.name,
-    );
-    if (!supabaseRoute) {
-      toUpdateData.push({
-        RID: googleRoute.id,
-        zone_name: googleRoute.name,
-        route_color: googleRoute.color,
-        route_grade: googleRoute.grade,
-        route_setter: googleRoute.setter,
-        route_date: googleRoute.date,
-        route_link: googleRoute.link,
-      });
-    } else {
-      // Compare each property of the row, except for RID and zone name
-      for (const key in googleRoute) {
-        if (
-          key !== "id" &&
-          key !== "name" &&
-          googleRoute[key] !== supabaseRoute[key]
-        ) {
-          toUpdateData.push({
-            RID: googleRoute.id,
-            zone_name: googleRoute.name,
-            route_color: googleRoute.color,
-            route_grade: googleRoute.grade,
-            route_setter: googleRoute.setter,
-            route_date: googleRoute.date,
-            route_link: googleRoute.link,
-            mismatch: true, // Add a mismatch property to indicate that this row doesn't match
-          });
-          break;
-        }
-      }
-    }
-  });
-  return toUpdateData;
-};
-comparedData(googleRoutes.value, supabaseData.data)
-  .then((toUpdateData) => console.log(toUpdateData))
-  .catch((error) => console.error(error));
 </script>
 
 <template>
@@ -88,7 +19,7 @@ comparedData(googleRoutes.value, supabaseData.data)
         <p class="italic">Welcome into the database synchronisation tool.</p>
       </div>
       <div class="flex flex-row gap-2">
-        <Table class="rounded border p-1 text-center text-xs">
+        <!-- <Table class="rounded border p-1 text-center text-xs">
           <TableCaption>Raw Google Sheet Data</TableCaption>
           <TableHeader>
             <TableRow>
@@ -110,14 +41,17 @@ comparedData(googleRoutes.value, supabaseData.data)
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow v-for="route in googleRoutes" :key="route.id">
+            <TableRow
+              v-for="route in googleData.data.transformedValues"
+              :key="route.id"
+            >
               <TableCell>{{ route.id }}</TableCell>
               <TableCell class="text-nowrap">{{ route.name }}</TableCell>
               <TableCell class="text-nowrap">{{ route.color }}</TableCell>
               <TableCell class="text-nowrap">{{ route.grade }}</TableCell>
               <TableCell class="text-nowrap">{{ route.setter }}</TableCell>
               <TableCell>{{
-                route.date ? formatDate(route.date) : "no date"
+                route.date ? formatDateString(route.date) : "no date"
               }}</TableCell>
               <TableCell>{{ route.link ? "link" : "nolink" }}</TableCell>
             </TableRow>
@@ -159,13 +93,15 @@ comparedData(googleRoutes.value, supabaseData.data)
               </TableCell>
               <TableCell class="text-nowrap">
                 {{
-                  route.route_date ? formatDate(route.route_date) : "no date"
+                  route.route_date
+                    ? formatDateString(route.route_date)
+                    : "no date"
                 }}
               </TableCell>
               <TableCell>{{ route.route_link ? "link" : "nolink" }}</TableCell>
             </TableRow>
           </TableBody>
-        </Table>
+        </Table> -->
       </div>
     </div>
   </div>
