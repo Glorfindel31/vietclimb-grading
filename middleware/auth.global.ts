@@ -1,6 +1,6 @@
 export default defineNuxtRouteMiddleware((to, _from) => {
 
-	const publicRoutes = ['/', '/login', '/register', '/about', '/public'];
+	const publicRoutes = ['/', '/login', '/register', '/about', '/public', '/admin'];
 	const authRoutes = ['/', '/user', '/about', '/public'];
 	const user = useSupabaseUser();
 

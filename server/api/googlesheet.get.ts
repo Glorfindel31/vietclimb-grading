@@ -1,6 +1,4 @@
 import { google } from "googleapis";
-import { serverSupabaseClient } from '#supabase/server'
-import type { Database } from "~/database.types";
 
 //type definitions
 type mutatedData = {
@@ -125,18 +123,9 @@ client.authorize(function (err, tokens) {
 });
 
 
-
-
-
 export default defineEventHandler(async (event) => {
 
 	try {
-		const clientSupabase = await serverSupabaseClient(event)
-
-
-		const { data: routeSupabase } = await clientSupabase.from('routes').select("*");
-
-
 		const gsapi = google.sheets({ version: "v4", auth: client });
 
 		const opt = {
@@ -152,8 +141,6 @@ export default defineEventHandler(async (event) => {
 		const { transformedValues, routeNum } = dataMutation(
 			data.data.values as Data,
 		);
-
-
 
 		return { transformedValues, routeNum };
 	} catch (error) {
