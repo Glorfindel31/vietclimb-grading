@@ -1,5 +1,8 @@
 import { google } from "googleapis";
+import { serverSupabaseClient } from '#supabase/server'
+import type { Database } from "~/database.types";
 
+//type definitions
 type mutatedData = {
 	name: string;
 	id: string;
@@ -24,12 +27,12 @@ type RowData = [
 	setter: string,
 	comment: string,
 	date: string,
-	link?: string
+	link?: string,
 ];
 
 type Data = RowData[];
 
-type ColorCodes = 'R' | 'G' | 'BL' | 'Y' | 'PI' | 'PR' | 'BK' | 'O' | 'W';
+type ColorCodes = "R" | "G" | "BL" | "Y" | "PI" | "PR" | "BK" | "O" | "W";
 type ColorReplacements = Record<ColorCodes, string>;
 
 const colorReplacements: ColorReplacements = {
@@ -43,6 +46,9 @@ const colorReplacements: ColorReplacements = {
 	O: "orange",
 	W: "white",
 };
+
+//env variables
+const spreadSheetId = process.env.SHEET_ID;
 
 const keys = {
 	type: process.env.TYPE,
@@ -61,7 +67,6 @@ const keys = {
 function convertToISODate(dateString: string): string {
 	const [day, month, year] = dateString.split("/");
 
-
 	let adjustedYear = parseInt(year, 10);
 	if (adjustedYear < 100) {
 		adjustedYear += 2000;
@@ -77,7 +82,6 @@ function convertToISODate(dateString: string): string {
 }
 
 function dataMutation(data: Data): dataMutationResult {
-
 	let name: any = null;
 	const transformedValues: mutatedData[] = (data as RowData[])
 		.map((row: RowData, _index: number): mutatedData | null => {
@@ -94,7 +98,7 @@ function dataMutation(data: Data): dataMutationResult {
 				comment: row[5],
 				date: convertToISODate(row[6]),
 				link: link,
-			}
+			};
 		})
 		.filter((item: mutatedData | null): item is mutatedData => item !== null);
 
@@ -105,12 +109,12 @@ function dataMutation(data: Data): dataMutationResult {
 }
 
 
-
-const spreadSheetId = process.env.SHEET_ID;
-
-const client = new google.auth.JWT(keys.client_email, undefined, keys.private_key, [
-	"https://www.googleapis.com/auth/spreadsheets",
-]);
+const client = new google.auth.JWT(
+	keys.client_email,
+	undefined,
+	keys.private_key,
+	["https://www.googleapis.com/auth/spreadsheets"],
+);
 client.authorize(function (err, tokens) {
 	if (err) {
 		console.log(err);
@@ -120,8 +124,19 @@ client.authorize(function (err, tokens) {
 	}
 });
 
+
+
+
+
 export default defineEventHandler(async (event) => {
+
 	try {
+		const clientSupabase = await serverSupabaseClient(event)
+
+
+		const { data: routeSupabase } = await clientSupabase.from('routes').select("*");
+
+
 		const gsapi = google.sheets({ version: "v4", auth: client });
 
 		const opt = {
@@ -134,10 +149,13 @@ export default defineEventHandler(async (event) => {
 			throw new Error("Failed to fetch data from Google Sheets");
 		}
 
-		const { transformedValues, routeNum } = dataMutation(data.data.values as Data);
+		const { transformedValues, routeNum } = dataMutation(
+			data.data.values as Data,
+		);
 
-		return { transformedValues, routeNum }
 
+
+		return { transformedValues, routeNum };
 	} catch (error) {
 		console.error("Error:", error);
 		return {
