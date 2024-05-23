@@ -24,16 +24,16 @@ const formatDate = (dateString: string) => {
 </script>
 
 <template>
-  <div class="min-h-[80vh] w-full px-10 py-4">
+  <div class="min-h-[80vh] w-full px-2 py-4">
     <div
-      class="flex flex-col gap-8 rounded-lg border bg-background p-8 shadow-md"
+      class="flex flex-col gap-8 rounded-lg border bg-background p-2 shadow-md"
     >
       <div>
         <h2>Admin</h2>
         <p class="italic">Welcome into the database synchronisation tool.</p>
       </div>
       <div class="flex flex-row gap-2">
-        <Table class="rounded border p-2 text-center text-xs">
+        <Table class="rounded border p-1 text-center text-xs">
           <TableCaption>Raw Google Sheet Data</TableCaption>
           <TableHeader>
             <TableRow>
@@ -57,16 +57,18 @@ const formatDate = (dateString: string) => {
           <TableBody>
             <TableRow v-for="route in googleRoutes" :key="route.id">
               <TableCell>{{ route.id }}</TableCell>
-              <TableCell>{{ route.name }}</TableCell>
-              <TableCell>{{ route.color }}</TableCell>
-              <TableCell>{{ route.grade }}</TableCell>
-              <TableCell>{{ route.setter }}</TableCell>
-              <TableCell>{{ formatDate(route.date) }}</TableCell>
-              <TableCell>{{ route.link ? "link" : "no link" }}</TableCell>
+              <TableCell class="text-nowrap">{{ route.name }}</TableCell>
+              <TableCell class="text-nowrap">{{ route.color }}</TableCell>
+              <TableCell class="text-nowrap">{{ route.grade }}</TableCell>
+              <TableCell class="text-nowrap">{{ route.setter }}</TableCell>
+              <TableCell>{{
+                route.date ? formatDate(route.date) : "no date"
+              }}</TableCell>
+              <TableCell>{{ route.link ? "link" : "nolink" }}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
-        <Table class="rounded border p-2 text-center text-xs">
+        <Table class="rounded border p-1 text-center text-xs">
           <TableCaption>Raw Supabase Sheet Data</TableCaption>
           <TableHeader>
             <TableRow>
@@ -90,14 +92,18 @@ const formatDate = (dateString: string) => {
           <TableBody>
             <TableRow v-for="route in supabaseData.data" :key="route.id">
               <TableCell>{{ route.RID }}</TableCell>
-              <TableCell>{{ route.zone_name }}</TableCell>
-              <TableCell>{{ route.route_color }}</TableCell>
-              <TableCell>{{ route.route_grade }}</TableCell>
-              <TableCell>{{ route.route_setter }}</TableCell>
-              <TableCell>{{
-                route.route_date ? formatDate(route.route_date) : "no date"
-              }}</TableCell>
-              <TableCell>{{ route.route_link ? "link" : "no link" }}</TableCell>
+              <TableCell class="text-nowrap">{{ route.zone_name }}</TableCell>
+              <TableCell class="text-nowrap">{{ route.route_color }}</TableCell>
+              <TableCell class="text-nowrap">{{ route.route_grade }}</TableCell>
+              <TableCell class="text-nowrap">
+                {{ route.route_setter }}
+              </TableCell>
+              <TableCell class="text-nowrap">
+                {{
+                  route.route_date ? formatDate(route.route_date) : "no date"
+                }}
+              </TableCell>
+              <TableCell>{{ route.route_link ? "link" : "nolink" }}</TableCell>
             </TableRow>
           </TableBody>
         </Table>

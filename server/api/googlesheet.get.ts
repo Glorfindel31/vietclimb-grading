@@ -82,30 +82,26 @@ function convertToISODate(dateString: string): string {
 function dataMutation(data: Data): dataMutationResult {
 	let name: any = null;
 	const transformedValues: mutatedData[] = (data as RowData[])
-		.map((row: RowData, _index: number): mutatedData | null => {
+		.map((row: RowData, _index: number): mutatedData => {
 			row[1] === "1" ? (name = row[0]) : (name = name as any);
 			const link = row[7] || "";
-			if (!row[2]) return null;
-			const color = colorReplacements[row[2] as ColorCodes] || row[2];
+			const color = colorReplacements[row[2] as ColorCodes] || row[2] || "";
 			return {
 				name: name,
-				id: row[1],
+				id: row[1] || "",
 				color: color,
-				grade: row[3],
-				setter: row[4].toLowerCase(),
-				comment: row[5],
-				date: convertToISODate(row[6]),
+				grade: row[3] || "",
+				setter: (row[4] || "").toLowerCase(),
+				comment: row[5] || "",
+				date: row[6] ? convertToISODate(row[6]) : "",
 				link: link,
 			};
-		})
-		.filter((item: mutatedData | null): item is mutatedData => item !== null);
-
+		});
 	return {
 		transformedValues,
 		routeNum: transformedValues.length,
 	};
 }
-
 
 const client = new google.auth.JWT(
 	keys.client_email,
@@ -122,9 +118,7 @@ client.authorize(function (err, tokens) {
 	}
 });
 
-
 export default defineEventHandler(async (event) => {
-
 	try {
 		const gsapi = google.sheets({ version: "v4", auth: client });
 
