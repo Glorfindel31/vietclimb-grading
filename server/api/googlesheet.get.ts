@@ -1,7 +1,7 @@
 import { google } from "googleapis";
 
 //type definitions
-type mutatedData = {
+export type mutatedData = {
 	name: string;
 	id: string;
 	color: string;
@@ -12,12 +12,12 @@ type mutatedData = {
 	link: string;
 };
 
-type dataMutationResult = {
+export type dataMutationResult = {
 	transformedValues: mutatedData[];
 	routeNum: number;
 };
 
-type RowData = [
+export type RowData = [
 	name: string,
 	id: string,
 	colorCode: string,
