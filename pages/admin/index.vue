@@ -21,6 +21,61 @@ const formatDate = (dateString: string) => {
   const year = date.getFullYear().toString().slice(2);
   return `${day}/${month}/${year}`;
 };
+
+const comparedData = async (
+  googleRoutesPromise: any,
+  supabaseDataPromise: any,
+) => {
+  const toUpdateData = [] as any;
+  const googleRoutes = await googleRoutesPromise;
+  const supabaseData = await supabaseDataPromise;
+  if (!supabaseData.data) {
+    console.error("Supabase data is undefined");
+    return toUpdateData;
+  }
+  googleRoutes.map((googleRoute: any) => {
+    const supabaseRoute = supabaseData.data.find(
+      (route: any) =>
+        route.RID === googleRoute.id && route.zone_name === googleRoute.name,
+    );
+    if (!supabaseRoute) {
+      toUpdateData.push({
+        RID: googleRoute.id,
+        zone_name: googleRoute.name,
+        route_color: googleRoute.color,
+        route_grade: googleRoute.grade,
+        route_setter: googleRoute.setter,
+        route_date: googleRoute.date,
+        route_link: googleRoute.link,
+      });
+    } else {
+      // Compare each property of the row, except for RID and zone name
+      for (const key in googleRoute) {
+        if (
+          key !== "id" &&
+          key !== "name" &&
+          googleRoute[key] !== supabaseRoute[key]
+        ) {
+          toUpdateData.push({
+            RID: googleRoute.id,
+            zone_name: googleRoute.name,
+            route_color: googleRoute.color,
+            route_grade: googleRoute.grade,
+            route_setter: googleRoute.setter,
+            route_date: googleRoute.date,
+            route_link: googleRoute.link,
+            mismatch: true, // Add a mismatch property to indicate that this row doesn't match
+          });
+          break;
+        }
+      }
+    }
+  });
+  return toUpdateData;
+};
+comparedData(googleRoutes.value, supabaseData.data)
+  .then((toUpdateData) => console.log(toUpdateData))
+  .catch((error) => console.error(error));
 </script>
 
 <template>
@@ -90,7 +145,11 @@ const formatDate = (dateString: string) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow v-for="route in supabaseData.data" :key="route.id">
+            <TableRow
+              v-for="route in supabaseData.data"
+              :key="route.id"
+              class="bg-destructive"
+            >
               <TableCell>{{ route.RID }}</TableCell>
               <TableCell class="text-nowrap">{{ route.zone_name }}</TableCell>
               <TableCell class="text-nowrap">{{ route.route_color }}</TableCell>
