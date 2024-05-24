@@ -3,13 +3,27 @@
 			import type { Database } from "~/database.types";
 			import type { dataMutationResult } from "~/server/api/googlesheet.get";
 			import { formatDateString } from "~/lib/definition";
-			import Spinner from "~/components/ui/spinner/Spinner.vue";
+			import { Spinner } from "@/components/ui/spinner";
 
-			import {
-				HoverCard,
-				HoverCardContent,
-				HoverCardTrigger,
-			} from '@/components/ui/hover-card'
+			interface RowsAdditional {
+				URID?: string;
+				identicale?: boolean;
+			}
+			interface newGoogleRows {
+				id: number,
+				RID: string
+				URID: string,
+				zone_name: string,
+				route_color: string,
+				route_grade: string,
+				route_setter: string,
+				route_date: string,
+				route_link: string,
+			}
+
+			type dataMutationResultExtended = dataMutationResult & RowsAdditional
+
+			type DataBaseExtended = Database["public"]["Tables"]["routes"]["Row"] & RowsAdditional
 
 			// db connection
 			const supabase = useSupabaseClient<Database>();
@@ -23,15 +37,16 @@
 				async () => {
 					const { data: supabaseData } = await supabase.from("routes").select("*");
 					const response = await $fetch("/api/googlesheet");
-					const typedResponse = response as unknown as dataMutationResult;
+					const typedResponse = response as unknown as dataMutationResultExtended;
 					const googleData = typedResponse.transformedValues;
 					return { googleData: googleData, supabaseData: supabaseData };
 				},
 				{
 					transform: (data) => {
 						return {
-							googleData: data.googleData.map((route) => {
+							googleData: data.googleData.map((route, index) => {
 								return {
+									id: index + 1,
 									RID: route.id,
 									URID: `URID_${route.id}_${route.name.replace(/\s+/g, "")}_${route.color}_${route.grade}_${route.setter.replace(/\s+/g, "")}_${route.date}`,
 									zone_name: route.name,
@@ -47,6 +62,19 @@
 					},
 				},
 			);
+			const isIdentical = (googleData: newGoogleRows[], supabaseData: DataBaseExtended[]) => {
+				const supabaseDataURID: DataBaseExtended[] = supabaseData.map((route, index) => {
+					const identicale = googleData[index].URID === route.URID ? true : false;
+					return {
+						...route,
+						identicale: identicale
+					}
+				});
+				return supabaseDataURID as DataBaseExtended[];
+			}
+			const checkData = ref<DataBaseExtended[]>([]);
+			checkData.value = isIdentical(allData.value?.googleData || [] as newGoogleRows[], allData.value?.supabaseData || [] as DataBaseExtended[]);
+			console.log(checkData)
 </script>
 
 <template>
@@ -132,7 +160,8 @@
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						<TableRow v-for="route in allData.supabaseData" :key="route.id" class="bg-destructive">
+						<TableRow v-for="route in checkData" :key="route.id"
+							:class="{ 'bg-destructive': !route.identicale }">
 							<TableCell>{{ route.RID }}</TableCell>
 							<TableCell class="text-nowrap">{{ route.zone_name }}</TableCell>
 							<TableCell class="text-nowrap">{{

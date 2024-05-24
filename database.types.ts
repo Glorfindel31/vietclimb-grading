@@ -11,7 +11,6 @@ export type Database = {
 		Tables: {
 			routes: {
 				Row: {
-					created_at: string
 					id: number
 					RID: number
 					route_color: string | null
@@ -19,10 +18,10 @@ export type Database = {
 					route_grade: number | null
 					route_link: string | null
 					route_setter: string | null
+					RUID: string | null
 					zone_name: string | null
 				}
 				Insert: {
-					created_at?: string
 					id?: number
 					RID: number
 					route_color?: string | null
@@ -30,10 +29,10 @@ export type Database = {
 					route_grade?: number | null
 					route_link?: string | null
 					route_setter?: string | null
+					RUID?: string | null
 					zone_name?: string | null
 				}
 				Update: {
-					created_at?: string
 					id?: number
 					RID?: number
 					route_color?: string | null
@@ -41,6 +40,7 @@ export type Database = {
 					route_grade?: number | null
 					route_link?: string | null
 					route_setter?: string | null
+					RUID?: string | null
 					zone_name?: string | null
 				}
 				Relationships: []
