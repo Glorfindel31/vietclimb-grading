@@ -56,6 +56,13 @@
 			</NavigationMenuList>
 			<NavigationMenuList>
 				<NavigationMenuItem>
+					<NuxtLink to="/admin">
+						<NavigationMenuLink :class="navigationMenuTriggerStyle()">
+							Admin
+						</NavigationMenuLink>
+					</NuxtLink>
+				</NavigationMenuItem>
+				<NavigationMenuItem>
 					<NuxtLink to="/about">
 						<NavigationMenuLink :class="navigationMenuTriggerStyle()">
 							About
@@ -107,28 +114,28 @@
 								</SheetDescription>
 							</SheetHeader>
 							<ul class="flex flex-col gap-2 justify-center">
-										<SheetClose>
-											<li>
-												<Button variant="link" asChild class="text-md">
-													<NuxtLink to="/about">
-														About
-													</NuxtLink>
-												</Button>
-											</li>
-											<li>
-												<Button variant="link" asChild class="text-md">
-													<NuxtLink to="/public">
-														Public Stats
-													</NuxtLink>
-												</Button>
-											</li>
-											<li>
-												<UserNav v-if="user.value" :logOutHandler="logOutHandler"
-													class="text-md" mobile />
-												<PublicNav v-else class="text-md" mobile />
-											</li>
-										</SheetClose>
-									</ul>
+								<SheetClose>
+									<li>
+										<Button variant="link" asChild class="text-md">
+											<NuxtLink to="/about">
+												About
+											</NuxtLink>
+										</Button>
+									</li>
+									<li>
+										<Button variant="link" asChild class="text-md">
+											<NuxtLink to="/public">
+												Public Stats
+											</NuxtLink>
+										</Button>
+									</li>
+									<li>
+										<UserNav v-if="user.value" :logOutHandler="logOutHandler" class="text-md"
+											mobile />
+										<PublicNav v-else class="text-md" mobile />
+									</li>
+								</SheetClose>
+							</ul>
 						</SheetContent>
 					</Sheet>
 				</NavigationMenuItem>
