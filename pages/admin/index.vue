@@ -4,6 +4,7 @@
 			import type { dataMutationResult } from "~/server/api/googlesheet.get";
 			import { formatDateString } from "~/lib/definition";
 			import { Spinner } from "@/components/ui/spinner";
+			import { google } from "googleapis";
 
 			interface RowsAdditional {
 				identicale?: boolean;
@@ -56,8 +57,8 @@
 									route_date: route.date,
 									route_link: route.link,
 								};
-							}),
-							supabaseData: data.supabaseData,
+							}).sort((a, b) => a.id - b.id) || [],
+							supabaseData: data.supabaseData?.sort((a, b) => a.id - b.id) || [],
 						};
 					},
 				},
@@ -95,23 +96,22 @@
 				zone_name: route.zone_name,
 			}));
 
-			// const updateHandler = async () => {
-			// 	const array = JSON.parse(JSON.stringify(dataToUpdate.value));
-			// 	try {
-			// 		const { data, error } = await supabase
-			// 			.from("routes")
-			// 			.upsert(array);
-			// 		if (data) {
-			// 			console.log("Data updated", data);
-			// 		} else {
-			// 			console.error("Error updating data", error);
-			// 		}
-			// 	} catch (error) {
-			// 		console.error("Error updating data", error);
-			// 	}
-			// }
-
-
+			const updateHandler = async () => {
+				const array = JSON.parse(JSON.stringify(dataToUpdate.value));
+				// try {
+				// 	const { data, error } = await supabase
+				// 		.from("routes")
+				// 		.upsert(array);
+				// 	if (data) {
+				// 		console.log("Data updated", data);
+				// 	} else {
+				// 		console.error("Error updating data", error);
+				// 	}
+				// } catch (error) {
+				// 	console.error("Error updating data", error);
+				// }
+				console.log(checkData.value[0], allData.value?.googleData[0])
+			};
 
 </script>
 
@@ -125,9 +125,9 @@
 					<Button @click="refresh" size="sm" variant="default">
 						Refresh
 					</Button>
-					<!-- <Button @click="updateHandler" size="sm" variant="default">
+					<Button @click="updateHandler" size="sm" variant="default">
 						Update
-					</Button> -->
+					</Button>
 				</div>
 			</div>
 			<div v-if="pending" class="flex flex-col min-h-[60vh] justify-center items-center">
@@ -202,7 +202,7 @@
 					</TableHeader>
 					<TableBody>
 						<TableRow v-for="route in checkData" :key="route.id"
-							:class="{ 'bg-destructive': !route.identicale }">
+							:class="!route.identicale ? 'bg-destructive' : ''">
 							<TableCell>{{ route.RID }}</TableCell>
 							<TableCell class="text-nowrap">{{ route.zone_name }}</TableCell>
 							<TableCell class="text-nowrap">{{
