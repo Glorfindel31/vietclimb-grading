@@ -48,7 +48,7 @@
 								return {
 									id: index + 1,
 									RID: route.id,
-									URID: `URID_${route.id}_${route.name.replace(/\s+/g, "")}_${route.color}_${route.grade}_${route.setter.replace(/\s+/g, "")}_${route.date}`,
+									URID: route.color !== '' && route.grade !== '' ? `URID_${route.id}_${route.name.replace(/\s+/g, "")}_${route.color}_${route.grade}_${route.setter.replace(/\s+/g, "")}_${route.date}` : '',
 									zone_name: route.name,
 									route_color: route.color,
 									route_grade: route.grade,
@@ -64,7 +64,7 @@
 			);
 			const isIdentical = (googleData: newGoogleRows[], supabaseData: DataBaseExtended[]) => {
 				const supabaseDataURID: DataBaseExtended[] = supabaseData.map((route, index) => {
-					const identicale = googleData[index].URID === route.URID ? true : false;
+					const identicale = googleData[index].URID === '' ? true : false;
 					return {
 						...route,
 						identicale: identicale
