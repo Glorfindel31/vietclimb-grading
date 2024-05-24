@@ -6,7 +6,6 @@
 			import { Spinner } from "@/components/ui/spinner";
 
 			interface RowsAdditional {
-				URID?: string;
 				identicale?: boolean;
 			}
 			interface newGoogleRows {
@@ -21,9 +20,10 @@
 				route_link: string,
 			}
 
-			type dataMutationResultExtended = dataMutationResult & RowsAdditional
+			type dataMutationResultExtended = dataMutationResult & RowsAdditional;
 
-			type DataBaseExtended = Database["public"]["Tables"]["routes"]["Row"] & RowsAdditional
+			type DataBaseInsert = Database["public"]["Tables"]["routes"]["Insert"];
+			type DataBaseExtended = Database["public"]["Tables"]["routes"]["Row"] & RowsAdditional;
 
 			// db connection
 			const supabase = useSupabaseClient<Database>();
@@ -74,7 +74,45 @@
 			}
 			const checkData = ref<DataBaseExtended[]>([]);
 			checkData.value = isIdentical(allData.value?.googleData || [] as newGoogleRows[], allData.value?.supabaseData || [] as DataBaseExtended[]);
-			console.log(checkData)
+
+			const dataToUpdate = ref<DataBaseInsert[]>([]);
+			const idArrays = ref<Array<number | string>>([]);
+
+			idArrays.value = checkData.value
+				.filter((route) => route.identicale === false)
+				.map((route) => [
+					route.id,
+				]).flat();
+
+			dataToUpdate.value = (allData.value?.googleData.filter((route) => idArrays.value.includes(route.id)) || []).map((route) => ({
+				id: Number(route.id),
+				route_color: route.route_color,
+				route_date: route.route_date,
+				route_grade: Number(route.route_grade),
+				route_link: route.route_link,
+				route_setter: route.route_setter,
+				URID: route.URID,
+				zone_name: route.zone_name,
+			}));
+
+			// const updateHandler = async () => {
+			// 	const array = JSON.parse(JSON.stringify(dataToUpdate.value));
+			// 	try {
+			// 		const { data, error } = await supabase
+			// 			.from("routes")
+			// 			.upsert(array);
+			// 		if (data) {
+			// 			console.log("Data updated", data);
+			// 		} else {
+			// 			console.error("Error updating data", error);
+			// 		}
+			// 	} catch (error) {
+			// 		console.error("Error updating data", error);
+			// 	}
+			// }
+
+
+
 </script>
 
 <template>
@@ -87,6 +125,9 @@
 					<Button @click="refresh" size="sm" variant="default">
 						Refresh
 					</Button>
+					<!-- <Button @click="updateHandler" size="sm" variant="default">
+						Update
+					</Button> -->
 				</div>
 			</div>
 			<div v-if="pending" class="flex flex-col min-h-[60vh] justify-center items-center">

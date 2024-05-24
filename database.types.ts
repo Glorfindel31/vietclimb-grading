@@ -18,18 +18,18 @@ export type Database = {
 					route_grade: number | null
 					route_link: string | null
 					route_setter: string | null
-					RUID: string | null
+					URID: string | null
 					zone_name: string | null
 				}
 				Insert: {
 					id?: number
-					RID: number
+					RID?: number
 					route_color?: string | null
 					route_date?: string | null
 					route_grade?: number | null
 					route_link?: string | null
 					route_setter?: string | null
-					RUID?: string | null
+					URID?: string | null
 					zone_name?: string | null
 				}
 				Update: {
@@ -40,7 +40,7 @@ export type Database = {
 					route_grade?: number | null
 					route_link?: string | null
 					route_setter?: string | null
-					RUID?: string | null
+					URID?: string | null
 					zone_name?: string | null
 				}
 				Relationships: []
