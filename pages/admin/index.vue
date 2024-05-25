@@ -4,7 +4,6 @@
 			import type { dataMutationResult } from "~/server/api/googlesheet.get";
 			import { formatDateString } from "~/lib/definition";
 			import { Spinner } from "@/components/ui/spinner";
-			import { google } from "googleapis";
 
 			interface RowsAdditional {
 				identicale?: boolean;
@@ -13,12 +12,12 @@
 				id: number,
 				RID: string
 				URID: string,
-				zone_name: string,
-				route_color: string,
-				route_grade: string,
-				route_setter: string,
-				route_date: string,
-				route_link: string,
+				zone_name: string | null,
+				route_color: string | null,
+				route_grade: string | null,
+				route_setter: string | null,
+				route_date: string | null,
+				route_link: string | null,
 			}
 
 			type dataMutationResultExtended = dataMutationResult & RowsAdditional;
@@ -51,11 +50,11 @@
 									RID: route.id,
 									URID: route.color !== '' && route.grade !== '' ? `URID_${route.id}_${route.name.replace(/\s+/g, "")}_${route.color}_${route.grade}_${route.setter.replace(/\s+/g, "")}_${route.date}` : '',
 									zone_name: route.name,
-									route_color: route.color,
-									route_grade: route.grade,
-									route_setter: route.setter,
-									route_date: route.date,
-									route_link: route.link,
+									route_color: route.color !== '' ? route.color : null,
+									route_grade: route.grade !== "" ? route.grade : null,
+									route_setter: route.setter !== "" ? route.setter : null,
+									route_date: route.date !== "" ? route.date : null,
+									route_link: route.link !== "" ? route.link : null,
 								};
 							}).sort((a, b) => a.id - b.id) || [],
 							supabaseData: data.supabaseData?.sort((a, b) => a.id - b.id) || [],
@@ -63,9 +62,14 @@
 					},
 				},
 			);
+
+			const checkData = ref<DataBaseExtended[]>([]);
+			const dataToUpdate = ref<DataBaseInsert[]>([]);
+			const idArrays = ref<Array<number | string>>([]);
+
 			const isIdentical = (googleData: newGoogleRows[], supabaseData: DataBaseExtended[]) => {
 				const supabaseDataURID: DataBaseExtended[] = supabaseData.map((route, index) => {
-					const identicale = googleData[index].URID === '' ? true : false;
+					const identicale = googleData[index].URID === route.URID ? true : false;
 					return {
 						...route,
 						identicale: identicale
@@ -73,45 +77,64 @@
 				});
 				return supabaseDataURID as DataBaseExtended[];
 			}
-			const checkData = ref<DataBaseExtended[]>([]);
-			checkData.value = isIdentical(allData.value?.googleData || [] as newGoogleRows[], allData.value?.supabaseData || [] as DataBaseExtended[]);
 
-			const dataToUpdate = ref<DataBaseInsert[]>([]);
-			const idArrays = ref<Array<number | string>>([]);
+			const dataChanges = () => {
+				checkData.value = isIdentical(allData.value?.googleData || [] as newGoogleRows[], allData.value?.supabaseData || [] as DataBaseExtended[]);
 
-			idArrays.value = checkData.value
-				.filter((route) => route.identicale === false)
-				.map((route) => [
-					route.id,
-				]).flat();
+				idArrays.value = checkData.value
+					.filter((route) => route.identicale === false)
+					.map((route) => [
+						route.id,
+					]).flat();
 
-			dataToUpdate.value = (allData.value?.googleData.filter((route) => idArrays.value.includes(route.id)) || []).map((route) => ({
-				id: Number(route.id),
-				route_color: route.route_color,
-				route_date: route.route_date,
-				route_grade: Number(route.route_grade),
-				route_link: route.route_link,
-				route_setter: route.route_setter,
-				URID: route.URID,
-				zone_name: route.zone_name,
-			}));
+				dataToUpdate.value = (allData.value?.googleData.filter((route) => idArrays.value.includes(route.id)) || []).map((route) => ({
+					id: Number(route.id),
+					route_color: route.route_color,
+					route_date: route.route_date,
+					route_grade: Number(route.route_grade) === 0 ? null : Number(route.route_grade),
+					route_link: route.route_link,
+					route_setter: route.route_setter,
+					URID: route.URID,
+					zone_name: route.zone_name,
+				}));
+			}
 
-			const updateHandler = async () => {
-				const array = JSON.parse(JSON.stringify(dataToUpdate.value));
-				// try {
-				// 	const { data, error } = await supabase
-				// 		.from("routes")
-				// 		.upsert(array);
-				// 	if (data) {
-				// 		console.log("Data updated", data);
-				// 	} else {
-				// 		console.error("Error updating data", error);
-				// 	}
-				// } catch (error) {
-				// 	console.error("Error updating data", error);
-				// }
-				console.log(checkData.value[0], allData.value?.googleData[0])
+			dataChanges()
+
+			watch(allData, () => {
+				dataChanges()
+			});
+
+
+			const updateHandler = async (e: Event) => {
+				e.preventDefault();
+				const array = await JSON.parse(JSON.stringify(dataToUpdate.value));
+				if (array.length === 0) {
+					console.log("No data to update");
+					return;
+				}
+				try {
+					const { data, error } = await supabase
+						.from("routes")
+						.upsert(array)
+						.select();
+					if (data) {
+						console.log("Data updated", data);
+					} else if (error) {
+						console.error("Error updating data", error);
+					}
+				} catch (error) {
+					console.error("Error updating data", error);
+				} finally {
+					refresh();
+				}
 			};
+
+			const refreshHandler = (e: Event) => {
+				e.preventDefault();
+				refresh();
+			};
+
 
 </script>
 
@@ -122,12 +145,14 @@
 				<h2>Admin</h2>
 				<div class="flex flex-row justify-between py-4 align-middle">
 					<p class="italic">Welcome into the database synchronisation tool.</p>
-					<Button @click="refresh" size="sm" variant="default">
-						Refresh
-					</Button>
-					<Button @click="updateHandler" size="sm" variant="default">
-						Update
-					</Button>
+					<div class="flex gap-2">
+						<Button @click="refreshHandler" size="sm" variant="outline">
+							Refresh
+						</Button>
+						<Button @click="updateHandler" size="sm" variant="outline">
+							Update
+						</Button>
+					</div>
 				</div>
 			</div>
 			<div v-if="pending" class="flex flex-col min-h-[60vh] justify-center items-center">
@@ -143,10 +168,10 @@
 							</TableHead>
 						</TableRow>
 						<TableRow>
-							<TableHead class="w-[50px] text-center">RID</TableHead>
+							<TableHead class="text-center">ID - RID</TableHead>
 							<TableHead class="text-center">Zone Name</TableHead>
 							<TableHead class="text-center">Route Color</TableHead>
-							<TableHead class="w-[50px] text-center">
+							<TableHead class="text-center">
 								Route Grade
 							</TableHead>
 							<TableHead class="text-center">Route Setter</TableHead>
@@ -156,25 +181,25 @@
 					</TableHeader>
 					<TableBody>
 						<TableRow v-for="route in allData.googleData" :key="route.RID">
-							<TableCell>{{ route.RID }}</TableCell>
-							<TableCell class="text-nowrap">{{ route.zone_name }}</TableCell>
-							<TableCell class="text-nowrap">{{
+							<TableCell class="py-4 px-1">{{ route.id }}-{{ route.RID }}</TableCell>
+							<TableCell class="text-nowrap py-4 px-1">{{ route.zone_name }}</TableCell>
+							<TableCell class="text-nowrap py-4 px-1">{{
 								route.route_color
 							}}</TableCell>
-							<TableCell class="text-nowrap">{{
+							<TableCell class="text-nowrap py-4 px-1">{{
 								route.route_grade
 							}}</TableCell>
-							<TableCell class="text-nowrap">
+							<TableCell class="text-nowrap py-4 px-1">
 								{{ route.route_setter }}
 							</TableCell>
-							<TableCell class="text-nowrap">
+							<TableCell class="text-nowrap py-4 px-1">
 								{{
 									route.route_date
 										? formatDateString(route.route_date)
 										: "no date"
 								}}
 							</TableCell>
-							<TableCell>{{
+							<TableCell class="py-4 px-1">{{
 								route.route_link ? "link" : "nolink"
 							}}</TableCell>
 						</TableRow>
@@ -189,10 +214,10 @@
 							</TableHead>
 						</TableRow>
 						<TableRow>
-							<TableHead class="w-[50px] text-center">RID</TableHead>
+							<TableHead class="text-center">ID - RID</TableHead>
 							<TableHead class="text-center">Zone Name</TableHead>
 							<TableHead class="text-center">Route Color</TableHead>
-							<TableHead class="w-[50px] text-center">
+							<TableHead class="text-center">
 								Route Grade
 							</TableHead>
 							<TableHead class="text-center">Route Setter</TableHead>
@@ -203,25 +228,25 @@
 					<TableBody>
 						<TableRow v-for="route in checkData" :key="route.id"
 							:class="!route.identicale ? 'bg-destructive' : ''">
-							<TableCell>{{ route.RID }}</TableCell>
-							<TableCell class="text-nowrap">{{ route.zone_name }}</TableCell>
-							<TableCell class="text-nowrap">{{
+							<TableCell class="py-4 px-1">{{ route.id }}-{{ route.RID }}</TableCell>
+							<TableCell class="text-nowrap py-4 px-1">{{ route.zone_name }}</TableCell>
+							<TableCell class="text-nowrap py-4 px-1">{{
 								route.route_color
 							}}</TableCell>
-							<TableCell class="text-nowrap">{{
+							<TableCell class="text-nowrap py-4 px-1">{{
 								route.route_grade
 							}}</TableCell>
-							<TableCell class="text-nowrap">
+							<TableCell class="text-nowrap py-4 px-1">
 								{{ route.route_setter }}
 							</TableCell>
-							<TableCell class="text-nowrap">
+							<TableCell class="text-nowrap py-4 px-1">
 								{{
 									route.route_date
 										? formatDateString(route.route_date)
 										: "no date"
 								}}
 							</TableCell>
-							<TableCell>{{
+							<TableCell class="py-4 px-1">{{
 								route.route_link ? "link" : "nolink"
 							}}</TableCell>
 						</TableRow>
