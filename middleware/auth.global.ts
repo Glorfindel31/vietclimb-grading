@@ -7,7 +7,6 @@ export default defineNuxtRouteMiddleware((to, _from) => {
 	const adminRoutes = ['/', '/about', '/public', '/admin'];
 	const user = useSupabaseUser();
 
-	console.log('user', user.value?.id, admin);
 	if (!user.value && !publicRoutes.includes(to.path)) {
 		return navigateTo('/login');
 	} else if (user.value && !authRoutes.includes(to.path) && user.value?.id !== admin) {
