@@ -39,4 +39,9 @@ export default defineNuxtConfig({
 			],
 		},
 	},
+	runtimeConfig: {
+		public: {
+			admin: process.env.ADMIN_ID,
+		}
+	}
 });

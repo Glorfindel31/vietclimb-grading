@@ -12,7 +12,6 @@
 				SheetClose,
 				SheetContent,
 				SheetDescription,
-				SheetFooter,
 				SheetHeader,
 				SheetTitle,
 				SheetTrigger,
@@ -22,22 +21,26 @@
 			import type { Database } from '~/database.types'
 			import { Icon } from '@iconify/vue'
 
-			let client = ref();
-			let user = ref();
+			const client = ref();
+			const user = ref();
+			const adminENV = useRuntimeConfig().public.admin
+			const isAdmin = ref(false);
 
 			onMounted(async () => {
 				client.value = useSupabaseClient<Database>();
 				user.value = useSupabaseUser();
+				user.value.value.id === adminENV ? isAdmin.value = true : isAdmin.value = false;
 			});
 
 			const logOutHandler = async () => {
 				try {
 					await client.value.auth.signOut();
-
+					navigateTo('/');
 				} catch (error) {
 					console.error('Error logging out:', error as Error);
 				}
 			};
+
 </script>
 
 <template>
@@ -55,7 +58,7 @@
 				</NavigationMenuItem>
 			</NavigationMenuList>
 			<NavigationMenuList>
-				<NavigationMenuItem>
+				<NavigationMenuItem v-if="isAdmin">
 					<NuxtLink to="/admin">
 						<NavigationMenuLink :class="navigationMenuTriggerStyle()">
 							Admin
