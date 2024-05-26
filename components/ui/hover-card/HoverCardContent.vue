@@ -31,6 +31,7 @@
 	<HoverCardPortal>
 		<HoverCardContent v-bind="forwardedProps" :class="cn(
 			'z-50 w-64 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none',
+			animations,
 			props.class,
 		)
 			">

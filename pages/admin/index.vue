@@ -189,9 +189,6 @@
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-
-
-
 						<HoverCard :openDelay="1" :close-delay="1" v-for="route in dataList" :key="route.id">
 							<HoverCardTrigger asChild>
 								<TableRow
