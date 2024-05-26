@@ -5,6 +5,12 @@
 			import { formatDateString } from "~/lib/definition";
 			import { Spinner } from "@/components/ui/spinner";
 
+			import {
+				HoverCard,
+				HoverCardContent,
+				HoverCardTrigger,
+			} from '@/components/ui/hover-card'
+
 			interface RowsAdditional {
 				identicale?: boolean;
 			}
@@ -67,6 +73,8 @@
 			const dataToUpdate = ref<DataBaseInsert[]>([]);
 			const idArrays = ref<Array<number | string>>([]);
 
+			const modifiedGroup = ref<{ supabase: DataBaseExtended[], google: newGoogleRows[] }>({ supabase: [], google: [] });
+
 			const isIdentical = (googleData: newGoogleRows[], supabaseData: DataBaseExtended[]) => {
 				const supabaseDataURID: DataBaseExtended[] = supabaseData.map((route, index) => {
 					const identicale = googleData[index].URID === route.URID ? true : false;
@@ -97,6 +105,8 @@
 					URID: route.URID,
 					zone_name: route.zone_name,
 				}));
+
+				modifiedGroup.value = { google: (allData.value?.googleData as any) as newGoogleRows[], supabase: (checkData.value as any) as DataBaseExtended[] }
 			}
 
 			dataChanges()
@@ -104,7 +114,6 @@
 			watch(allData, () => {
 				dataChanges()
 			});
-
 
 			const updateHandler = async (e: Event) => {
 				e.preventDefault();
@@ -135,13 +144,12 @@
 				refresh();
 			};
 
-
 </script>
 
 <template>
-	<div class="min-h-[80vh] w-full px-2 py-4">
-		<div class="flex flex-col gap-8 rounded-lg border bg-background p-2 shadow-md min-h-[80vh]">
-			<div class="p-4 h-full">
+	<div class="min-h-[80vh] w-full flex flex-col items-center justify-center py-10">
+		<div class="flex flex-col gap-8 rounded-lg border bg-background p-4 shadow-md min-h-[80vh] max-w-[1200px]">
+			<div class="h-full">
 				<h2>Admin</h2>
 				<div class="flex flex-row justify-between py-4 align-middle">
 					<p class="italic">Welcome into the database synchronisation tool.</p>
@@ -158,13 +166,14 @@
 			<div v-if="pending" class="flex flex-col min-h-[60vh] justify-center items-center">
 				<Spinner />
 			</div>
-			<div v-else-if="allData?.googleData && allData?.supabaseData" class="flex flex-row gap-2">
-				<Table class="rounded border p-1 text-center text-xs">
-					<TableCaption>Raw Google Sheet Data</TableCaption>
+			<div v-else-if="modifiedGroup" class="flex flex-row gap-2">
+				<Table v-for="(dataList, index) in modifiedGroup" class="rounded border p-1 text-center text-xs"
+					:key="index">
+					<TableCaption>Raw <span class="capitalize">{{ index }}</span> Sheet Data</TableCaption>
 					<TableHeader>
 						<TableRow>
 							<TableHead class="w-full text-center text-sm font-bold" colspan="7">
-								Google Sheet Data
+								<span class="capitalize">{{ index }}</span> Sheet Data
 							</TableHead>
 						</TableRow>
 						<TableRow>
@@ -180,76 +189,51 @@
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						<TableRow v-for="route in allData.googleData" :key="route.RID">
-							<TableCell class="py-4 px-1">{{ route.id }}-{{ route.RID }}</TableCell>
-							<TableCell class="text-nowrap py-4 px-1">{{ route.zone_name }}</TableCell>
-							<TableCell class="text-nowrap py-4 px-1">{{
-								route.route_color
-							}}</TableCell>
-							<TableCell class="text-nowrap py-4 px-1">{{
-								route.route_grade
-							}}</TableCell>
-							<TableCell class="text-nowrap py-4 px-1">
-								{{ route.route_setter }}
-							</TableCell>
-							<TableCell class="text-nowrap py-4 px-1">
-								{{
-									route.route_date
-										? formatDateString(route.route_date)
-										: "no date"
-								}}
-							</TableCell>
-							<TableCell class="py-4 px-1">{{
-								route.route_link ? "link" : "nolink"
-							}}</TableCell>
-						</TableRow>
-					</TableBody>
-				</Table>
-				<Table class="rounded border p-1 text-center text-xs">
-					<TableCaption>Raw Supabase Sheet Data</TableCaption>
-					<TableHeader>
-						<TableRow>
-							<TableHead class="w-full text-center text-sm font-bold" colspan="7">
-								Supabase Data
-							</TableHead>
-						</TableRow>
-						<TableRow>
-							<TableHead class="text-center">ID - RID</TableHead>
-							<TableHead class="text-center">Zone Name</TableHead>
-							<TableHead class="text-center">Route Color</TableHead>
-							<TableHead class="text-center">
-								Route Grade
-							</TableHead>
-							<TableHead class="text-center">Route Setter</TableHead>
-							<TableHead class="text-center">Route Date</TableHead>
-							<TableHead class="text-center">Route link</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						<TableRow v-for="route in checkData" :key="route.id"
-							:class="!route.identicale ? 'bg-destructive' : ''">
-							<TableCell class="py-4 px-1">{{ route.id }}-{{ route.RID }}</TableCell>
-							<TableCell class="text-nowrap py-4 px-1">{{ route.zone_name }}</TableCell>
-							<TableCell class="text-nowrap py-4 px-1">{{
-								route.route_color
-							}}</TableCell>
-							<TableCell class="text-nowrap py-4 px-1">{{
-								route.route_grade
-							}}</TableCell>
-							<TableCell class="text-nowrap py-4 px-1">
-								{{ route.route_setter }}
-							</TableCell>
-							<TableCell class="text-nowrap py-4 px-1">
-								{{
-									route.route_date
-										? formatDateString(route.route_date)
-										: "no date"
-								}}
-							</TableCell>
-							<TableCell class="py-4 px-1">{{
-								route.route_link ? "link" : "nolink"
-							}}</TableCell>
-						</TableRow>
+
+
+
+						<HoverCard :openDelay="1" :close-delay="1" v-for="route in dataList" :key="route.id">
+							<HoverCardTrigger asChild>
+								<TableRow
+									:class="index === 'supabase' && ('identicale' in route) && !route.identicale ? 'bg-destructive' : ''">
+									<TableCell class="py-4 px-1">{{ route.id }}-{{ route.RID }}</TableCell>
+									<TableCell class="text-nowrap py-4 px-1">{{ route.zone_name }}</TableCell>
+									<TableCell class="text-nowrap py-4 px-1">{{
+										route.route_color
+									}}</TableCell>
+									<TableCell class="text-nowrap py-4 px-1">{{
+										route.route_grade
+									}}</TableCell>
+									<TableCell class="text-nowrap py-4 px-1">
+										{{ route.route_setter }}
+									</TableCell>
+									<TableCell class="text-nowrap py-4 px-1">
+										{{
+											route.route_date
+												? formatDateString(route.route_date)
+												: "no date"
+										}}
+									</TableCell>
+									<TableCell class="py-4 px-1">{{
+										route.route_link ? "link" : "nolink"
+									}}</TableCell>
+								</TableRow>
+							</HoverCardTrigger>
+							<HoverCardContent align="start" class="w-auto">
+								<div class="text-xs pr-2">
+									<h2 class="text-sm mb-2">All infos</h2>
+									<ul>
+										<li>URID: {{ route.URID }}</li>
+										<li>Zone: {{ route.zone_name }}</li>
+										<li>Color: {{ route.route_color }}</li>
+										<li>Grade: {{ route.route_grade }}</li>
+										<li>Setter: {{ route.route_setter }}</li>
+										<li>Date: {{ route.route_date }}</li>
+										<li>Link: {{ route.route_link }}</li>
+									</ul>
+								</div>
+							</HoverCardContent>
+						</HoverCard>
 					</TableBody>
 				</Table>
 			</div>
