@@ -21,25 +21,28 @@
 			import type { Database } from '~/database.types'
 			import { Icon } from '@iconify/vue'
 
-			const client = ref();
-			const user = ref();
 			const adminENV = useRuntimeConfig().public.admin
 			const isAdmin = ref(false);
 
-			onMounted(async () => {
-				client.value = useSupabaseClient<Database>();
-				user.value = useSupabaseUser();
-				user.value.value.id === adminENV ? isAdmin.value = true : isAdmin.value = false;
-			});
+			const client = useSupabaseClient<Database>();
+			const user = useSupabaseUser();
+			// if (user.value) user.value.id === adminENV ? isAdmin.value = true : isAdmin.value = false;
+
+			// watch(() => user.value, (curr, prev) => {
+			// 	if (user.value.value) user.value.value.id === adminENV ? isAdmin.value = true : isAdmin.value = false;
+			// })
 
 			const logOutHandler = async () => {
 				try {
-					await client.value.auth.signOut();
+					await client.auth.signOut();
 					navigateTo('/');
 				} catch (error) {
 					console.error('Error logging out:', error as Error);
 				}
 			};
+			setInterval(() => {
+				console.log('user id:', user.value)
+			}, 5000);
 
 </script>
 
@@ -58,7 +61,7 @@
 				</NavigationMenuItem>
 			</NavigationMenuList>
 			<NavigationMenuList>
-				<NavigationMenuItem v-if="isAdmin">
+				<NavigationMenuItem v-show="isAdmin">
 					<NuxtLink to="/admin">
 						<NavigationMenuLink :class="navigationMenuTriggerStyle()">
 							Admin
@@ -68,7 +71,7 @@
 				<NavigationMenuItem>
 					<NuxtLink to="/about">
 						<NavigationMenuLink :class="navigationMenuTriggerStyle()">
-							About
+							About {{ isAdmin.valueOf() }}
 						</NavigationMenuLink>
 					</NuxtLink>
 				</NavigationMenuItem>
