@@ -8,10 +8,10 @@
 [x] Create a login form
 [x] Implement registration functionality
 [x] Implement login functionality
-## [ ] Implement route data management
-[ ] Create a db schema for routes
-[ ] Implement functionality to copy data from REST API to the DB
-[ ] Implement functionality to refresh db when it doesn't match with the REST API
+## [x] Implement route data management
+[x] Create a db schema for routes
+[x] Implement functionality to copy data from REST API to the DB
+[x] Implement functionality to refresh db when it doesn't match with the REST API
 ## [ ] Implement user interaction with routes 
 [ ] Allow users to mark a route as finished
 [ ] Allow users to rate a route
