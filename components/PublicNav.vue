@@ -1,8 +1,5 @@
 <script setup
 		lang="ts">
-			import {
-				NavigationMenuItem,
-			} from '@/components/ui/navigation-menu';
 			import { cn } from '~/lib/utils';
 
 			const props = defineProps({
@@ -23,19 +20,19 @@
 
 <template>
 	<div :class="mobileClass">
-		<NavigationMenuItem>
+		<li>
 			<Button as-child :class="buttonClass">
 				<NuxtLink to="/register">
 					Register
 				</NuxtLink>
 			</Button>
-		</NavigationMenuItem>
-		<NavigationMenuItem>
+		</li>
+		<li>
 			<Button as-child variant="secondary" :class="buttonClass">
 				<NuxtLink to="/login">
 					Login
 				</NuxtLink>
 			</Button>
-		</NavigationMenuItem>
+		</li>
 	</div>
 </template>

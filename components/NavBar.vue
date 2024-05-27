@@ -1,13 +1,6 @@
 <script setup
 		lang="ts">
 			import {
-				NavigationMenu,
-				NavigationMenuItem,
-				NavigationMenuList,
-				navigationMenuTriggerStyle
-			} from '@/components/ui/navigation-menu';
-
-			import {
 				Sheet,
 				SheetClose,
 				SheetContent,
@@ -21,16 +14,12 @@
 			import type { Database } from '~/database.types'
 			import { Icon } from '@iconify/vue'
 
-			const adminENV = useRuntimeConfig().public.admin
-			const isAdmin = ref(false);
 
+			const adminENV = useRuntimeConfig().public.admin
 			const client = useSupabaseClient<Database>();
 			const user = useSupabaseUser();
-			// if (user.value) user.value.id === adminENV ? isAdmin.value = true : isAdmin.value = false;
 
-			// watch(() => user.value, (curr, prev) => {
-			// 	if (user.value.value) user.value.value.id === adminENV ? isAdmin.value = true : isAdmin.value = false;
-			// })
+			const isAdmin = ref(adminENV === user.value?.id)
 
 			const logOutHandler = async () => {
 				try {
@@ -40,112 +29,113 @@
 					console.error('Error logging out:', error as Error);
 				}
 			};
-			setInterval(() => {
-				console.log('user id:', user.value)
-			}, 5000);
+
+			watch(user, () => {
+				isAdmin.value = adminENV === user.value?.id
+			})
 
 </script>
 
 <template>
-	<ClientOnly>
-		<!-- Desktop Nav -->
-		<NavigationMenu class="sm:flex flex-row justify-between min-w-full hidden">
-			<NavigationMenuList>
-				<NavigationMenuItem>
-					<NuxtLink to="/">
-						<NavigationMenuLink :class="navigationMenuTriggerStyle()">
-							<img src="/logo-light.svg" alt="logo" class="w-6 h-6 dark:hidden block" />
-							<img src="/logo-dark.svg" alt="logo" class="w-6 h-6 dark:block hidden" />
-						</NavigationMenuLink>
-					</NuxtLink>
-				</NavigationMenuItem>
-			</NavigationMenuList>
-			<NavigationMenuList>
-				<NavigationMenuItem v-show="isAdmin">
+	<!-- Desktop Nav -->
+	<div class="sm:flex flex-row justify-between items-center min-w-full hidden p-2">
+		<ul>
+			<li>
+				<NuxtLink to="/">
+					<img src="/logo-light.svg" alt="logo" class="w-6 h-6 dark:hidden block" />
+					<img src="/logo-dark.svg" alt="logo" class="w-6 h-6 dark:block hidden" />
+				</NuxtLink>
+			</li>
+		</ul>
+		<ul class="flex flex-row gap-4">
+			<li v-if="isAdmin">
+				<Button variant="link" asChild>
 					<NuxtLink to="/admin">
-						<NavigationMenuLink :class="navigationMenuTriggerStyle()">
-							Admin
-						</NavigationMenuLink>
+						Admin
 					</NuxtLink>
-				</NavigationMenuItem>
-				<NavigationMenuItem>
+				</Button>
+			</li>
+			<li>
+				<Button variant="link" asChild>
 					<NuxtLink to="/about">
-						<NavigationMenuLink :class="navigationMenuTriggerStyle()">
-							About {{ isAdmin.valueOf() }}
-						</NavigationMenuLink>
+						About
 					</NuxtLink>
-				</NavigationMenuItem>
-				<NavigationMenuItem>
+				</Button>
+			</li>
+			<li>
+				<Button variant="link" asChild>
 					<NuxtLink to="/public">
-						<NavigationMenuLink :class="navigationMenuTriggerStyle()">
-							Public Stats
-						</NavigationMenuLink>
+						Public Stats
 					</NuxtLink>
-				</NavigationMenuItem>
-				<UserNav v-if="user.value" :logOutHandler="logOutHandler" />
-				<PublicNav v-else />
-				<NavigationMenuItem>
-					<ToggleMode />
-				</NavigationMenuItem>
-			</NavigationMenuList>
-		</NavigationMenu>
-		<!-- Mobile Nav -->
-		<NavigationMenu class="sm:hidden flex flex-row justify-between min-w-full">
-			<NavigationMenuList>
-				<NavigationMenuItem>
-					<NuxtLink to="/">
-						<NavigationMenuLink :class="navigationMenuTriggerStyle()">
-							<img src="/logo-light.svg" alt="logo" class="w-6 h-6 dark:hidden block" />
-							<img src="/logo-dark.svg" alt="logo" class="w-6 h-6 dark:block hidden" />
-						</NavigationMenuLink>
-					</NuxtLink>
-				</NavigationMenuItem>
-			</NavigationMenuList>
-			<NavigationMenuList>
-				<NavigationMenuItem>
-					<ToggleMode />
-				</NavigationMenuItem>
-				<NavigationMenuItem>
-					<Sheet>
-						<SheetTrigger as-child>
-							<Button variant="ghost" size="icon">
-								<Icon icon="radix-icons:hamburger-menu" class="h-[1.2rem] w-[1rem]" />
-							</Button>
-						</SheetTrigger>
-						<SheetContent side="top">
-							<SheetHeader>
-								<SheetTitle>Menu</SheetTitle>
-								<SheetDescription hidden>
-									Navigation menu
-								</SheetDescription>
-							</SheetHeader>
-							<ul class="flex flex-col gap-2 justify-center">
-								<SheetClose>
-									<li>
-										<Button variant="link" asChild class="text-md">
-											<NuxtLink to="/about">
-												About
-											</NuxtLink>
-										</Button>
-									</li>
-									<li>
-										<Button variant="link" asChild class="text-md">
-											<NuxtLink to="/public">
-												Public Stats
-											</NuxtLink>
-										</Button>
-									</li>
-									<li>
-										<UserNav v-if="user.value" :logOutHandler="logOutHandler" class="text-md"
-											mobile />
-										<PublicNav v-else class="text-md" mobile />
-									</li>
-								</SheetClose>
-							</ul>
-						</SheetContent>
-					</Sheet>
-				</NavigationMenuItem>
-			</NavigationMenuList>
-		</NavigationMenu>
-	</ClientOnly>
+				</Button>
+			</li>
+			<UserNav v-if="user" :logOutHandler="logOutHandler" />
+			<PublicNav v-else />
+			<li>
+				<ToggleMode />
+			</li>
+		</ul>
+	</div>
+	<!-- Mobile Nav -->
+	<div class="sm:hidden flex flex-row justify-between min-w-full">
+		<ul>
+			<li>
+				<NuxtLink to="/">
+					<img src="/logo-light.svg" alt="logo" class="w-6 h-6 dark:hidden block" />
+					<img src="/logo-dark.svg" alt="logo" class="w-6 h-6 dark:block hidden" />
+				</NuxtLink>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<ToggleMode />
+			</li>
+			<li>
+				<Sheet>
+					<SheetTrigger as-child>
+						<Button variant="ghost" size="icon">
+							<Icon icon="radix-icons:hamburger-menu" class="h-[1.2rem] w-[1rem]" />
+						</Button>
+					</SheetTrigger>
+					<SheetContent side="top">
+						<SheetHeader>
+							<SheetTitle>Menu</SheetTitle>
+							<SheetDescription hidden>
+								Navigation menu
+							</SheetDescription>
+						</SheetHeader>
+						<ul class="flex flex-col gap-2 justify-center">
+							<SheetClose>
+								<li v-if="isAdmin">
+									<Button variant="link" asChild>
+										<NuxtLink to="/admin">
+											Admin
+										</NuxtLink>
+									</Button>
+								</li>
+								<li>
+									<Button variant="link" asChild class="text-md">
+										<NuxtLink to="/about">
+											About
+										</NuxtLink>
+									</Button>
+								</li>
+								<li>
+									<Button variant="link" asChild class="text-md">
+										<NuxtLink to="/public">
+											Public Stats
+										</NuxtLink>
+									</Button>
+								</li>
+								<li>
+									<UserNav v-if="user" :logOutHandler="logOutHandler" class="text-md" mobile />
+									<PublicNav v-else class="text-md" mobile />
+								</li>
+							</SheetClose>
+						</ul>
+					</SheetContent>
+				</Sheet>
+			</li>
+		</ul>
+	</div>
 </template>
