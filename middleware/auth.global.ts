@@ -1,17 +1,27 @@
-export default defineNuxtRouteMiddleware((to, _from) => {
 
+
+export default defineNuxtRouteMiddleware((to, from) => {
 	const admin = useRuntimeConfig().public.admin;
+	const user = useSupabaseUser();
 
 	const publicRoutes = ['/', '/login', '/register', '/about', '/public'];
-	const authRoutes = ['/', '/user', '/about', '/public'];
-	const adminRoutes = ['/', '/about', '/public', '/admin'];
-	const user = useSupabaseUser();
+	const alwaysAllowedRoutes = ['/', '/about', '/public'];
+	const authRoutesBase = ['/user'];
+	const adminRoutesBase = ['/admin'];
+
+	const isMatchingRoute = (basePath: string[], routePath: string): boolean => {
+		return basePath.some(basePathSegment => routePath.startsWith(basePathSegment));
+	};
 
 	if (!user.value && !publicRoutes.includes(to.path)) {
 		return navigateTo('/login');
-	} else if (user.value && !authRoutes.includes(to.path) && user.value?.id !== admin) {
+	} else if (user.value && alwaysAllowedRoutes.includes(to.path)) {
+		return;
+	} else if (user.value && user.value.id !== admin && !isMatchingRoute(authRoutesBase, to.path)) {
 		return navigateTo('/user');
-	} else if (user.value && user.value?.id === admin && !adminRoutes.includes(to.path)) {
-		return navigateTo('/admin')
+	} else if (user.value && user.value.id === admin && !isMatchingRoute(adminRoutesBase, to.path)) {
+		return navigateTo('/admin');
+	} else {
+		return;
 	}
 });
