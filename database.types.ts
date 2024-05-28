@@ -9,10 +9,55 @@ export type Json =
 export type Database = {
 	public: {
 		Tables: {
+			rates_grades: {
+				Row: {
+					created_at: string
+					id: number
+					route_grade: number
+					route_rate: number
+					route_top: boolean
+					URID_linked: string
+					user_id: string
+				}
+				Insert: {
+					created_at?: string
+					id?: number
+					route_grade?: number
+					route_rate?: number
+					route_top?: boolean
+					URID_linked: string
+					user_id: string
+				}
+				Update: {
+					created_at?: string
+					id?: number
+					route_grade?: number
+					route_rate?: number
+					route_top?: boolean
+					URID_linked?: string
+					user_id?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "rates_grades_URID_linked_fkey"
+						columns: ["URID_linked"]
+						isOneToOne: true
+						referencedRelation: "routes"
+						referencedColumns: ["URID"]
+					},
+					{
+						foreignKeyName: "rates_grades_user_id_fkey"
+						columns: ["user_id"]
+						isOneToOne: true
+						referencedRelation: "users"
+						referencedColumns: ["UID"]
+					},
+				]
+			}
 			routes: {
 				Row: {
 					id: number
-					RID: number
+					RID: number | null
 					route_color: string | null
 					route_date: string | null
 					route_grade: number | null
@@ -23,7 +68,7 @@ export type Database = {
 				}
 				Insert: {
 					id?: number
-					RID?: number
+					RID?: number | null
 					route_color?: string | null
 					route_date?: string | null
 					route_grade?: number | null
@@ -34,7 +79,7 @@ export type Database = {
 				}
 				Update: {
 					id?: number
-					RID?: number
+					RID?: number | null
 					route_color?: string | null
 					route_date?: string | null
 					route_grade?: number | null
@@ -48,7 +93,10 @@ export type Database = {
 			users: {
 				Row: {
 					created_at: string
+					diplay_rank: boolean
+					display_data: boolean
 					display_name: string | null
+					display_user: boolean
 					email: string
 					id: number
 					role: string
@@ -56,7 +104,10 @@ export type Database = {
 				}
 				Insert: {
 					created_at?: string
+					diplay_rank?: boolean
+					display_data?: boolean
 					display_name?: string | null
+					display_user?: boolean
 					email: string
 					id?: number
 					role?: string
@@ -64,7 +115,10 @@ export type Database = {
 				}
 				Update: {
 					created_at?: string
+					diplay_rank?: boolean
+					display_data?: boolean
 					display_name?: string | null
+					display_user?: boolean
 					email?: string
 					id?: number
 					role?: string

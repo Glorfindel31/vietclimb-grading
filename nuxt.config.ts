@@ -5,12 +5,12 @@ export default defineNuxtConfig({
 		classSuffix: "",
 	},
 	modules: [
-		"@nuxtjs/tailwindcss",
-		"shadcn-nuxt",
-		"@nuxtjs/color-mode",
-		"@nuxt/image",
-		"@nuxtjs/supabase",
-	],
+        "@nuxtjs/tailwindcss",
+        "@nuxtjs/color-mode",
+        "@nuxt/image",
+        "@nuxtjs/supabase",
+        "shadcn-nuxt"
+    ],
 	supabase: {
 		redirect: false,
 		url: process.env.SUPABASE_URL,
