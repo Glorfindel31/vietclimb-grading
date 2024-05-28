@@ -4,6 +4,7 @@
 			import type { dataMutationResult } from "~/server/api/googlesheet.get";
 			import { formatDateString } from "~/lib/definition";
 			import { Spinner } from "@/components/ui/spinner";
+			import { useToast } from '@/components/ui/toast/use-toast'
 
 			import {
 				HoverCard,
@@ -31,6 +32,7 @@
 			type DataBaseInsert = Database["public"]["Tables"]["routes"]["Insert"];
 			type DataBaseExtended = Database["public"]["Tables"]["routes"]["Row"] & RowsAdditional;
 
+			const { toast } = useToast();
 			// db connection
 			const supabase = useSupabaseClient<Database>();
 
@@ -54,7 +56,7 @@
 								return {
 									id: index + 1,
 									RID: route.id,
-									URID: route.color !== '' && route.grade !== '' ? `URID_${route.id}_${route.name.replace(/\s+/g, "")}_${route.color}_${route.grade}_${route.setter.replace(/\s+/g, "")}_${route.date}` : '',
+									URID: `URID_${index + 1}_${route.id}_${route.name.replace(/\s+/g, "")}_${route.color}_${route.grade}_${route.setter.replace(/\s+/g, "")}_${route.date}`,
 									zone_name: route.name,
 									route_color: route.color !== '' ? route.color : null,
 									route_grade: route.grade !== "" ? route.grade : null,
@@ -129,8 +131,17 @@
 						.select();
 					if (data) {
 						console.log("Data updated", data);
+						toast({
+							title: 'Data updated',
+							description: 'Data has been updated successfully',
+						});
 					} else if (error) {
 						console.error("Error updating data", error);
+						toast({
+							title: 'Error updating data',
+							description: `error updating data${error}`,
+							variant: 'destructive',
+						});
 					}
 				} catch (error) {
 					console.error("Error updating data", error);
@@ -142,6 +153,10 @@
 			const refreshHandler = (e: Event) => {
 				e.preventDefault();
 				refresh();
+				toast({
+					title: 'Fresh start',
+					description: 'Data has been refreshed successfully',
+				});
 			};
 
 </script>
@@ -185,7 +200,6 @@
 							</TableHead>
 							<TableHead class="text-center">Route Setter</TableHead>
 							<TableHead class="text-center">Route Date</TableHead>
-							<TableHead class="text-center">Route link</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
@@ -211,9 +225,6 @@
 												: "no date"
 										}}
 									</TableCell>
-									<TableCell class="py-4 px-1">{{
-										route.route_link ? "link" : "nolink"
-									}}</TableCell>
 								</TableRow>
 							</HoverCardTrigger>
 							<HoverCardContent align="start" class="w-auto">

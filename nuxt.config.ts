@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-	devtools: { enabled: true },
+	devtools: { enabled: false },
 	colorMode: {
 		classSuffix: "",
 	},
@@ -17,8 +17,15 @@ export default defineNuxtConfig({
 		key: process.env.SUPABASE_KEY,
 	},
 	shadcn: {
-		prefix: "",
-		componentDir: "./components/ui",
+		/**
+	 * Prefix for all the imported component
+	 */
+		prefix: '',
+		/**
+		 * Directory that the component lives in.
+		 * @default "./components/ui"
+		 */
+		componentDir: './components/ui'
 	},
 	image: {
 		domains: ["utfs.io"],
