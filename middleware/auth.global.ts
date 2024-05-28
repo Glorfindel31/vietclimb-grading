@@ -1,5 +1,3 @@
-
-
 export default defineNuxtRouteMiddleware((to, from) => {
 	const admin = useRuntimeConfig().public.admin;
 	const user = useSupabaseUser();
