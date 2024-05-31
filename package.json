@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@internationalized/date": "^3.5.4",
     "@nuxt/image": "^1.7.0",
     "@nuxtjs/supabase": "^1.2.2",
     "@supabase/functions-js": "^2.4.1",

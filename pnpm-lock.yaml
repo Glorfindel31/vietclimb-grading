@@ -11,6 +11,9 @@ importers:
 
   .:
     dependencies:
+      '@internationalized/date':
+        specifier: ^3.5.4
+        version: 3.5.4
       '@nuxt/image':
         specifier: ^1.7.0
         version: 1.7.0(ioredis@5.4.1)(rollup@4.18.0)
