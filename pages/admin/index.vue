@@ -1,8 +1,8 @@
 <script setup
 		lang="ts">
-			import type { Database } from "~/database.types";
+			import type { Database } from "~/types/database.types";
 			import type { dataMutationResult } from "~/server/api/googlesheet.get";
-			import { formatDateString } from "~/lib/definition";
+			import { formatDateString } from "~/helpers/helpFunctions";
 			import { Spinner } from "@/components/ui/spinner";
 			import { useToast } from '@/components/ui/toast/use-toast'
 
