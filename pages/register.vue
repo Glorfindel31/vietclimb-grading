@@ -1,7 +1,7 @@
 <script setup
 		lang="ts">
-			
-			import type { Database } from '~/database.types'
+
+			import type { Database } from '~/types/database.types'
 			declare global {
 				interface Window {
 					confetti: Function;
@@ -23,7 +23,7 @@
 
 			import { Loader2 } from 'lucide-vue-next'
 
-			import { imageListLink, getRandomImage } from '~/assets/image'
+			import { imageListLink, getRandomImage } from '~/helpers/image'
 
 			const client = useSupabaseClient<Database>()
 

@@ -13,10 +13,10 @@
 			} from '@/components/ui/form'
 			import { Input } from '@/components/ui/input'
 			import { Button } from '@/components/ui/button'
-			import { imageListLink, getRandomImage } from '~/assets/image'
+			import { imageListLink, getRandomImage } from '~/helpers/image'
 
 			const supabase = useSupabaseClient()
-			
+
 			const isLoading = ref(false)
 
 			const formSchema = toTypedSchema(z.object({

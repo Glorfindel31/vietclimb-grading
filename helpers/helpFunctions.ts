@@ -1,12 +1,8 @@
-import type { Route } from '@/components/tableGrad/columns'
-export type RouteCount = {
-	level: string;
-	amount: number;
-};
-export type RouteCountSetter = {
-	name: string;
-	amount: number;
-};
+import type { Route } from '~/types/dataTable.type'
+import type { Updater } from '@tanstack/vue-table'
+import { type Ref } from 'vue'
+
+import type { RouteCount, RouteCountSetter } from '~/types/dataTable.type'
 
 export const transformData = (incomingData: Route[]): RouteCount[] => {
 	const data: RouteCount[] = []
@@ -28,7 +24,6 @@ export const transformData = (incomingData: Route[]): RouteCount[] => {
 	})
 	return data
 }
-
 export const transformDataSetter = (incomingData: Route[]): RouteCountSetter[] => {
 	const data: RouteCountSetter[] = []
 	incomingData.reduce((nameCount, route) => {
@@ -52,7 +47,6 @@ export const formatDate = (date: Date) =>
 		month: '2-digit',
 		year: 'numeric'
 	}).format(date as Date)
-
 export const easyRouteCounter = (data: RouteCount[]): number => {
 	return data.reduce((count, route) => {
 		if (route.level === '1') { return route.amount }
@@ -60,7 +54,6 @@ export const easyRouteCounter = (data: RouteCount[]): number => {
 		return count
 	}, 0)
 }
-
 export const normalRouteCounter = (data: RouteCount[]): number => {
 	return data.reduce((count, route) => {
 		if (route.level === '4') { return route.amount }
@@ -68,7 +61,6 @@ export const normalRouteCounter = (data: RouteCount[]): number => {
 		return count
 	}, 0)
 }
-
 export const formatDateString = (dateString: string) => {
 	const date = new Date(dateString);
 	const day = date.getDate().toString().padStart(2, "0");
@@ -76,3 +68,7 @@ export const formatDateString = (dateString: string) => {
 	const year = date.getFullYear().toString().slice(2);
 	return `${day}/${month}/${year}`;
 };
+export function valueUpdater<T extends Updater<any>>(updaterOrValue: T, ref: Ref) {
+	ref.value =
+		typeof updaterOrValue === 'function' ? updaterOrValue(ref.value) : updaterOrValue
+}

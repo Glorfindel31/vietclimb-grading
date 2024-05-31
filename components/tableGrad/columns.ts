@@ -2,21 +2,8 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 import { ArrowUpDown, Video } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
-export interface Route {
-	name: string;
-	id: string;
-	color: string;
-	grade: string;
-	setter: string;
-	comment: string;
-	link: string;
-	date: string;
-}
+import type { Route } from '@/types/dataTable.type'
 
-export interface DataStructure {
-	transformedValues: Route[];
-	routeNum: number;
-}
 
 function formatDate(isoDate: string): string {
 	const date = new Date(isoDate)

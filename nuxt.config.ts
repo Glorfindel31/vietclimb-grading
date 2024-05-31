@@ -5,21 +5,26 @@ export default defineNuxtConfig({
 		classSuffix: "",
 	},
 	modules: [
-        "@nuxtjs/tailwindcss",
-        "@nuxtjs/color-mode",
-        "@nuxt/image",
-        "@nuxtjs/supabase",
-        "shadcn-nuxt"
-    ],
+		"@nuxtjs/color-mode",
+		"@nuxt/image",
+		"@nuxtjs/supabase",
+		"@nuxtjs/tailwindcss",
+		"shadcn-nuxt"
+	],
 	supabase: {
 		redirect: false,
 		url: process.env.SUPABASE_URL,
 		key: process.env.SUPABASE_KEY,
 	},
+	runtimeConfig: {
+		public: {
+			admin: process.env.ADMIN_ID,
+		}
+	},
 	shadcn: {
 		/**
-	 * Prefix for all the imported component
-	 */
+		 * Prefix for all the imported component
+		 */
 		prefix: '',
 		/**
 		 * Directory that the component lives in.
@@ -46,9 +51,4 @@ export default defineNuxtConfig({
 			],
 		},
 	},
-	runtimeConfig: {
-		public: {
-			admin: process.env.ADMIN_ID,
-		}
-	}
 });

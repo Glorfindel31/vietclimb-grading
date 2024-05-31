@@ -1,7 +1,7 @@
 <script setup
 		lang="ts">
 			import { Button } from '@/components/ui/button'
-			import { imageListLink } from '~/assets/image'
+			import { imageListLink } from '~/helpers/image'
 
 			const user = useSupabaseUser()
 
