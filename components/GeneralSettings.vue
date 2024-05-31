@@ -111,20 +111,21 @@
 					</FormItem>
 				</FormField>
 
+				<div class="flex flex-row items-center justify-between w-full rounded-lg border p-4">
+					<div class="flex flex-col justify-between m-0">
+						<span class="text-md font-bold">Ape Index</span>
+						<span class="text-sm text-muted-foreground w-1/2">
+							Your Ape index is the relational size between your
+							arms size and your height. It can be
+							positive or negative</span>
+					</div>
+					<span class="text-2xl font-bold h-10 w-10 flex justify-center items-center">{{ ape_index }}</span>
+				</div>
+
 
 				<Button type="submit" class="w-20">Save</Button>
 			</form>
-			<div class="flex flex-row gap-2 p-2 items-center space-y-0">
-				<div class="flex flex-col gap-2 w-80 justify-between">
-					<h3 class="text-md">Ape Index</h3>
-					<p class="text-sm text-muted-foreground"> Your Ape index is the relational size between your
-						arms size and your height. It can be
-						positive or negative</p>
-				</div>
-				<div>
-					<h3>{{ ape_index }}</h3>
-				</div>
-			</div>
+
 
 		</div>
 	</div>

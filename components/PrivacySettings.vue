@@ -53,9 +53,8 @@
 						console.log('Form submitted!', values)
 					})
 
-
-
 </script>
+
 <template>
 	<div class="flex  max-w-[1400px] flex-col gap-4 rounded-lg border bg-background p-8">
 		<div class="flex flex-col">

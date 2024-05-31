@@ -78,7 +78,7 @@
 	</div>
 	<!-- Mobile Nav -->
 	<div class="sm:hidden flex flex-row justify-between min-w-full">
-		<ul>
+		<ul class="flex items-center justify-center">
 			<li>
 				<NuxtLink to="/">
 					<img src="/logo-light.svg" alt="logo" class="w-6 h-6 dark:hidden block" />
@@ -86,7 +86,7 @@
 				</NuxtLink>
 			</li>
 		</ul>
-		<ul>
+		<ul class="flex flex-row gap-2 jus">
 			<li>
 				<ToggleMode />
 			</li>
