@@ -1,23 +1,6 @@
 <script setup
 		lang="ts">
 			import { Icon } from "@iconify/vue/dist/iconify.js";
-			import { toTypedSchema } from '@vee-validate/zod'
-			import * as z from 'zod'
-			import { useForm } from 'vee-validate'
-
-			const privacySetting = toTypedSchema(z.object({
-				hideBirthday: z.boolean(),
-				hideHeight: z.boolean(),
-				hideArms: z.boolean(),
-				hideRank: z.boolean(),
-				hideTops: z.boolean(),
-				hideSingle: z.boolean(),
-			}))
-
-			const { handleSubmit: handleSubmitPrivacy, setFieldValue, values } = useForm({
-				validationSchema: privacySetting,
-			})
-
 </script>
 
 <template>
@@ -32,6 +15,7 @@
 		</div>
 		<div class="flex flex-col lg:flex-row gap-4">
 			<GeneralSettings />
+			<PrivacySettings />
 		</div>
 	</div>
 </template>
