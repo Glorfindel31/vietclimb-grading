@@ -35,7 +35,7 @@
 
 			<h3 class="m-0 p-0 pb-8  font-thin">General Settings</h3>
 
-			<form @submit="onSubmitGeneral" class="flex flex-col gap-8">
+			<form @submit="onSubmitGeneral" class="flex flex-col gap-4 lg:gap-0 lg:justify-between">
 
 				<FormField v-slot="{ componentField }" name="displayName">
 					<FormItem class="flex flex-row gap-2 p-2 items-center space-y-0">
@@ -111,20 +111,20 @@
 					</FormItem>
 				</FormField>
 
-				<div class="flex flex-row gap-2 p-2 items-center space-y-0">
-					<div class="flex flex-col gap-2 w-80 justify-between">
-						<h3 class="text-md">Ape Index</h3>
-						<p class="text-sm text-muted-foreground"> Your Ape index is the relational size between your
-							arms size and your height. It can be
-							positive or negative</p>
-					</div>
-					<div>
-						<h3>{{ ape_index }}</h3>
-					</div>
-				</div>
 
 				<Button type="submit" class="w-20">Save</Button>
 			</form>
+			<div class="flex flex-row gap-2 p-2 items-center space-y-0">
+				<div class="flex flex-col gap-2 w-80 justify-between">
+					<h3 class="text-md">Ape Index</h3>
+					<p class="text-sm text-muted-foreground"> Your Ape index is the relational size between your
+						arms size and your height. It can be
+						positive or negative</p>
+				</div>
+				<div>
+					<h3>{{ ape_index }}</h3>
+				</div>
+			</div>
 
 		</div>
 	</div>
