@@ -1,6 +1,10 @@
 <script setup
 		lang="ts">
 			import { Icon } from "@iconify/vue/dist/iconify.js";
+
+			const user = useSupabaseUser();
+			const supabase = useSupabaseClient();
+
 </script>
 
 <template>

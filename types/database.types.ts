@@ -92,34 +92,43 @@ export type Database = {
 			}
 			users: {
 				Row: {
+					arms: string | null
+					birthdate: string | null
 					created_at: string
 					diplay_rank: boolean
 					display_data: boolean
 					display_name: string | null
 					display_user: boolean
 					email: string
+					height: string | null
 					id: number
 					role: string
 					UID: string
 				}
 				Insert: {
+					arms?: string | null
+					birthdate?: string | null
 					created_at?: string
 					diplay_rank?: boolean
 					display_data?: boolean
 					display_name?: string | null
 					display_user?: boolean
 					email: string
+					height?: string | null
 					id?: number
 					role?: string
 					UID: string
 				}
 				Update: {
+					arms?: string | null
+					birthdate?: string | null
 					created_at?: string
 					diplay_rank?: boolean
 					display_data?: boolean
 					display_name?: string | null
 					display_user?: boolean
 					email?: string
+					height?: string | null
 					id?: number
 					role?: string
 					UID?: string
