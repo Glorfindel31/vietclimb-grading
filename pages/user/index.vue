@@ -18,7 +18,6 @@
 						console.error(error)
 						return
 					}
-
 					return userData[0]
 				}
 			)

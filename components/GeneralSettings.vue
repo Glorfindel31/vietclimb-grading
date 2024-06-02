@@ -5,6 +5,10 @@
 					import * as z from 'zod'
 					import { useForm } from 'vee-validate'
 
+					const props = defineProps<{
+						userData: UserDataType
+					}>()
+
 					const ape_index = ref(0)
 
 					const generalSetting = toTypedSchema(z.object({
@@ -18,6 +22,19 @@
 
 					const { handleSubmit: handleSubmitGeneral, setFieldValue, values } = useForm({
 						validationSchema: generalSetting,
+					})
+
+					watchEffect(() => {
+						if (props.userData) {
+							resetForm({
+								values: {
+									displayName: props.userData.displayName,
+									height: props.userData.height,
+									arms: props.userData.arms,
+									birthday: props.userData.birthday,
+								},
+							})
+						}
 					})
 
 					const onSubmitGeneral = handleSubmitGeneral((values) => {

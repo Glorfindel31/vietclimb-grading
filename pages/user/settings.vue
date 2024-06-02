@@ -2,8 +2,31 @@
 		lang="ts">
 			import { Icon } from "@iconify/vue/dist/iconify.js";
 
-			const user = useSupabaseUser();
-			const supabase = useSupabaseClient();
+			import type { Database } from "~/types/database.types";
+			type UserDataType = Database["public"]["Tables"]["users"]["Row"];
+
+			const { data } = await useAsyncData(
+				"userData",
+				async () => {
+					const user = useSupabaseUser();
+					const supabase = useSupabaseClient();
+					if (!user.value) return;
+					const { data: userData, error } = await supabase
+						.from("users")
+						.select("*")
+						.eq("UID", user.value.id)
+					if (error) {
+						console.error(error)
+						return
+					}
+					return userData[0]
+				}
+			)
+
+			const userData = ref<UserDataType | null>(null)
+			if (data.value) {
+				userData.value = data.value
+			}
 
 </script>
 
@@ -19,8 +42,8 @@
 				</Button>
 			</div>
 			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-				<GeneralSettings />
-				<PrivacySettings />
+				<GeneralSettings :userData="userData.value" />
+				<PrivacySettings :userData="userData.value" />
 			</div>
 		</div>
 	</div>
