@@ -5,7 +5,7 @@
 			import type { Tables } from "~/types/supabase.type";
 			type UserDataType = Tables<"users">;
 
-			const { data } = await useAsyncData(
+			const { data, refresh } = await useAsyncData(
 				"userData",
 				async () => {
 					const user = useSupabaseUser();
@@ -42,8 +42,8 @@
 				</Button>
 			</div>
 			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-				<GeneralSettings :userData="userData" />
-				<PrivacySettings :userData="userData" />
+				<GeneralSettings :userData="userData" :refresh="refresh" />
+				<PrivacySettings :userData="userData" :refresh="refresh" />
 			</div>
 		</div>
 	</div>

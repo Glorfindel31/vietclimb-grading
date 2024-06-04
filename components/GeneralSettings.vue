@@ -1,16 +1,21 @@
-		
-<script setup
+		<script setup
 				lang="ts">
 					import { toTypedSchema } from '@vee-validate/zod'
 					import * as z from 'zod'
 					import { useForm } from 'vee-validate'
+					import { Loader2 } from 'lucide-vue-next'
 
-					import type { Tables } from "~/types/supabase.type";
+					import type { Tables, Database } from "~/types/supabase.type";
+
 					type UserDataType = Tables<"users">;
+
+					const supabase = useSupabaseClient<Database>()
+					const isUpdating = ref(false)
 
 
 					const props = defineProps<{
 						userData?: UserDataType | null;
+						refresh: () => void;
 					}>();
 
 					const ape_index = ref(0)
@@ -28,19 +33,46 @@
 						validationSchema: generalSetting,
 					})
 
-					setFieldValue('displayName', props.userData?.display_name ? props.userData.display_name : undefined);
+					setFieldValue('displayName', props.userData?.displayed_name ? props.userData.displayed_name : undefined);
 					setFieldValue('height', props.userData?.height ?? undefined);
 					setFieldValue('arms', props.userData?.arms ?? undefined);
 					setFieldValue('birthdate', props.userData?.birthdate ?? undefined);
 
-
-					const onSubmitGeneral = handleSubmitGeneral((values) => {
-						console.log('Form submitted!', values)
+					const onSubmitGeneral = handleSubmitGeneral(async (values) => {
+						if (!props.userData?.UID) throw new Error('No user data found, Cant update user data.')
+						if (values.height === props.userData?.height
+							&& values.arms === props.userData?.arms
+							&& values.displayName === props.userData?.displayed_name
+							&& values.birthdate === props.userData?.birthdate) {
+							return console.log('No changes to update')
+						}
+						isUpdating.value = true
+						const { data, error } = await supabase.from('users')
+							.update({
+								displayed_name: values.displayName,
+								height: values.height,
+								arms: values.arms,
+								birthdate: values.birthdate
+							})
+							.eq('UID', props.userData?.UID)
+							.select()
+						if (data) {
+							console.log('Data updated:', data)
+							props.refresh()
+							isUpdating.value = false
+						} else {
+							console.error('Error updating data:', error)
+							useForm().resetForm()
+							props.refresh()
+							isUpdating.value = false
+						}
 					})
 
 					watch(values, (newValues) => {
 						ape_index.value = newValues.arms && newValues.height ? (newValues.arms - newValues.height) : 0;
 					}, { deep: true });
+
+					ape_index.value = values.arms && values.height ? (values.arms - values.height) : 0;
 
 </script>
 <template>
@@ -135,7 +167,10 @@
 					</div>
 					<span class="text-2xl font-bold h-10 w-10 flex justify-center items-center">{{ ape_index }}</span>
 				</div>
-				<Button type="submit" class="w-20">Save</Button>
+				<Button type="submit" class="w-24" :disabled="isUpdating">
+					<Loader2 v-if="isUpdating" class="w-4 h-4 mr-2 animate-spin" />
+					Save
+				</Button>
 			</form>
 
 

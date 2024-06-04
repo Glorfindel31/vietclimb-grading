@@ -95,42 +95,51 @@ export type Database = {
           arms: number | null
           birthdate: string | null
           created_at: string
-          diplay_rank: boolean
-          display_data: boolean
-          display_name: string | null
-          display_user: boolean
+          displayed_name: string | null
           email: string
           height: number | null
           id: number
           role: string
+          show_arms: boolean | null
+          show_birthdate: boolean | null
+          show_height: boolean
+          show_name: boolean | null
+          show_rank: boolean
+          show_tops: boolean
           UID: string
         }
         Insert: {
           arms?: number | null
           birthdate?: string | null
           created_at?: string
-          diplay_rank?: boolean
-          display_data?: boolean
-          display_name?: string | null
-          display_user?: boolean
+          displayed_name?: string | null
           email: string
           height?: number | null
           id?: number
           role?: string
+          show_arms?: boolean | null
+          show_birthdate?: boolean | null
+          show_height?: boolean
+          show_name?: boolean | null
+          show_rank?: boolean
+          show_tops?: boolean
           UID: string
         }
         Update: {
           arms?: number | null
           birthdate?: string | null
           created_at?: string
-          diplay_rank?: boolean
-          display_data?: boolean
-          display_name?: string | null
-          display_user?: boolean
+          displayed_name?: string | null
           email?: string
           height?: number | null
           id?: number
           role?: string
+          show_arms?: boolean | null
+          show_birthdate?: boolean | null
+          show_height?: boolean
+          show_name?: boolean | null
+          show_rank?: boolean
+          show_tops?: boolean
           UID?: string
         }
         Relationships: []
