@@ -4,6 +4,7 @@
 					import * as z from 'zod'
 					import { useForm } from 'vee-validate'
 					import { Loader2 } from 'lucide-vue-next'
+					import { useToast } from './ui/toast'
 
 					import type { Tables, Database } from "~/types/supabase.type";
 
@@ -11,7 +12,7 @@
 
 					const supabase = useSupabaseClient<Database>()
 					const isUpdating = ref(false)
-
+					const { toast } = useToast()
 
 					const props = defineProps<{
 						userData?: UserDataType | null;
@@ -44,7 +45,12 @@
 							&& values.arms === props.userData?.arms
 							&& values.displayName === props.userData?.displayed_name
 							&& values.birthdate === props.userData?.birthdate) {
-							return console.log('No changes to update')
+							toast({
+								title: 'You have no changes to save  🤷‍♂️',
+								description: 'Try to change something first ? 🤔',
+								variant: 'destructive',
+							})
+							return
 						}
 						isUpdating.value = true
 						const { data, error } = await supabase.from('users')
@@ -57,14 +63,30 @@
 							.eq('UID', props.userData?.UID)
 							.select()
 						if (data) {
-							console.log('Data updated:', data)
 							props.refresh()
 							isUpdating.value = false
+							const now = new Date()
+							toast({
+								title: 'Your profile has been updated ✅',
+								description: `updated at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} - ${now.getDate()}:${now.getMonth() + 1}:${now.getFullYear()}`,
+							})
 						} else {
-							console.error('Error updating data:', error)
 							useForm().resetForm()
 							props.refresh()
 							isUpdating.value = false
+							const now = new Date()
+							toast({
+								title: 'Your profile wasnt updated ❌',
+								description: `An error occured at 
+								${now.getHours()}:
+								${now.getMinutes()}:
+								${now.getSeconds()} - 
+								${now.getDate()}:
+								${now.getMonth() + 1}:
+								${now.getFullYear()} 
+								Error message: ${error}`,
+								variant: 'destructive',
+							})
 						}
 					})
 
