@@ -11,7 +11,7 @@
 			} from '@/components/ui/sheet'
 
 			import ToggleMode from './ToggleMode.vue';
-			import type { Database } from '~/types/database.types'
+			import type { Database } from '~/types/supabase.type'
 			import { Icon } from '@iconify/vue'
 
 

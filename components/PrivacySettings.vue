@@ -5,6 +5,13 @@
 					import * as z from 'zod'
 					import { useForm } from 'vee-validate'
 
+					import type { Tables } from "~/types/supabase.type";
+					type UserDataType = Tables<"users">;
+
+					const props = defineProps<{
+						userData?: UserDataType | null;
+					}>();
+
 					const ape_index = ref(0)
 
 					const privacySetting = toTypedSchema(z.object({

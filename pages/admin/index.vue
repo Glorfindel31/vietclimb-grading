@@ -1,6 +1,6 @@
 <script setup
 		lang="ts">
-			import type { Database } from "~/types/database.types";
+			import type { Database } from "~/types/supabase.type";
 			import type { dataMutationResult } from "~/server/api/googlesheet.get";
 			import { formatDateString } from "~/helpers/helpFunctions";
 			import { Spinner } from "@/components/ui/spinner";

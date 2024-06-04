@@ -2,8 +2,8 @@
 		lang="ts">
 			import { Icon } from "@iconify/vue/dist/iconify.js";
 
-			import type { Database } from "~/types/database.types";
-			type UserDataType = Database["public"]["Tables"]["users"]["Row"];
+			import type { Tables } from "~/types/supabase.type";
+			type UserDataType = Tables<"users">;
 
 			const { data } = await useAsyncData(
 				"userData",
@@ -42,8 +42,8 @@
 				</Button>
 			</div>
 			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-				<GeneralSettings :userData="userData.value" />
-				<PrivacySettings :userData="userData.value" />
+				<GeneralSettings :userData="userData" />
+				<PrivacySettings :userData="userData" />
 			</div>
 		</div>
 	</div>

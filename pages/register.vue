@@ -1,7 +1,7 @@
 <script setup
 		lang="ts">
 
-			import type { Database } from '~/types/database.types'
+			import type { Database } from '~/types/supabase.type'
 			declare global {
 				interface Window {
 					confetti: Function;

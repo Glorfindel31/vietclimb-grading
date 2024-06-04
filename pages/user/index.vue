@@ -1,8 +1,9 @@
 <script setup
 		lang="ts">
 			import { Icon } from "@iconify/vue/dist/iconify.js";
-			import type { Database } from "~/types/database.types";
-			type UserDataType = Database["public"]["Tables"]["users"]["Row"];
+			import type { Tables } from "~/types/supabase.type";
+					type UserDataType = Tables<"users">;
+
 
 			const { data } = await useAsyncData(
 				"userData",

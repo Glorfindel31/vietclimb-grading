@@ -5,17 +5,21 @@
 					import * as z from 'zod'
 					import { useForm } from 'vee-validate'
 
+					import type { Tables } from "~/types/supabase.type";
+					type UserDataType = Tables<"users">;
+
+
 					const props = defineProps<{
-						userData: UserDataType
-					}>()
+						userData?: UserDataType | null;
+					}>();
 
 					const ape_index = ref(0)
 
 					const generalSetting = toTypedSchema(z.object({
 						displayName: z.string().regex(/^[a-zA-Z0-9\p{Emoji}]+$/u).min(3).max(50),
-						height: z.number().positive().gte(100, 'Height must be greater than 100 cm').lte(300, 'Height must be less than 300 cm').default(160),
-						arms: z.number().positive().gte(100, 'Arms must be greater than 100 cm').lte(300, 'Arms must be less than 300 cm').default(160),
-						birthday: z
+						height: z.number().positive().gte(100, 'Height must be greater than 100 cm').lte(300, 'Height must be less than 300 cm').optional(),
+						arms: z.number().positive().gte(100, 'Arms must be greater than 100 cm').lte(300, 'Arms must be less than 300 cm').optional(),
+						birthdate: z
 							.string()
 							.refine(v => v, { message: 'A date of birth is required.' }),
 					}))
@@ -24,18 +28,11 @@
 						validationSchema: generalSetting,
 					})
 
-					watchEffect(() => {
-						if (props.userData) {
-							resetForm({
-								values: {
-									displayName: props.userData.displayName,
-									height: props.userData.height,
-									arms: props.userData.arms,
-									birthday: props.userData.birthday,
-								},
-							})
-						}
-					})
+					setFieldValue('displayName', props.userData?.display_name ? props.userData.display_name : undefined);
+					setFieldValue('height', props.userData?.height ?? undefined);
+					setFieldValue('arms', props.userData?.arms ?? undefined);
+					setFieldValue('birthdate', props.userData?.birthdate ?? undefined);
+
 
 					const onSubmitGeneral = handleSubmitGeneral((values) => {
 						console.log('Form submitted!', values)
@@ -110,12 +107,12 @@
 					</FormItem>
 				</FormField>
 
-				<FormField v-slot="{ componentField }" name="birthday">
+				<FormField v-slot="{ componentField }" name="birthdate">
 					<FormItem class="flex flex-row  p-2 items-center space-y-0 gap-4">
 						<div class="flex flex-col gap-2 w-full">
-							<FormLabel class="text-md font-bold">birthday</FormLabel>
+							<FormLabel class="text-md font-bold">birthdate</FormLabel>
 							<FormDescription>
-								Your birthday will be displayed to other users.
+								Your birthdate will be displayed to other users.
 							</FormDescription>
 						</div>
 						<div class="flex flex-col w-80">
@@ -128,7 +125,7 @@
 					</FormItem>
 				</FormField>
 
-				<div class="flex flex-row items-center justify-between w-full rounded-lg border p-4">
+				<div class="flex flex-row items-center justify-between w-full rounded-lg border p-4 md:mb-2">
 					<div class="flex flex-col justify-between m-0">
 						<span class="text-md font-bold">Ape Index</span>
 						<span class="text-sm text-muted-foreground w-1/2">
@@ -138,8 +135,6 @@
 					</div>
 					<span class="text-2xl font-bold h-10 w-10 flex justify-center items-center">{{ ape_index }}</span>
 				</div>
-
-
 				<Button type="submit" class="w-20">Save</Button>
 			</form>
 
