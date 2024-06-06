@@ -66,7 +66,7 @@
 							.from('users')
 							.insert([{
 								email: values.email,
-								display_name: values.username,
+								displayed_name: values.username,
 								UID: signUpData.user?.id as string
 							}]);
 

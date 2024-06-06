@@ -1,8 +1,9 @@
 <script setup
 		lang="ts">
+
 			import { Icon } from "@iconify/vue/dist/iconify.js";
 			import type { Tables } from "~/types/supabase.type";
-					type UserDataType = Tables<"users">;
+			type UserDataType = Tables<"users">;
 
 
 			const { data } = await useAsyncData(
@@ -35,7 +36,7 @@
 			<div class="">
 				<div class="flex w-full flex-row items-center justify-between border-b py-4">
 					<h1 class="text-3xl">Welcome <span class="capitalize text-primary italic">
-							{{ userData.display_name }}
+							{{ userData.displayed_name }}
 						</span> in your personal space</h1>
 					<Button size="icon" variant="ghost" asChild>
 						<NuxtLink to="/user/settings">

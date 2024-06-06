@@ -12,9 +12,13 @@ export default defineNuxtConfig({
 		"shadcn-nuxt"
 	],
 	supabase: {
-		redirect: false,
 		url: process.env.SUPABASE_URL,
 		key: process.env.SUPABASE_KEY,
+		redirectOptions: {
+			login: "/login",
+			exclude: ["/login", "/register", "/about", "/public"],
+			callback: "/user",
+		}
 	},
 	runtimeConfig: {
 		public: {
