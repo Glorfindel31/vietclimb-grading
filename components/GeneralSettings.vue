@@ -145,16 +145,16 @@
 				<FormField v-slot="{ componentField }" name="arms">
 					<FormItem class="flex flex-row justify-between p-2 items-center space-y-0 gap-4">
 						<div class="flex flex-col gap-2 w-full">
-							<FormLabel class="text-md font-bold">Arms lenght</FormLabel>
+							<FormLabel class="text-md font-bold">Arms length</FormLabel>
 							<FormDescription>
-								Your arms lenght will be displayed to other users in cm and used to compute your
-								ape index. (Both arms in a T pose mesured from finger to finger).
+								Your arms length will be displayed to other users in cm and used to compute your
+								ape index. (Both arms in a T pose measured from finger to finger).
 							</FormDescription>
 						</div>
 						<div class="flex flex-col w-80">
 							<FormControl>
 								<FormControl>
-									<Input type="number" placeholder="Arms lenght in cm" v-bind="componentField" />
+									<Input type="number" placeholder="Arms length in cm" v-bind="componentField" />
 								</FormControl>
 							</FormControl>
 						</div>
@@ -172,7 +172,7 @@
 						<div class="flex flex-col w-80">
 							<FormControl>
 								<FormControl>
-									<Input type="date" placeholder="Arms lenght in cm" v-bind="componentField" />
+									<Input type="date" placeholder="Arms length in cm" v-bind="componentField" />
 								</FormControl>
 							</FormControl>
 						</div>

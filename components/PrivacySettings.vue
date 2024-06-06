@@ -43,7 +43,7 @@
 						},
 						{
 							name: 'showArms',
-							label: 'Arms lenght Visibility',
+							label: 'Arms length Visibility',
 							description: 'Your arms length will be displayed to other users.',
 						},
 						{

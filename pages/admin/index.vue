@@ -12,6 +12,13 @@
 				HoverCardTrigger,
 			} from '@/components/ui/hover-card'
 
+			definePageMeta
+				({
+					middleware
+						: ["auth"]
+					// or middleware: 'auth'
+				})
+
 			interface RowsAdditional {
 				identicale?: boolean;
 			}
@@ -121,7 +128,11 @@
 				e.preventDefault();
 				const array = await JSON.parse(JSON.stringify(dataToUpdate.value));
 				if (array.length === 0) {
-					console.log("No data to update");
+					toast({
+						title: 'No data to update',
+						description: `😒`,
+						variant: 'destructive',
+					});
 					return;
 				}
 				try {
@@ -130,7 +141,7 @@
 						.upsert(array)
 						.select();
 					if (data) {
-						console.log("Data updated", data);
+
 						toast({
 							title: 'Data updated',
 							description: 'Data has been updated successfully',
