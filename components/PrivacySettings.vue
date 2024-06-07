@@ -7,7 +7,6 @@
 					import { Loader2 } from 'lucide-vue-next'
 					import { useToast } from './ui/toast'
 
-
 					import type { Tables, Database } from "~/types/supabase.type";
 					type UserDataType = Tables<"users">;
 
@@ -20,7 +19,6 @@
 					}>();
 
 					const { toast } = useToast()
-
 
 					const privacySetting = toTypedSchema(z.object({
 						showBirthdate: z.boolean().default(true),

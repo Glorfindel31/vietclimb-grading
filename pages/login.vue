@@ -54,7 +54,7 @@
 </script>
 
 <template>
-	<div class="flex flex-col items-center justify-center min-h-full min-w-full p-8">
+	<div class="page-container">
 		<div
 			class="grid grid-rows-[20%,80%]  align-middle justify-center border rounded-lg overflow-hidden max-w-7xl max-h-[80vh] sm:grid-rows-none sm:grid-cols-2 sm:max-h-none">
 			<div class="w-auto  h-[80vh]">

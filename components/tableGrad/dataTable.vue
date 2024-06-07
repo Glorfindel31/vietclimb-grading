@@ -81,7 +81,8 @@
 				<template v-if="table.getRowModel().rows?.length">
 					<TableRow v-for="row in table.getRowModel().rows" :key="row.id"
 						:data-state="row.getIsSelected() ? 'selected' : undefined">
-						<TableCell v-for="cell in row.getVisibleCells()" :key="cell.id" class="px-1 text-center">
+						<TableCell v-for="cell in row.getVisibleCells()" :key="cell.id"
+							class="px-1 py-1 sm:py-2 text-center">
 							<FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
 						</TableCell>
 					</TableRow>

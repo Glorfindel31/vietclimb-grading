@@ -19,7 +19,7 @@
 			});
 </script>
 <template>
-	<Card :class="cn(props.class)">
+	<Card :class="cn(props.class), 'border-0 sm:border '">
 		<CardContent>
 			<DataTable :columns="columns" :data="props.data.transformedValues" />
 		</CardContent>

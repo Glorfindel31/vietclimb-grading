@@ -47,7 +47,7 @@
 </script>
 
 <template>
-	<div class="m-2 h-full md:m-10">
+	<div class="page-container py-0">
 		<div v-if="data" class="flex flex-col-reverse items-center justify-center gap-4 md:flex-col">
 			<RouteCountCards :route-num="data.routeNum" :easy-route-count="easyRouteCount"
 				:normal-route-count="normalRouteCount" :hard-route-count="hardRouteCount" />

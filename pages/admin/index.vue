@@ -15,7 +15,7 @@
 			definePageMeta
 				({
 					middleware
-						: ["auth"]
+						: ["auth-admin"]
 					// or middleware: 'auth'
 				})
 
@@ -166,15 +166,15 @@
 				refresh();
 				toast({
 					title: 'Fresh start',
-					description: 'Data has been refreshed successfully',
+					description: 'Fetching your precious data',
 				});
 			};
 
 </script>
 
 <template>
-	<div class="min-h-[80vh] w-full flex flex-col items-center justify-center py-10">
-		<div class="flex flex-col gap-8 rounded-lg border bg-background p-4 shadow-md min-h-[80vh] max-w-[1200px]">
+	<div class="page-container">
+		<div class="page-card rounded-lg border bg-background">
 			<div class="h-full">
 				<h2>Admin</h2>
 				<div class="flex flex-row justify-between py-4 align-middle">
@@ -192,7 +192,7 @@
 			<div v-if="pending" class="flex flex-col min-h-[60vh] justify-center items-center">
 				<Spinner />
 			</div>
-			<div v-else-if="modifiedGroup" class="flex flex-row gap-2">
+			<div v-else-if="modifiedGroup" class="flex flex-col sm:flex-row gap-2">
 				<Table v-for="(dataList, index) in modifiedGroup" class="rounded border p-1 text-center text-xs"
 					:key="index">
 					<TableCaption>Raw <span class="capitalize">{{ index }}</span> Sheet Data</TableCaption>
