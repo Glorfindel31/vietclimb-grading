@@ -7,29 +7,53 @@
 						: ["auth"]
 					// or middleware: 'auth'
 				})
+
 			import { Icon } from "@iconify/vue/dist/iconify.js";
 			import type { Tables } from "~/types/supabase.type";
+			import { columnsUser } from "~/components/tableGradUsers/columns";
+
 			type UserDataType = Tables<"users">;
+			type RouteDataType = Tables<"routes">;
 
 			const { data } = await useAsyncData("userData", async () => {
 				const user = useSupabaseUser();
 				const supabase = useSupabaseClient();
+
 				if (!user.value) return;
-				const { data: userData, error } = await supabase
+				const { data: userData, error: errorUser } = await supabase
 					.from("users")
 					.select("*")
 					.eq("UID", user.value.id);
-				if (error) {
-					console.error(error);
+				if (errorUser) {
+					console.error(errorUser);
 					return;
 				}
-				return userData[0];
+				if (!user.value) return;
+				const { data: routeList, error: errorRoutes } = await supabase
+					.from("routes")
+					.select("*")
+				if (errorRoutes) {
+					console.error(errorRoutes);
+					return;
+				}
+
+				return { userData: userData[0], routeList: routeList }
 			});
 
 			const userData = ref<UserDataType | null>(null);
+			const routeList = ref<RouteDataType[]>([]);
+
 			if (data.value) {
-				userData.value = data.value;
+				userData.value = data.value.userData;
+				routeList.value = data.value.routeList;
+
+				routeList.value = routeList.value
+					.sort((a, b) => a.id - b.id)
+					.filter((route) => route.route_grade);
 			}
+
+
+
 </script>
 
 <template>
@@ -57,6 +81,7 @@
 			</div>
 			<div class="">
 				<h2 class="text-md">Route Table</h2>
+				<TableGradUsersDataTable :columns="columnsUser" :data="routeList" />
 			</div>
 			<div class="">
 				<h2 class="text-md">Your Stats</h2>

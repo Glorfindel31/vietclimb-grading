@@ -47,6 +47,7 @@ export const formatDate = (date: Date) =>
 		month: '2-digit',
 		year: 'numeric'
 	}).format(date as Date)
+
 export const easyRouteCounter = (data: RouteCount[]): number => {
 	return data.reduce((count, route) => {
 		if (route.level === '1') { return route.amount }
