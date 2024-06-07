@@ -66,7 +66,6 @@
 						<span class="capitalize italic text-primary">
 							{{ userData.displayed_name }}
 						</span>
-						in your personal space
 					</h1>
 					<Button size="icon" variant="ghost" asChild>
 						<NuxtLink to="/user/settings">

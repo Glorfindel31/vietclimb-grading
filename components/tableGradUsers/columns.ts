@@ -1,22 +1,12 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
-import { ArrowUpDown, Video } from 'lucide-vue-next'
+import { ArrowUpDown, } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
+import DropdownAction from './dataTableDropdown.vue'
 import type { Tables } from '~/types/supabase.type'
 
-type Route = Tables<"routes">;
 
-/* 
-	id: number;
-	RID: number | null;
-	route_color: string | null;
-	route_date: string | null;
-	route_grade: number | null;
-	route_link: string | null;
-	route_setter: string | null;
-	URID: string | null;
-	zone_name: string | null;
-*/
+type Route = Tables<"routes">;
 
 
 function formatDate(isoDate: string): string {
@@ -28,21 +18,6 @@ function formatDate(isoDate: string): string {
 }
 
 export const columnsUser: ColumnDef<Route>[] = [
-	// {
-	// 	accessorKey: 'id',
-	// 	header: () => {
-	// 		return h(
-	// 			Button,
-	// 			{
-	// 				variant: 'ghost',
-	// 				class: 'w-full text-xs text-center px-0 md:text-md lg:text-lg'
-	// 			},
-	// 			() => ['Id']
-	// 		)
-	// 	},
-	// 	cell: ({ row }) =>
-	// 		h('div', { class: 'text-center  p-0 text-xs md:text-md' }, row.original.id)
-	// },
 	{
 		accessorKey: 'zone_name',
 		header: ({ column }) => {
@@ -108,7 +83,8 @@ export const columnsUser: ColumnDef<Route>[] = [
 			h('div', { class: 'text-center text-xs md:text-md' }, row.getValue('route_grade'))
 	},
 	{
-		accessorKey: 'route_setter',
+		id: 'topCheck',
+		enableHiding: false,
 		header: ({ column }) => {
 			return h(
 				Button,
@@ -117,69 +93,24 @@ export const columnsUser: ColumnDef<Route>[] = [
 					class: 'w-full text-xs text-center px-1 md:text-md lg:text-lg',
 					onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
 				},
-				() => [
-					'Setter',
-					h(ArrowUpDown, { class: 'ml-1 h-3 w-3 text-xs md:text-md' })
-				]
+				() => ['Top', h(ArrowUpDown, { class: 'ml-1 h-3 w-3 text-xs md:text-md' })]
 			)
 		},
-		cell: ({ row }) =>
-			h(
-				'div',
-				{ class: 'text-center capitalize text-xs px-1 md:text-md' },
-				row.getValue('route_setter')
-			)
+		cell: ({ row }) => {
+			const thisRoute = row.original
+
+			return h('div', { class: 'text-center text-xs md:text-md' }, thisRoute ? '✅' : '❌')
+		}
 	},
 	{
-		accessorKey: 'route_date',
-		header: ({ column }) => {
-			return h(
-				Button,
-				{
-					variant: 'ghost',
-					class: 'w-full text-xs text-center px-1 md:text-md lg:text-lg',
-					onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
-				},
-				() => [
-					'Date',
-					h(ArrowUpDown, { class: 'ml-1 h-3 w-3 text-xs md:text-md' })
-				]
-			)
+		id: 'actions',
+		enableHiding: false,
+		cell: ({ row }) => {
+			const thisRoute = row.original
+
+			return h('div', { class: 'relative' }, h(DropdownAction, {
+				thisRoute,
+			}))
 		},
-		cell: ({ row }) =>
-			h(
-				'div',
-				{ class: 'text-center capitalize text-xs px-1 md:text-md ' },
-				formatDate(row.getValue('route_date'))
-			)
 	},
-	{
-		accessorKey: 'route_link',
-		header: ({ column }) => {
-			return h(
-				Button,
-				{
-					variant: 'ghost',
-					class: 'w-full text-xs text-center px-1 md:text-md lg:text-lg',
-					onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
-				},
-				() => [
-					'Beta',
-					h(ArrowUpDown, { class: 'ml-1 h-3 w-3 text-xs md:text-md' })
-				]
-			)
-		},
-		cell: ({ row }) =>
-			h(
-				Button,
-				{
-					variant: 'outline',
-					disabled: !row.getValue('route_link'),
-					size: 'icon',
-					class: 'text-center capitalize text-xs px-1 md:text-md',
-					onClick: () => window.open(row.getValue('link'), '_blank')
-				},
-				() => h(Video, { class: 'ml-1 h-5 w-5 text-xs text-center md:text-md' })
-			)
-	}
 ]
