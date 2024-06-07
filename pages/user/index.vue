@@ -58,7 +58,7 @@
 
 <template>
 	<div class="page-container" v-if="userData">
-		<div class="page-card rounded-lg sm:bg-background sm:border sm:shadow-lg">
+		<div class="page-card sm:rounded-lg bg-background sm:border sm:shadow-lg">
 			<div class="">
 				<div class="flex w-full flex-row items-center justify-between border-b py-4">
 					<h1 class="text-3xl">
