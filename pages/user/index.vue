@@ -8,9 +8,9 @@
 					// or middleware: 'auth'
 				})
 
-			import { Icon } from "@iconify/vue/dist/iconify.js";
 			import type { Tables } from "~/types/supabase.type";
 			import { columnsUser } from "~/components/tableGradUsers/columns";
+			import { Icon } from '@iconify/vue'
 
 			type UserDataType = Tables<"users">;
 			type RouteDataType = Tables<"routes">;
@@ -80,7 +80,48 @@
 			</div>
 			<div class="">
 				<h2 class="text-md">Route Table</h2>
-				<TableGradUsersDataTable :columns="columnsUser" :data="routeList" />
+				<Table class=" w-full">
+					<TableHeader>
+						<TableRow>
+							<TableHead class="text-foreground font-bold text-base">
+								Route List - Route Number: {{ routeList.length }}
+							</TableHead>
+						</TableRow>
+					</TableHeader>
+					<TableBody>
+						<TableRow v-for="row in routeList" class="flex flex-row justify-between">
+							<TableCell class="flex flex-col p-0 py-3 gap-1 justify-center">
+								<div class="px-2 py-1 font-bold text-sm"
+									:class="`bg-${row.route_color?.toString()} text-${row.route_color?.toString()}-foreground rounded-full`">
+									{{ row.zone_name }} - {{ row.route_color?.toUpperCase() }}
+								</div>
+								<div class="text-xs italic pl-2">
+									Set by: <span class="capitalize">{{ row.route_setter }}</span>
+								</div>
+							</TableCell>
+							<TableCell class="flex flex-row p-0 py-3 gap-2 items-center">
+								<div class="flex flex-col gap-1">
+									<div>
+										Grade: {{ row.route_grade }}
+									</div>
+									<div class="text-xs italic flex flex-row gap-1 items-center">
+										Rate:
+										<div class="flex flex-row gap-0">
+											<Icon icon="radix-icons:star-filled" class="h-3 w-3" />
+											<Icon icon="radix-icons:star-filled" class="h-3 w-3" />
+											<Icon icon="radix-icons:star-filled" class="h-3 w-3" />
+											<Icon icon="radix-icons:star-filled" class="h-3 w-3" />
+											<Icon icon="radix-icons:star-filled" class="h-3 w-3" />
+										</div>
+									</div>
+								</div>
+								<Button variant="outline" size="icon">
+									<Icon icon="radix-icons:plus" class="h-5 w-5" />
+								</Button>
+							</TableCell>
+						</TableRow>
+					</TableBody>
+				</Table>
 			</div>
 			<div class="">
 				<h2 class="text-md">Your Stats</h2>
