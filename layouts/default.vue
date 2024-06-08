@@ -5,7 +5,7 @@
 
 <template>
 	<Toaster />
-	<main
+	<main vaul-drawer-wrapper id="app"
 		class="w-screen min-h-screen bg-gradient-to-t from-primary from-0% to-background to-50% flex flex-col justify-between">
 		<NuxtLoadingIndicator :throttle="0" :height="3" class="bg-gradient-to-l from-foreground  to-primary"
 			color="false" />

@@ -14,19 +14,7 @@
 			type UserDataType = Tables<"users">;
 			type RouteDataType = Tables<"routes">;
 
-			// type RouteAquiredDataType = {
-			// 	id: number;
-			// 	RID: number;
-			// 	route_color: string;
-			// 	route_date: string;
-			// 	route_grade: number;
-			// 	route_link: string;
-			// 	route_setter: string;
-			// 	URID: string;
-			// 	zone_name: string;
-			// };
-
-			type RouteTabsDataType = Array<{
+			export type RouteTabsDataType = Array<{
 				zone: "Moon Korner" | "Slabber" | "High Tension" | "Da Ruff" | "Flat Door" | "Titanic" | "Hang Over Corner" | "Bob Your Uncle" | "Circle of Life";
 				tabName: "MK" | "SL" | "HT" | "DR" | "FD" | "TI" | "HOC" | "BYU" | "COL";
 				cardDescription: string;
@@ -137,8 +125,10 @@
 
 <template>
 	<div class="page-container" v-if="userData">
+
 		<div class="page-card sm:rounded-lg bg-background sm:border sm:shadow-lg">
-			<div class="">
+
+			<div class="w-full py-8">
 				<div class="flex w-full flex-row items-center justify-between border-b py-4">
 					<h1 class="text-3xl">
 						Welcome
@@ -157,72 +147,21 @@
 					climbed.
 				</p>
 			</div>
-			<div class="">
-				<Tabs default-value="Moon Korner" class="w-full">
-					<TabsList class="grid w-full grid-cols-9">
-						<TabsTrigger v-for="tab in routeTabs" :value="tab.zone">
-							{{ tab.tabName }}
-						</TabsTrigger>
-					</TabsList>
-					<TabsContent v-for="tab in routeTabs" :value="tab.zone">
-						<Card>
-							<CardHeader>
-								<CardTitle>{{ tab.zone }}</CardTitle>
-								<CardDescription>
-									{{ tab.cardDescription }}
-								</CardDescription>
-							</CardHeader>
-							<Table class="w-full">
-								<TableHeader>
-									<TableRow>
-										<TableHead class="text-foreground font-bold text-base">
-											Route List - Route Number: {{ tab.routes.length }}
-										</TableHead>
-									</TableRow>
-								</TableHeader>
-								<TableBody>
-									<TableRow v-for="row in tab.routes" class="flex flex-row justify-between">
-										<TableCell class="flex flex-col px-2 py-3 gap-1 justify-center">
-											<div class="px-2 py-1 font-bold text-sm"
-												:class="`bg-${row.route_color?.toString()} text-${row.route_color?.toString()}-foreground rounded-full`">
-												{{ row.zone_name }} - {{ row.route_color?.toUpperCase() }}
-											</div>
-											<div class="text-xs italic pl-2">
-												Set by: <span class="capitalize">{{ row.route_setter }}</span>
-											</div>
-										</TableCell>
-										<TableCell class="flex flex-row px-2 py-3 gap-1 items-center">
-											<div class="flex flex-col gap-1">
-												<div>
-													Grade: {{ row.route_grade }}
-												</div>
-												<div class="text-xs italic flex flex-row gap-1 items-center">
-													Rate:
-													<div class="flex flex-row gap-0">
-														<Icon icon="radix-icons:star-filled" class="h-3 w-3" />
-														<Icon icon="radix-icons:star-filled" class="h-3 w-3" />
-														<Icon icon="radix-icons:star-filled" class="h-3 w-3" />
-														<Icon icon="radix-icons:star-filled" class="h-3 w-3" />
-														<Icon icon="radix-icons:star-filled" class="h-3 w-3" />
-													</div>
-												</div>
-											</div>
-											<Button variant="outline" size="icon">
-												<Icon icon="radix-icons:plus" class="h-5 w-5" />
-											</Button>
-										</TableCell>
-									</TableRow>
-								</TableBody>
-							</Table>
-						</Card>
-					</TabsContent>
-				</Tabs>
+
+			<div class="flex flex-row flex-wrap  justify-evenly">
+
+				<UserRouteList :routeTabs="routeTabs" />
+
+				<div class="min-w-[300px] max-w-md">
+					<h2 class="text-md">Your Stats</h2>
+				</div>
+
 			</div>
-			<div class="">
-				<h2 class="text-md">Your Stats</h2>
-			</div>
+
 		</div>
+
 	</div>
+
 	<div v-else>
 		<div class="page-container">
 			<div class="page-card border rounded-lg justify-center items-center">
