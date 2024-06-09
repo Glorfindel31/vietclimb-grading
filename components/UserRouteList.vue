@@ -1,15 +1,10 @@
 <script setup
 		lang="ts">
-
-			import { type RouteTabsDataType } from "~/pages/user/index.vue"
-			import { Icon } from '@iconify/vue'
+			import { type RouteTabsDataType } from "~/pages/user/index.vue";
+			import { Icon } from "@iconify/vue";
 			const props = defineProps<{
-				routeTabs: RouteTabsDataType
-			}>()
-
-
-
-
+				routeTabs: RouteTabsDataType;
+			}>();
 </script>
 
 <template>
@@ -19,7 +14,7 @@
 				{{ tab.tabName }}
 			</TabsTrigger>
 		</TabsList>
-		<TabsContent v-for="tab in routeTabs" :value="tab.zone">
+		<TabsContent v-for="(tab, index) in routeTabs" :value="tab.zone" :key="index">
 			<Card>
 				<CardHeader>
 					<CardTitle>{{ tab.zone }}</CardTitle>
@@ -30,31 +25,29 @@
 				<Table class="w-full">
 					<TableHeader>
 						<TableRow>
-							<TableHead class="text-foreground font-bold text-base">
+							<TableHead class="text-base font-bold text-foreground">
 								Route List - Route Number: {{ tab.routes.length }}
 							</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						<TableRow v-for="row in tab.routes" class="flex flex-row justify-between">
-							<TableCell class="flex flex-col px-2 py-3 gap-1 justify-center">
-								<div class="px-2 py-1 font-bold text-sm">
+						<TableRow v-for="row in tab.routes" :key="row.id" class="flex flex-row justify-between">
+							<TableCell class="flex flex-col justify-center gap-1 px-2 py-3">
+								<div class="px-2 py-1 text-sm font-bold">
 									{{ row.zone_name }}
 								</div>
-								<div class="text-xs p-1 text-center"
+								<div class="p-1 text-center text-xs"
 									:class="`bg-${row.route_color?.toString()} text-${row.route_color?.toString()}-foreground rounded-full`">
 									{{ row.route_color?.toUpperCase() }}
 								</div>
-								<div class="text-xs italic pl-2">
+								<div class="pl-2 text-xs italic">
 									Set by: <span class="capitalize">{{ row.route_setter }}</span>
 								</div>
 							</TableCell>
-							<TableCell class="flex flex-row px-2 py-3 gap-4 items-center">
+							<TableCell class="flex flex-row items-center gap-4 px-2 py-3">
 								<div class="flex flex-col gap-1">
-									<div>
-										Grade: {{ row.route_grade }}
-									</div>
-									<div class="text-xs italic flex flex-row gap-1 items-center">
+									<div>Grade: {{ row.route_grade }}</div>
+									<div class="flex flex-row items-center gap-1 text-xs italic">
 										Rate:
 										<div class="flex flex-row gap-0">
 											<Icon icon="radix-icons:star-filled" class="h-3 w-3" />
@@ -73,36 +66,43 @@
 										</Button>
 									</DrawerTrigger>
 									<DrawerContent>
-										<DrawerHeader>
-											<DrawerTitle
-												class="text-2xl text-center border-0 bg-secondary text-black-foreground leading-none p-4 rounded-lg">
+										<DrawerHeader class="flex flex-col justify-center">
+											<DrawerTitle class="text-center text-2xl  py-5">
 												{{ row.zone_name }}
 											</DrawerTitle>
-											<div class="flex flex-col py-2 justify-center items-center">
-												<DrawerDescription
-													class="text-primary text-base italic leading-none pb-4">
-													Have you top this Route?
-												</DrawerDescription>
-												<div
-													class="border flex flex-col justify-center text-center gap-1 py-4 my-8 w-full rounded-lg">
-													<div class="text-xs px-4 py-2 text-center font-bold w-fit self-center"
-														:class="`bg-${row.route_color?.toString()} text-${row.route_color?.toString()}-foreground rounded-full`">
-														{{ row.route_color?.toUpperCase() }}
-													</div>
-													<div>
-														Setter's grade: {{ row.route_grade }}
-													</div>
+
+											<div class="flex flex-row rounded-lg p-4 gap-2 self-center">
+
+												<div class="w-fit self-center text-center text-xs font-bold px-2 py-1"
+													:class="`bg-${row.route_color?.toString()} text-${row.route_color?.toString()}-foreground rounded-full`">
+													{{ row.route_color?.toUpperCase() }}
+												</div>
+
+												<div class="text-left">
+													<div>Setter's grade: {{ row.route_grade }}</div>
 													<div class="text-xs italic">
-														Set by: <span class="capitalize">{{ row.route_setter }}</span>
+														Set by:
+														<span class="capitalize">
+															{{ row.route_setter }}
+														</span>
 													</div>
 												</div>
+
+											</div>
+
+											<div class="border rounded flex flex-col justify-center p-4">
 												<FormTops :routeData="row" />
 											</div>
+
+
+
+
 										</DrawerHeader>
+
 										<DrawerFooter>
 											<DrawerClose>
-												<Button variant="outline">
-													Cancel
+												<Button variant="outline" size="icon">
+													<Icon icon="radix-icons:cross-1" class="w-6 h-6" />
 												</Button>
 											</DrawerClose>
 										</DrawerFooter>
