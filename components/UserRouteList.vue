@@ -8,6 +8,8 @@
 			}>()
 
 
+
+
 </script>
 
 <template>
@@ -72,22 +74,30 @@
 									</DrawerTrigger>
 									<DrawerContent>
 										<DrawerHeader>
-											<DrawerTitle>
+											<DrawerTitle
+												class="text-2xl text-center border-0 bg-secondary text-black-foreground leading-none p-4 rounded-lg">
 												{{ row.zone_name }}
 											</DrawerTitle>
-											<div class="flex flex-col gap-2 py-4">
-												<div class="text-xs px-4 py-2 text-center font-bold w-fit self-center"
-													:class="`bg-${row.route_color?.toString()} text-${row.route_color?.toString()}-foreground rounded-full`">
-													{{ row.route_color?.toUpperCase() }}
+											<div class="flex flex-col py-2 justify-center items-center">
+												<DrawerDescription
+													class="text-primary text-base italic leading-none pb-4">
+													Have you top this Route?
+												</DrawerDescription>
+												<div
+													class="border flex flex-col justify-center text-center gap-1 py-4 my-8 w-full rounded-lg">
+													<div class="text-xs px-4 py-2 text-center font-bold w-fit self-center"
+														:class="`bg-${row.route_color?.toString()} text-${row.route_color?.toString()}-foreground rounded-full`">
+														{{ row.route_color?.toUpperCase() }}
+													</div>
+													<div>
+														Setter's grade: {{ row.route_grade }}
+													</div>
+													<div class="text-xs italic">
+														Set by: <span class="capitalize">{{ row.route_setter }}</span>
+													</div>
 												</div>
-												<div>
-													Grade: {{ row.route_grade }}
-												</div>
-												<div class="text-xs italic pl-2">
-													Set by: <span class="capitalize">{{ row.route_setter }}</span>
-												</div>
+												<FormTops :routeData="row" />
 											</div>
-											<DrawerDescription>Have you top this Route? </DrawerDescription>
 										</DrawerHeader>
 										<DrawerFooter>
 											<DrawerClose>
