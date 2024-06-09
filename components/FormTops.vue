@@ -50,8 +50,8 @@
 						Route can't be rated if not topped.
 					</div>
 				</FormLabel>
+				<FormMessage class="px-4 text-xs" />
 			</FormItem>
-			<FormMessage class="px-4 text-xs" />
 		</FormField>
 
 		<FormField v-slot="{ componentField }" type="radio" name="rate">

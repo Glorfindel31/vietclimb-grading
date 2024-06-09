@@ -71,6 +71,10 @@
 												{{ row.zone_name }}
 											</DrawerTitle>
 
+											<DrawerDescription class="text-center text-sm" hidden>
+												Fill the form to submit your top
+											</DrawerDescription>
+
 											<div class="flex flex-row rounded-lg p-4 gap-2 self-center">
 
 												<div class="w-fit self-center text-center text-xs font-bold px-2 py-1"
@@ -93,9 +97,6 @@
 											<div class="border rounded flex flex-col justify-center p-4">
 												<FormTops :routeData="row" />
 											</div>
-
-
-
 
 										</DrawerHeader>
 
