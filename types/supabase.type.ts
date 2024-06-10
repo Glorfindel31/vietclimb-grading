@@ -9,51 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      rates_grades: {
-        Row: {
-          created_at: string
-          id: number
-          route_grade: number
-          route_rate: number
-          route_top: boolean
-          URID_linked: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          route_grade?: number
-          route_rate?: number
-          route_top?: boolean
-          URID_linked: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          route_grade?: number
-          route_rate?: number
-          route_top?: boolean
-          URID_linked?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "rates_grades_URID_linked_fkey"
-            columns: ["URID_linked"]
-            isOneToOne: true
-            referencedRelation: "routes"
-            referencedColumns: ["URID"]
-          },
-          {
-            foreignKeyName: "rates_grades_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["UID"]
-          },
-        ]
-      }
       routes: {
         Row: {
           id: number
@@ -89,6 +44,51 @@ export type Database = {
           zone_name?: string | null
         }
         Relationships: []
+      }
+      top_records: {
+        Row: {
+          created_at: string
+          id: number
+          TUID: string
+          UID_linked: string
+          URID_linked: string
+          user_grade: number | null
+          user_rate: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          TUID: string
+          UID_linked: string
+          URID_linked: string
+          user_grade?: number | null
+          user_rate?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          TUID?: string
+          UID_linked?: string
+          URID_linked?: string
+          user_grade?: number | null
+          user_rate?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "top_records_UID_linked_fkey"
+            columns: ["UID_linked"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["UID"]
+          },
+          {
+            foreignKeyName: "top_records_URID_linked_fkey"
+            columns: ["URID_linked"]
+            isOneToOne: false
+            referencedRelation: "routes"
+            referencedColumns: ["URID"]
+          },
+        ]
       }
       users: {
         Row: {

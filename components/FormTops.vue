@@ -1,6 +1,6 @@
 <script setup
 		lang="ts">
-			import type { Tables } from "~/types/supabase.type";
+			import type { Tables, Database } from "~/types/supabase.type";
 			import { toTypedSchema } from "@vee-validate/zod";
 			import { useForm } from "vee-validate";
 			import { Icon } from "@iconify/vue";
@@ -10,7 +10,10 @@
 
 			const props = defineProps<{
 				routeData: RouteDataType;
+				userID: string;
 			}>();
+
+			const supabase = useSupabaseClient<Database>();
 
 			const formSchema = toTypedSchema(
 				z.object({
@@ -30,9 +33,32 @@
 				validationSchema: formSchema,
 			});
 
-			const onSubmit = handleSubmit((values) => {
-				console.log(values);
+			const onSubmit = handleSubmit(async (values) => {
+				const { grade, rate } = values;
+				const URID = props.routeData.URID;
+				const UID = props.userID;
+				if (values.isTop && values.grade && values.rate && URID && UID) {
+					const { data, error } = await supabase
+						.from("top_records")
+						.insert(
+							{
+								URID_linked: URID,
+								user_grade: grade,
+								user_rate: Number(rate),
+								UID_linked: UID,
+								TUID: UID + URID,
+							}
+						).select()
+					if (data) {
+						console.log("Rating and Grade submitted successfully.");
+					} else {
+						console.error(error);
+					}
+				} else {
+					console.error("You must have topped the route to submit a rating or a grade.");
+				}
 			});
+
 </script>
 
 <template>

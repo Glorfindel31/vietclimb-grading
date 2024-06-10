@@ -63,7 +63,7 @@
 								return {
 									id: index + 1,
 									RID: route.id,
-									URID: `URID_${index + 1}_${route.id}_${route.name.replace(/\s+/g, "")}_${route.color}_${route.grade}_${route.setter.replace(/\s+/g, "")}_${route.date}`,
+									URID: `URID_${index + 1}_${route.id}_${route.name.replace(/\s+/g, "")}_${route.color}_${route.setter.replace(/\s+/g, "")}_${route.date}`,
 									zone_name: route.name,
 									route_color: route.color !== '' ? route.color : null,
 									route_grade: route.grade !== "" ? route.grade : null,
@@ -198,61 +198,62 @@
 					<TableCaption>Raw <span class="capitalize">{{ index }}</span> Sheet Data</TableCaption>
 					<TableHeader>
 						<TableRow>
-							<TableHead class="w-full text-center text-sm font-bold" colspan="7">
+							<TableHead class="w-full text-center text-base font-bold" colspan="7">
 								<span class="capitalize">{{ index }}</span> Sheet Data
 							</TableHead>
 						</TableRow>
-						<TableRow>
-							<TableHead class="text-center">ID - RID</TableHead>
-							<TableHead class="text-center">Zone Name</TableHead>
-							<TableHead class="text-center">Route Color</TableHead>
-							<TableHead class="text-center">
-								Route Grade
+						<TableRow class="text-base">
+							<TableHead class="text-left py-4 px-2 min-w-20">
+								<div class="flex flex-col">
+									<p class="font-bold">ID</p>
+									<p class="font-bold">RID</p>
+								</div>
 							</TableHead>
-							<TableHead class="text-center">Route Setter</TableHead>
-							<TableHead class="text-center">Route Date</TableHead>
+							<TableHead class="text-center py-4 px-2">
+								<div class="flex flex-col">
+									<p class="font-bold">Zone Name</p>
+									<p class="font-bold">Color</p>
+									<p class="font-bold">Setter</p>
+								</div>
+							</TableHead>
+							<TableHead class="text-right py-4 px-2">
+								<div class="flex flex-col">
+									<p class="font-bold">Route Grade</p>
+									<p class="font-bold">URID</p>
+									<p class="font-bold">Date</p>
+								</div>
+							</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						<HoverCard :openDelay="1" :close-delay="1" v-for="route in dataList" :key="route.id">
-							<HoverCardTrigger asChild>
-								<TableRow
-									:class="index === 'supabase' && ('identicale' in route) && !route.identicale ? 'bg-destructive' : ''">
-									<TableCell class="py-4 px-1">{{ route.id }}-{{ route.RID }}</TableCell>
-									<TableCell class="text-nowrap py-4 px-1">{{ route.zone_name }}</TableCell>
-									<TableCell class="text-nowrap py-4 px-1">{{
-										route.route_color
-									}}</TableCell>
-									<TableCell class="text-nowrap py-4 px-1">{{
-										route.route_grade
-									}}</TableCell>
-									<TableCell class="text-nowrap py-4 px-1">
-										{{ route.route_setter }}
-									</TableCell>
-									<TableCell class="text-nowrap py-4 px-1">
-										{{
-											route.route_date
-												? formatDateString(route.route_date)
-												: "no date"
-										}}
-									</TableCell>
-								</TableRow>
-							</HoverCardTrigger>
-							<HoverCardContent align="start" class="w-auto">
-								<div class="text-xs pr-2">
-									<h2 class="text-sm mb-2">All infos</h2>
-									<ul>
-										<li>URID: {{ route.URID }}</li>
-										<li>Zone: {{ route.zone_name }}</li>
-										<li>Color: {{ route.route_color }}</li>
-										<li>Grade: {{ route.route_grade }}</li>
-										<li>Setter: {{ route.route_setter }}</li>
-										<li>Date: {{ route.route_date }}</li>
-										<li>Link: {{ route.route_link }}</li>
-									</ul>
+						<TableRow v-for="route in dataList" :key="route.id"
+							:class="index === 'supabase' && ('identicale' in route) && !route.identicale ? 'bg-destructive' : ''">
+							<TableCell class="py-4 px-2 text-sm min-w-20">
+								<div class="flex flex-col text-left">
+									<p>ID-{{ route.id }}</p>
+									<p>RID-{{ route.RID }}</p>
 								</div>
-							</HoverCardContent>
-						</HoverCard>
+							</TableCell>
+							<TableCell class="text-center py-4 px-2 text-sm w-full">
+								<div class="flex flex-col gap-1 items-center">
+									<p>{{ route.zone_name }}</p>
+									<p class="uppercase w-fit py-0.5 px-4 rounded-full"
+										:class="route.route_color ? `bg-${route.route_color?.toString()} text-${route.route_color?.toString()}-foreground` : 'bg-foreground text-background'">
+										{{ route.route_color ? route.route_color : "COLOR" }}</p>
+									<p class="capitalize">{{ route.route_setter ? route.route_setter : "Setter" }}</p>
+								</div>
+							</TableCell>
+							<TableCell class="text-right py-4 px-2 w-fit">
+								<div class="flex flex-col justify-end gap-1">
+									<p class="text-sm">Grade: {{ route.route_grade ? route.route_grade : "no grade" }}
+									</p>
+									<p class="text-[0.7rem]">{{ route.URID?.slice(0, -13) }}</p>
+									<p>{{ route.route_date
+										? formatDateString(route.route_date)
+										: "no date" }}</p>
+								</div>
+							</TableCell>
+						</TableRow>
 					</TableBody>
 				</Table>
 			</div>

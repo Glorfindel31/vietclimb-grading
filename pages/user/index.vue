@@ -150,7 +150,7 @@
 
 			<div class="flex flex-row flex-wrap  justify-evenly">
 
-				<UserRouteList :routeTabs="routeTabs" />
+				<UserRouteList :routeTabs="routeTabs" :userID="userData.UID" />
 
 				<div class="min-w-[300px] max-w-md">
 					<h2 class="text-md">Your Stats</h2>

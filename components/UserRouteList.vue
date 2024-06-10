@@ -2,9 +2,12 @@
 		lang="ts">
 			import { type RouteTabsDataType } from "~/pages/user/index.vue";
 			import { Icon } from "@iconify/vue";
+
 			const props = defineProps<{
 				routeTabs: RouteTabsDataType;
+				userID: string;
 			}>();
+
 </script>
 
 <template>
@@ -31,6 +34,7 @@
 						</TableRow>
 					</TableHeader>
 					<TableBody>
+
 						<TableRow v-for="row in tab.routes" :key="row.id" class="flex flex-row justify-between">
 							<TableCell class="flex flex-col justify-center gap-1 px-2 py-3">
 								<div class="px-2 py-1 text-sm font-bold">
@@ -44,6 +48,7 @@
 									Set by: <span class="capitalize">{{ row.route_setter }}</span>
 								</div>
 							</TableCell>
+
 							<TableCell class="flex flex-row items-center gap-4 px-2 py-3">
 								<div class="flex flex-col gap-1">
 									<div>Grade: {{ row.route_grade }}</div>
@@ -66,6 +71,7 @@
 										</Button>
 									</DrawerTrigger>
 									<DrawerContent>
+
 										<DrawerHeader class="flex flex-col justify-center">
 											<DrawerTitle class="text-center text-2xl  py-5">
 												{{ row.zone_name }}
@@ -95,7 +101,7 @@
 											</div>
 
 											<div class="border rounded flex flex-col justify-center p-4">
-												<FormTops :routeData="row" />
+												<FormTops :routeData="row" :userID="props.userID" />
 											</div>
 
 										</DrawerHeader>
@@ -109,6 +115,8 @@
 										</DrawerFooter>
 									</DrawerContent>
 								</Drawer>
+
+
 							</TableCell>
 						</TableRow>
 					</TableBody>
