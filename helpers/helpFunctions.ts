@@ -73,3 +73,30 @@ export function valueUpdater<T extends Updater<any>>(updaterOrValue: T, ref: Ref
 	ref.value =
 		typeof updaterOrValue === 'function' ? updaterOrValue(ref.value) : updaterOrValue
 }
+
+export function stringCompressor(input: string) {
+	function seededRandom(seed: number) {
+		let x = Math.sin(seed++) * 10000;
+		return x - Math.floor(x);
+	}
+
+	function shuffle(array: Array<string>, seed: number) {
+		let currentIndex = array.length, temporaryValue, randomIndex;
+
+		while (0 !== currentIndex) {
+			randomIndex = Math.floor(seededRandom(seed) * currentIndex);
+			currentIndex -= 1;
+
+			temporaryValue = array[currentIndex];
+			array[currentIndex] = array[randomIndex];
+			array[randomIndex] = temporaryValue;
+		}
+
+		return array;
+	}
+	const inputString = input.toString();
+	const array = inputString.toLowerCase().split('').filter(char => /[a-z1-9]/.test(char));
+	const seed = inputString.split('').filter(char => /[0-9]/.test(char)).reduce((acc, curr) => acc + parseInt(curr), 0);
+
+	return shuffle(array, seed).slice(0, 30).join("") as string;
+}

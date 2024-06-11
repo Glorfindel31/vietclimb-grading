@@ -5,12 +5,17 @@
 			import { useForm } from "vee-validate";
 			import { Icon } from "@iconify/vue";
 			import * as z from "zod";
+			import { stringCompressor } from "~/helpers/helpFunctions";
+			import { useToast } from '@/components/ui/toast/use-toast'
+
+			const { toast } = useToast()
 
 			type RouteDataType = Tables<"routes">;
 
 			const props = defineProps<{
 				routeData: RouteDataType;
 				userID: string;
+				userName?: string;
 			}>();
 
 			const supabase = useSupabaseClient<Database>();
@@ -33,35 +38,47 @@
 				validationSchema: formSchema,
 			});
 
-
-
 			const onSubmit = handleSubmit(async (values) => {
 				const { grade, rate } = values;
 				const URID = props.routeData.URID;
 				const UID = props.userID;
 
-
-				// if (values.isTop && values.grade && values.rate && URID && UID) {
-				// 	const { data, error } = await supabase
-				// 		.from("top_records")
-				// 		.insert(
-				// 			{
-				// 				URID_linked: URID,
-				// 				user_grade: grade,
-				// 				user_rate: Number(rate),
-				// 				UID_linked: UID,
-				// 				TUID: URID + UID,
-				// 			}
-				// 		).select()
-				// 	if (data) {
-				// 		console.log("Rating and Grade submitted successfully.");
-				// 		console.log(data);
-				// 	} else {
-				// 		console.error(error);
-				// 	}
-				// } else {
-				// 	console.error("You must have topped the route to submit a rating or a grade.");
-				// }
+				if (values.isTop && values.grade && values.rate && URID && UID) {
+					const { data, error } = await supabase
+						.from("top_records")
+						.insert(
+							{
+								URID_linked: URID,
+								user_grade: grade,
+								user_rate: Number(rate),
+								UID_linked: UID,
+								TUID: stringCompressor(URID + UID),
+							}
+						).select()
+					if (data) {
+						toast({
+							title: 'Ascent logged',
+							description: `Really good! Keep climbing ${props.userName}!`,
+						});
+					} else {
+						if (error.code === "23505") {
+							toast({
+								title: 'Ascent already logged',
+								description: `You have already logged this ascent ${props.userName}!`,
+							});
+						} else {
+							toast({
+								title: 'Error',
+								description: `There was an error logging the ascent ${props.userName}!`,
+							});
+						}
+					}
+				} else {
+					toast({
+						title: 'Error',
+						description: `You must have topped the route to submit a rating or a grade.`,
+					});
+				}
 			});
 
 </script>

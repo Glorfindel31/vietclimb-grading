@@ -6,6 +6,7 @@
 			const props = defineProps<{
 				routeTabs: RouteTabsDataType;
 				userID: string;
+				userName?: string;
 			}>();
 
 </script>
@@ -101,7 +102,8 @@
 											</div>
 
 											<div class="border rounded flex flex-col justify-center p-4">
-												<FormTops :routeData="row" :userID="props.userID" />
+												<FormTops :routeData="row" :userID="props.userID"
+													:userName="props.userName" />
 											</div>
 
 										</DrawerHeader>
