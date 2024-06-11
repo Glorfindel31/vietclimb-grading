@@ -33,30 +33,35 @@
 				validationSchema: formSchema,
 			});
 
+
+
 			const onSubmit = handleSubmit(async (values) => {
 				const { grade, rate } = values;
 				const URID = props.routeData.URID;
 				const UID = props.userID;
-				if (values.isTop && values.grade && values.rate && URID && UID) {
-					const { data, error } = await supabase
-						.from("top_records")
-						.insert(
-							{
-								URID_linked: URID,
-								user_grade: grade,
-								user_rate: Number(rate),
-								UID_linked: UID,
-								TUID: UID + URID,
-							}
-						).select()
-					if (data) {
-						console.log("Rating and Grade submitted successfully.");
-					} else {
-						console.error(error);
-					}
-				} else {
-					console.error("You must have topped the route to submit a rating or a grade.");
-				}
+
+
+				// if (values.isTop && values.grade && values.rate && URID && UID) {
+				// 	const { data, error } = await supabase
+				// 		.from("top_records")
+				// 		.insert(
+				// 			{
+				// 				URID_linked: URID,
+				// 				user_grade: grade,
+				// 				user_rate: Number(rate),
+				// 				UID_linked: UID,
+				// 				TUID: URID + UID,
+				// 			}
+				// 		).select()
+				// 	if (data) {
+				// 		console.log("Rating and Grade submitted successfully.");
+				// 		console.log(data);
+				// 	} else {
+				// 		console.error(error);
+				// 	}
+				// } else {
+				// 	console.error("You must have topped the route to submit a rating or a grade.");
+				// }
 			});
 
 </script>
