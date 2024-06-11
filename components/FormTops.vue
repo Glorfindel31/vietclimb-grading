@@ -7,6 +7,8 @@
 			import * as z from "zod";
 			import { stringCompressor } from "~/helpers/helpFunctions";
 			import { useToast } from '@/components/ui/toast/use-toast'
+			import { type UserWithTopRecords } from "~/pages/user/index.vue";
+
 
 			const { toast } = useToast()
 
@@ -14,8 +16,8 @@
 
 			const props = defineProps<{
 				routeData: RouteDataType;
-				userID: string;
-				userName?: string;
+				userData: UserWithTopRecords;
+				refresh: () => void;
 			}>();
 
 			const supabase = useSupabaseClient<Database>();
@@ -41,7 +43,7 @@
 			const onSubmit = handleSubmit(async (values) => {
 				const { grade, rate } = values;
 				const URID = props.routeData.URID;
-				const UID = props.userID;
+				const UID = props.userData.UID;
 
 				if (values.isTop && values.grade && values.rate && URID && UID) {
 					const { data, error } = await supabase
@@ -58,18 +60,19 @@
 					if (data) {
 						toast({
 							title: 'Ascent logged',
-							description: `Really good! Keep climbing ${props.userName}!`,
+							description: `Really good! Keep climbing ${props.userData.displayed_name}!`,
 						});
+						props.refresh();
 					} else {
 						if (error.code === "23505") {
 							toast({
 								title: 'Ascent already logged',
-								description: `You have already logged this ascent ${props.userName}!`,
+								description: `You have already logged this ascent ${props.userData.displayed_name}!`,
 							});
 						} else {
 							toast({
 								title: 'Error',
-								description: `There was an error logging the ascent ${props.userName}!`,
+								description: `There was an error logging the ascent ${props.userData.displayed_name}!`,
 							});
 						}
 					}
@@ -167,12 +170,11 @@
 				</NumberField>
 			</FormItem>
 		</FormField>
-
-
-
-		<Button class="self-center" type="submit" variant="outline" size="icon">
-			<Icon icon="radix-icons:check" class="w-6 h-6" />
-		</Button>
+		<DrawerClose asChild>
+			<Button class="self-center" type="submit" variant="outline" size="icon">
+				<Icon icon="radix-icons:check" class="w-6 h-6" />
+			</Button>
+		</DrawerClose>
 	</form>
 </template>
 

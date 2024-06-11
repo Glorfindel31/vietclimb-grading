@@ -11,8 +11,14 @@
 			import type { Tables } from "~/types/supabase.type";
 			import { Icon } from '@iconify/vue'
 
-			type UserDataType = Tables<"users">;
-			type RouteDataType = Tables<"routes">;
+			import { useToast } from '@/components/ui/toast/use-toast'
+			export type UserDataType = Tables<"users">;
+			export type RouteDataType = Tables<"routes">;
+			export type TopRecordsType = Tables<"top_records">;
+
+			export interface UserWithTopRecords extends UserDataType {
+				top_records: TopRecordsType[];
+			}
 
 			export type RouteTabsDataType = Array<{
 				zone: "Moon Korner" | "Slabber" | "High Tension" | "Da Ruff" | "Flat Door" | "Titanic" | "Hang Over Corner" | "Bob Your Uncle" | "Circle of Life";
@@ -78,14 +84,16 @@
 				},
 			]);
 
-			const { data } = await useAsyncData("userData", async () => {
+			const supabase = useSupabaseClient();
+			const { toast } = useToast()
+
+			const { data, refresh } = await useAsyncData("userData", async () => {
 				const user = useSupabaseUser();
-				const supabase = useSupabaseClient();
 
 				if (!user.value) return;
 				const { data: userData, error: errorUser } = await supabase
 					.from("users")
-					.select("*")
+					.select("*,top_records (*)")
 					.eq("UID", user.value.id);
 				if (errorUser) {
 					console.error(errorUser);
@@ -99,11 +107,10 @@
 					console.error(errorRoutes);
 					return;
 				}
-
 				return { userData: userData[0], routeList: routeList }
 			});
 
-			const userData = ref<UserDataType | null>(null);
+			const userData = ref<UserWithTopRecords | null>(null);
 			const routeList = ref<RouteDataType[]>([]);
 
 			if (data.value) {
@@ -121,6 +128,35 @@
 				});
 			}
 
+			const handleRemoveRecord = async (TUID: string) => {
+				const { error } = await supabase
+					.from('top_records')
+					.delete()
+					.eq('TUID', TUID)
+				if (error) {
+					console.error(error);
+					toast({
+						title: 'Ascent not removed',
+						description: `There was an error: ${error.message}`,
+						variant: 'destructive',
+					});
+					return;
+				} else {
+					refresh();
+					toast({
+						title: 'Ascent removed',
+						description: `You have removed an ascent!`,
+						variant: 'destructive',
+					});
+				}
+
+			}
+
+			watch(() => userData.value, (newVal, oldVal) => {
+				console.log('userData changed', newVal, oldVal);
+				// Perform your actions here. The component will re-render if its data changes.
+			});
+
 </script>
 
 <template>
@@ -133,7 +169,7 @@
 					<h1 class="text-3xl">
 						Welcome
 						<span class="capitalize italic text-primary">
-							{{ userData.displayed_name }}
+							{{ userData?.displayed_name ?? '' }}
 						</span>
 					</h1>
 					<Button size="icon" variant="ghost" asChild>
@@ -150,10 +186,12 @@
 
 			<div class="flex flex-row flex-wrap  justify-evenly">
 
-				<UserRouteList :routeTabs="routeTabs" :userID="userData.UID" :userName="userData.displayed_name" />
+				<UserRouteList :routeTabs="routeTabs" :userData="userData" :refresh="refresh"
+					:handleRemoveRecord="handleRemoveRecord" />
 
 				<div class="min-w-[300px] max-w-md">
 					<h2 class="text-md">Your Stats</h2>
+
 				</div>
 
 			</div>
