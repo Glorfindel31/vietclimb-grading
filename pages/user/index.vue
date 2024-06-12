@@ -60,7 +60,7 @@
 					if (hasChanged) {
 						routeList.value = newRouteList;
 						routeTabs.value.forEach(tab => tab.routes.splice(0, tab.routes.length));
-						console.log("values changed");
+
 						routeTabs.value.forEach(tab => {
 							const matchingRoutes = newRouteList.filter(route => route.zone_name === tab.zone);
 							tab.routes.push(...matchingRoutes);
@@ -97,7 +97,7 @@
 
 <template>
 	<div class="page-container" v-if="userData">
-		<div class="page-card sm:rounded-lg bg-background sm:border sm:shadow-lg">
+		<div class="page-card sm:rounded-lg  sm:border sm:shadow-lg">
 			<div class="w-full py-6">
 				<div class="flex w-full flex-row items-center justify-between border-b py-2">
 					<h1 class="text-3xl">
@@ -106,6 +106,7 @@
 							{{ userData?.displayed_name ?? '' }}
 						</span>
 					</h1>
+					<NuxtLink to="/user/statistics">stats</NuxtLink>
 					<Button size="icon" variant="ghost" asChild>
 						<NuxtLink to="/user/settings">
 							<Icon icon="radix-icons:gear" class="h-6 w-6" />
@@ -118,11 +119,8 @@
 				</p>
 			</div>
 			<div class="flex flex-row flex-wrap  justify-evenly">
-				<UserRouteList :routeTabs="routeTabs" :userData="userData" :refresh="refresh"
+				<UserRoutesRegistration :routeTabs="routeTabs" :userData="userData" :refresh="refresh"
 					:handleRemoveRecord="handleRemoveRecord" />
-				<div class="min-w-[300px] max-w-md">
-					<h2 class="text-md">Your Stats</h2>
-				</div>
 			</div>
 		</div>
 	</div>

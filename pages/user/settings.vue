@@ -1,5 +1,12 @@
 <script setup
 		lang="ts">
+			definePageMeta
+				({
+					middleware
+						: ["auth"]
+					// or middleware: 'auth'
+				})
+
 			import { Icon } from "@iconify/vue/dist/iconify.js";
 
 			import type { Tables } from "~/types/supabase.type";

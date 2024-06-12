@@ -1,11 +1,17 @@
 <script setup
 		lang="ts">
+			declare global {
+				interface Window {
+					confetti: Function;
+				}
+			}
 
 			import type { Database } from "~/types/supabase.type";
 			import { type UserWithTopRecords, type RouteDataType } from "@/types/userTable.type"
 			import { Icon } from "@iconify/vue";
 			import { useToast } from '@/components/ui/toast/use-toast'
 			import { stringCompressor } from "~/helpers/helpFunctions";
+			import { congratsMessages } from "~/pages/user/CongratsMessages";
 
 			import { toTypedSchema } from "@vee-validate/zod";
 			import { useForm } from "vee-validate";
@@ -59,9 +65,14 @@
 					if (data) {
 						toast({
 							title: 'Ascent logged',
-							description: `Really good! Keep climbing ${props.userData.displayed_name}!`,
+							description: congratsMessages[Math.floor(Math.random() * congratsMessages.length)],
 						});
 						props.refresh();
+						window.confetti({
+							particleCount: 100,
+							spread: 70,
+							origin: { y: 0.6 }
+						});
 					} else {
 						if (error.code === "23505") {
 							toast({

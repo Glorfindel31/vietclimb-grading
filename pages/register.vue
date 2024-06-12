@@ -1,12 +1,13 @@
 <script setup
 		lang="ts">
 
-			import type { Database } from '~/types/supabase.type'
 			declare global {
 				interface Window {
 					confetti: Function;
 				}
 			}
+
+			import type { Database } from '~/types/supabase.type'
 			import { useForm } from 'vee-validate'
 			import { toTypedSchema } from '@vee-validate/zod'
 			import * as z from 'zod'

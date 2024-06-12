@@ -1,3 +1,4 @@
+import { Video } from 'lucide-vue-next';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	devtools: { enabled: false },
@@ -18,7 +19,8 @@ export default defineNuxtConfig({
 			login: "/login",
 			exclude: ["/", "/login", "/register", "/about", "/public"],
 			callback: "/user",
-		}
+		},
+		redirect: true,
 	},
 	runtimeConfig: {
 		public: {
