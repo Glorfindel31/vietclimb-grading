@@ -9,7 +9,7 @@
 			import type { Database } from "~/types/supabase.type";
 			import type {
 				RouteTabsDataType,
-				RouteDataType,
+				RouteWithTopRecords,
 				UserWithTopRecords
 			} from "@/types/userTable.type"
 			import { Icon } from '@iconify/vue'
@@ -20,12 +20,12 @@
 			const user = useSupabaseUser();
 
 			const userData = ref<UserWithTopRecords | null>(null);
-			const routeList = ref<RouteDataType[]>([]);
+			const routeList = ref<RouteWithTopRecords[]>([]);
 			const routeTabs = ref<RouteTabsDataType>(UserTableStructure);
 
 			const { toast } = useToast()
 
-			const { data, refresh, pending } = await useAsyncData("userData", async () => {
+			const { data, refresh } = await useAsyncData("userData", async () => {
 				if (!user.value) return;
 				const { data: userData, error: errorUser } = await supabase
 					.from("users")
@@ -37,32 +37,38 @@
 				}
 				const { data: routeList, error: errorRoutes } = await supabase
 					.from("routes")
-					.select("*")
+					.select("*,top_records (*)")
 				if (errorRoutes) {
 					console.error(errorRoutes);
 					return;
 				}
-
 				return { userData: userData[0], routeList: routeList }
 			});
-			import { watchEffect } from 'vue';
 
 			watchEffect(() => {
-				if (data.value) {
+				if (data.value && data.value.routeList) {
 					userData.value = data.value.userData;
-					routeList.value = data.value.routeList;
-					routeList.value = routeList.value
-						.filter((route) => route.route_grade)
+
+					const newRouteList = data.value.routeList
+						.filter((route) => route.route_grade !== null)
 						.sort((a, b) => a.id - b.id);
 
-					routeTabs.value.map((tab) => {
-						tab.routes.push(
-							...routeList.value.filter((route) => route.zone_name === tab.zone)
-						);
-					});
-				}
+					const hasChanged = routeList.value.length !== newRouteList.length
+						|| !routeList.value.every((route, index) => route.id === newRouteList[index].id)
+						|| !routeList.value.every((route, index) => route.top_records.length !== newRouteList[index].top_records.length)
 
+					if (hasChanged) {
+						routeList.value = newRouteList;
+						routeTabs.value.forEach(tab => tab.routes.splice(0, tab.routes.length));
+						console.log("values changed");
+						routeTabs.value.forEach(tab => {
+							const matchingRoutes = newRouteList.filter(route => route.zone_name === tab.zone);
+							tab.routes.push(...matchingRoutes);
+						});
+					}
+				}
 			});
+
 
 			const handleRemoveRecord = async (TUID: string) => {
 				const { error } = await supabase
@@ -92,10 +98,10 @@
 <template>
 	<div class="page-container" v-if="userData">
 		<div class="page-card sm:rounded-lg bg-background sm:border sm:shadow-lg">
-			<div class="w-full py-8">
-				<div class="flex w-full flex-row items-center justify-between border-b py-4">
+			<div class="w-full py-6">
+				<div class="flex w-full flex-row items-center justify-between border-b py-2">
 					<h1 class="text-3xl">
-						Welcome
+						Welcome back
 						<span class="capitalize italic text-primary">
 							{{ userData?.displayed_name ?? '' }}
 						</span>

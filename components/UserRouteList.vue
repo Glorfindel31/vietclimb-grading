@@ -12,6 +12,29 @@
 				handleRemoveRecord: (TUID: string) => Promise<void>;
 			}>();
 
+			const computeMode = (numbers: Array<number>): number => {
+				const counts: Record<string, number> = {};
+				let maxCount = 0;
+				let mode: number | undefined;
+
+				numbers.forEach(num => {
+					counts[num] = (counts[num] || 0) + 1;
+				});
+
+				maxCount = Math.max(...Object.values(counts));
+
+				Object.keys(counts).forEach(key => {
+					if (counts[key] === maxCount) {
+						mode = Number(key);
+						return;
+					}
+				});
+				if (mode === undefined) {
+					return 0;
+				}
+				return mode;
+			}
+
 </script>
 
 <template>
@@ -38,7 +61,7 @@
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						<TableRow v-for="row in tab.routes" :key="row.id" class="flex flex-row justify-between">
+						<TableRow v-for="row, index in tab.routes" :key="index" class="flex flex-row justify-between">
 							<TableCell class="flex flex-col justify-center gap-1 px-2 py-3">
 								<div class="px-2 py-1 text-sm font-bold">
 									{{ row.zone_name }}
@@ -52,26 +75,81 @@
 								</div>
 							</TableCell>
 							<TableCell class="flex flex-row items-center gap-4 px-2 py-3">
+
+
+								<div class="flex flex-col gap-1 text-xs">
+									<div>Grade:</div>
+									<div>Setter's - {{ row.route_grade }}</div>
+									<div :key="index">Comunity's - {{ row.top_records.length > 0 ?
+										computeMode(
+											row.top_records
+												.map(route => route.user_grade)
+												.filter((grade): grade is number => grade !== null)
+										) : "n/a" }}</div>
+									<div class="flex flex-row items-center gap-1 italic">
+										Rate:
+										<StarsRating :key="index" :rating="row.top_records.length > 0 ?
+											computeMode(
+												row.top_records
+													.map(route => route.user_rate)
+													.filter((rate): rate is number => rate !== null)
+											) : 0" />
+									</div>
+								</div>
 								<Dialog v-if="userData.top_records.some(record => record.URID_linked === row.URID)"
 									:key="row?.URID?.toString()">
 									<DialogTrigger as-child>
-										<Button variant="outline" size="icon" class="hover:bg-destructive">
-											<Icon icon="radix-icons:check" class="h-5 w-5" />
+										<Button variant="outline" size="icon"
+											class="hover:bg-destructive border-green-600 text-green-600">
+											<Icon icon="radix-icons:cross-2" class="h-5 w-5" />
 										</Button>
 									</DialogTrigger>
 									<DialogContent class="sm:max-w-[425px]">
 										<DialogHeader>
-											<DialogTitle>Remove Top</DialogTitle>
+											<DialogTitle>Remove your top Record?</DialogTitle>
 											<DialogDescription>
-												Are you sure you want to remove this top?
+												Are you sure you want to remove this route from your records?
+												<div
+													class="border p-2 rounded-lg flex flex-col gap-1 justify-center my-2">
+													<div class="px-2 py-1 text-sm font-bold">
+														{{ row.zone_name }}
+													</div>
+													<div class="py-1 px-2 text-center text-xs w-fit self-center"
+														:class="`bg-${row.route_color?.toString()} text-${row.route_color?.toString()}-foreground rounded-full`">
+														{{ row.route_color?.toUpperCase() }}
+													</div>
+													<div class="pl-2 text-xs italic">
+														Set by: <span class="capitalize">{{ row.route_setter }}</span>
+													</div>
+													<div>Grade:</div>
+													<div>Setter's - {{ row.route_grade }}</div>
+													<div :key="index">Comunity's - {{ row.top_records.length > 0 ?
+														computeMode(
+															row.top_records
+																.map(route => route.user_grade)
+																.filter((grade): grade is number => grade !== null)
+														) : "n/a" }}</div>
+													<div
+														class="flex flex-row items-center gap-1 text-xs italic justify-center">
+														Rate:
+														<StarsRating :key="index" :rating="row.top_records.length > 0 ?
+															computeMode(
+																row.top_records
+																	.map(route => route.user_rate)
+																	.filter((rate): rate is number => rate !== null)
+															) : 0" />
+													</div>
+												</div>
 											</DialogDescription>
 										</DialogHeader>
-										<DialogFooter>
+										<DialogFooter class="flex flex-col gap-2">
 											<DialogClose asChild>
 												<Button type="button" variant="destructive"
 													@click="() => props.handleRemoveRecord(stringCompressor(row.URID + userData.UID))">
 													Delete
 												</Button>
+											</DialogClose>
+											<DialogClose asChild>
 												<Button type="button" variant="outline">
 													Cancel
 												</Button>
@@ -79,17 +157,7 @@
 										</DialogFooter>
 									</DialogContent>
 								</Dialog>
-								<div v-else class="border rounded-md p-2">
-									<Icon icon="radix-icons:cross-1" class="h-5 w-5" />
-								</div>
-								<div class="flex flex-col gap-1">
-									<div>Grade: {{ row.route_grade }}</div>
-									<div class="flex flex-row items-center gap-1 text-xs italic">
-										Rate:
-										<StarsRating :rating="2" />
-									</div>
-								</div>
-								<Drawer>
+								<Drawer v-else>
 									<DrawerTrigger asChild>
 										<Button variant="outline" size="icon">
 											<Icon icon="radix-icons:plus" class="h-5 w-5" />
