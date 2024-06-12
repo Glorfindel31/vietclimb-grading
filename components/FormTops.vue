@@ -1,18 +1,17 @@
 <script setup
 		lang="ts">
-			import type { Tables, Database } from "~/types/supabase.type";
+
+			import type { Database } from "~/types/supabase.type";
+			import { type UserWithTopRecords, type RouteDataType } from "@/types/userTable.type"
+			import { Icon } from "@iconify/vue";
+			import { useToast } from '@/components/ui/toast/use-toast'
+			import { stringCompressor } from "~/helpers/helpFunctions";
+
 			import { toTypedSchema } from "@vee-validate/zod";
 			import { useForm } from "vee-validate";
-			import { Icon } from "@iconify/vue";
 			import * as z from "zod";
-			import { stringCompressor } from "~/helpers/helpFunctions";
-			import { useToast } from '@/components/ui/toast/use-toast'
-			import { type UserWithTopRecords } from "~/pages/user/index.vue";
-
 
 			const { toast } = useToast()
-
-			type RouteDataType = Tables<"routes">;
 
 			const props = defineProps<{
 				routeData: RouteDataType;
@@ -88,7 +87,6 @@
 
 <template>
 	<form @submit="onSubmit" class="flex flex-col justify-center gap-6">
-
 		<FormField v-slot="{ value, handleChange }" type="checkbox" name="isTop">
 			<FormItem class="flex flex-row items-center justify-center gap-4">
 				<FormControl>
@@ -104,7 +102,6 @@
 				<FormMessage class="px-4 text-xs" />
 			</FormItem>
 		</FormField>
-
 		<FormField v-slot="{ componentField }" type="radio" name="rate">
 			<div class="flex items-center justify-center text-center">
 				<FormItem>
@@ -147,9 +144,6 @@
 				</FormItem>
 			</div>
 		</FormField>
-
-
-
 		<FormField name="grade">
 			<FormItem class="flex w-24 flex-col items-center justify-center self-center">
 				<FormLabel>Grade</FormLabel>

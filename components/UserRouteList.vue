@@ -1,9 +1,9 @@
 <script setup
 		lang="ts">
-			import { type RouteTabsDataType, type UserWithTopRecords } from "~/pages/user/index.vue";
+			import { type UserWithTopRecords } from "@/types/userTable.type"
+			import { type RouteTabsDataType } from "@/types/userTable.type"
 			import { stringCompressor } from "~/helpers/helpFunctions";
 			import { Icon } from "@iconify/vue";
-
 
 			const props = defineProps<{
 				routeTabs: RouteTabsDataType;
@@ -12,19 +12,12 @@
 				handleRemoveRecord: (TUID: string) => Promise<void>;
 			}>();
 
-			watch(() => props.userData, (newVal, oldVal) => {
-				console.log('userData changed', newVal, oldVal);
-				// Perform your actions here. The component will re-render if its data changes.
-			});
-
-
-
 </script>
 
 <template>
 	<Tabs v-if="props.userData" default-value="Moon Korner" class="min-w-[300px] max-w-md">
 		<TabsList class="grid w-full grid-cols-9">
-			<TabsTrigger v-for="tab in routeTabs" :value="tab.zone">
+			<TabsTrigger v-for="(tab, index) in routeTabs" :value="tab.zone" :key="index">
 				{{ tab.tabName }}
 			</TabsTrigger>
 		</TabsList>
@@ -59,7 +52,8 @@
 								</div>
 							</TableCell>
 							<TableCell class="flex flex-row items-center gap-4 px-2 py-3">
-								<Dialog v-if="userData.top_records.some(record => record.URID_linked === row.URID)">
+								<Dialog v-if="userData.top_records.some(record => record.URID_linked === row.URID)"
+									:key="row?.URID?.toString()">
 									<DialogTrigger as-child>
 										<Button variant="outline" size="icon" class="hover:bg-destructive">
 											<Icon icon="radix-icons:check" class="h-5 w-5" />
@@ -92,13 +86,7 @@
 									<div>Grade: {{ row.route_grade }}</div>
 									<div class="flex flex-row items-center gap-1 text-xs italic">
 										Rate:
-										<div class="flex flex-row gap-0">
-											<Icon icon="radix-icons:star-filled" class="h-3 w-3" />
-											<Icon icon="radix-icons:star-filled" class="h-3 w-3" />
-											<Icon icon="radix-icons:star-filled" class="h-3 w-3" />
-											<Icon icon="radix-icons:star-filled" class="h-3 w-3" />
-											<Icon icon="radix-icons:star-filled" class="h-3 w-3" />
-										</div>
+										<StarsRating :rating="2" />
 									</div>
 								</div>
 								<Drawer>
