@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { VisAxis, VisXYContainer, VisStackedBar } from '@unovis/vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { cn } from '@/lib/utils'
-import type { RouteCountSetter, Route } from '~/types/dataTable.type'
-import { transformDataSetter } from '~/helpers/helpFunctions'
+import { cn } from '~/lib/utils'
+import type { RouteCount, Route } from '~/types/dataTable.type'
+import { transformData } from '~/helpers/helpFunctions'
 
 const props = defineProps({
   incomingData: {
@@ -17,13 +17,13 @@ const props = defineProps({
   },
 })
 
-const data: RouteCountSetter[] = transformDataSetter(props.incomingData)
+const data: RouteCount[] = transformData(props.incomingData)
 </script>
 
 <template>
   <Card :class="cn(props.class)">
     <CardHeader>
-      <CardTitle>Setter Chart</CardTitle>
+      <CardTitle>Level Chart</CardTitle>
     </CardHeader>
     <CardContent class="w-full">
       <VisXYContainer
@@ -36,23 +36,25 @@ const data: RouteCountSetter[] = transformDataSetter(props.incomingData)
         }"
       >
         <VisStackedBar
-          orientation="horizontal"
-          :x="(___d: RouteCountSetter, i: number) => i"
-          :y="(d: RouteCountSetter) => d.amount"
+          :x="(___d: RouteCount, i: number) => i"
+          :y="(d: RouteCount) => d.amount"
           color="var(--theme-primary)"
           :rounded-corners="4"
-          :bar-padding="0"
+          :bar-padding="0.05"
         />
         <VisAxis
-          type="y"
+          type="x"
           :num-ticks="data.length"
-          :tick-format="(index: number) => data[index]?.name"
+          :tick-format="
+            (index: number) =>
+              'Lvl' + ' ' + data[index]?.level
+          "
           tick-text-color="var(--theme-text)"
           :grid-line="false"
           :tick-line="true"
         />
         <VisAxis
-          type="x"
+          type="y"
           :num-ticks="data.length"
           :grid-line="false"
           :tick-line="false"

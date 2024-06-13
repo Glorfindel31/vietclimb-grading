@@ -4,12 +4,16 @@ import TableRow from './TableRow.vue'
 import TableCell from './TableCell.vue'
 import { cn } from '@/lib/utils'
 
-const props = withDefaults(defineProps<{
-  class?: HTMLAttributes['class']
-  colspan?: number
-}>(), {
-  colspan: 1,
-})
+const props = withDefaults(
+  defineProps<{
+    class?: HTMLAttributes['class']
+    colspan?: number
+  }>(),
+  {
+    class: {},
+    colspan: 1,
+  },
+)
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props
@@ -23,7 +27,7 @@ const delegatedProps = computed(() => {
     <TableCell
       :class="
         cn(
-          'p-4 whitespace-nowrap align-middle text-sm text-foreground',
+          'whitespace-nowrap p-4 align-middle text-sm text-foreground',
           props.class,
         )
       "

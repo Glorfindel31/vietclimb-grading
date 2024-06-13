@@ -1,11 +1,14 @@
-export default defineNuxtRouteMiddleware((to, from) => {
+export default defineNuxtRouteMiddleware((_to, _from) => {
+  const admin = useRuntimeConfig().public.admin
+  const user = useSupabaseUser()
 
-	const admin = useRuntimeConfig().public.admin;
-	const user = useSupabaseUser();
-
-	if (user && user.value && user.value.id === admin) {
-		return
-	} else {
-		throw createError({ statusCode: 401, fatal: true, statusMessage: 'Unauthorized' });
-	}
-});
+  if (user && user.value && user.value.id === admin) {
+    return
+  } else {
+    throw createError({
+      statusCode: 401,
+      fatal: true,
+      statusMessage: 'Unauthorized',
+    })
+  }
+})

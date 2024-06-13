@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "vietclimb-grading",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,7 +8,9 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "gen:types": "pnpx supabase gen types typescript --project-id \"zxrdktljgadedhajpxjf\" --schema public > types/supabase.type.ts"
+    "gen:types": "pnpx supabase gen types typescript --project-id \"zxrdktljgadedhajpxjf\" --schema public > types/supabase.type.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@internationalized/date": "^3.5.4",
@@ -16,7 +18,7 @@
     "@nuxtjs/supabase": "^1.2.2",
     "@supabase/functions-js": "^2.4.1",
     "@supabase/gotrue-js": "^2.62.2",
-    "@supabase/postgrest-js": "^1.15.4",
+    "@supabase/postgrest-js": "^1.15.5",
     "@supabase/realtime-js": "^2.9.5",
     "@supabase/storage-js": "^2.5.5",
     "@supabase/supabase-js": "^2.43.4",
@@ -35,20 +37,27 @@
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul-vue": "^0.1.2",
-    "vee-validate": "^4.12.8",
+    "vee-validate": "^4.13.1",
     "vue": "3.3.13",
-    "vue-router": "^4.3.2",
+    "vue-router": "^4.3.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@iconify-json/radix-icons": "^1.1.14",
     "@iconify/vue": "^4.1.2",
+    "@nuxt/eslint": "^0.3.13",
     "@nuxtjs/color-mode": "^3.4.1",
     "@nuxtjs/tailwindcss": "^6.12.0",
-    "prettier": "^3.2.5",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-vue": "^9.26.0",
+    "prettier": "^3.3.2",
+    "prettier-eslint": "^16.1.2",
     "prettier-plugin-tailwindcss": "^0.5.14",
     "supabase": ">=1.8.1",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vue-eslint-parser": "^8.0.0"
   },
   "resolutions": {
     "vue": "3.3.13"
