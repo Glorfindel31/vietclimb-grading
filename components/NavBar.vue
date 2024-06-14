@@ -60,6 +60,11 @@ watch(user, () => {
           <NuxtLink to="/public"> Public Stats </NuxtLink>
         </Button>
       </li>
+      <li>
+        <Button variant="link" as-child>
+          <NuxtLink to="/dashboard"> Dashboard</NuxtLink>
+        </Button>
+      </li>
       <UserNav v-if="user" :log-out-handler="logOutHandler" />
       <PublicNav v-else />
       <li>
@@ -119,6 +124,11 @@ watch(user, () => {
                 <li>
                   <Button variant="link" as-child class="text-md">
                     <NuxtLink to="/public"> Public Stats </NuxtLink>
+                  </Button>
+                </li>
+                <li>
+                  <Button variant="link" as-child>
+                    <NuxtLink to="/dashboard"> Dashboard</NuxtLink>
                   </Button>
                 </li>
                 <li>

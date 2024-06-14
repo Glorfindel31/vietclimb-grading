@@ -37,9 +37,16 @@ watchEffect(() => {
     <div class="page-card gap-2">
       <div class="flex flex-row items-center justify-between border-b py-2">
         <h3 class="m-0">{{ userData.displayed_name }}'s climbing stats</h3>
-        <Button size="icon" variant="ghost" @click="refresh">
-          <Icon icon="radix-icons:reload" class="h-6w-6" />
-        </Button>
+        <div class="flex flex-row gap-2">
+          <Button size="icon" variant="ghost" @click="refresh">
+            <Icon icon="radix-icons:reload" class="h-6w-6" />
+          </Button>
+          <Button size="icon" variant="ghost" as-child>
+            <NuxtLink to="/user">
+              <Icon icon="radix-icons:arrow-left" class="h-6w-6" />
+            </NuxtLink>
+          </Button>
+        </div>
       </div>
       <Tabs default-value="tops">
         <TabsList class="grid w-full grid-cols-2">

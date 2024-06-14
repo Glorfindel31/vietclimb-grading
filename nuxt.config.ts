@@ -1,6 +1,6 @@
 //https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   colorMode: {
     classSuffix: '',
   },
@@ -17,10 +17,10 @@ export default defineNuxtConfig({
     key: process.env.SUPABASE_KEY,
     redirectOptions: {
       login: '/login',
-      exclude: ['/', '/login', '/register', '/about', '/public'],
+      exclude: ['/', '/login', '/register', '/about', '/public', '/dashboard'],
       callback: '/user',
     },
-    redirect: false,
+    redirect: true,
   },
   runtimeConfig: {
     public: {

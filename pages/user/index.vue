@@ -109,12 +109,18 @@ const handleRemoveRecord = async (TUID: string) => {
               {{ userData?.displayed_name ?? '' }}
             </span>
           </h1>
-          <NuxtLink to="/user/statistics"> stats </NuxtLink>
-          <Button size="icon" variant="ghost" as-child>
-            <NuxtLink to="/user/settings">
-              <Icon icon="radix-icons:gear" class="h-6 w-6" />
-            </NuxtLink>
-          </Button>
+          <div class="flex flex-row gap-2">
+            <Button size="icon" variant="ghost" as-child>
+              <NuxtLink to="/user/statistics">
+                <Icon icon="radix-icons:bar-chart" class="h-6 w-6" />
+              </NuxtLink>
+            </Button>
+            <Button size="icon" variant="ghost" as-child>
+              <NuxtLink to="/user/settings">
+                <Icon icon="radix-icons:gear" class="h-6 w-6" />
+              </NuxtLink>
+            </Button>
+          </div>
         </div>
         <p class="text-sm italic">
           Log your accents, rate the routes and give a rate to the route you

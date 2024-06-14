@@ -9,14 +9,10 @@ const props = defineProps<{
 <template>
   <div class="flex flex-row gap-0">
     <Icon
-      v-for="(n, index) in 5"
-      :key="index"
+      v-for="n in 5"
+      :key="n"
       class="h-3 w-3"
-      :icon="
-        n <= props.rating
-          ? 'radix-icons:star-filled'
-          : 'radix-icons:star'
-      "
+      :icon="n <= props.rating ? 'radix-icons:star-filled' : 'radix-icons:star'"
     />
   </div>
 </template>

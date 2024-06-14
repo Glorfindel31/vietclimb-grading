@@ -130,10 +130,10 @@ const dataChanges = () => {
   }
 }
 
-dataChanges()
-
-watch(allData, () => {
-  dataChanges()
+watchEffect(() => {
+  if (allData.value) {
+    dataChanges()
+  }
 })
 
 const updateHandler = async (e: Event) => {
@@ -205,7 +205,7 @@ const refreshHandler = (e: Event) => {
       <div v-else-if="modifiedGroup" class="flex flex-col gap-2 sm:flex-row">
         <Table
           v-for="(dataList, index) in modifiedGroup"
-          :key="index"
+          :key="dataList[index].id"
           class="rounded border p-1 text-center text-xs"
         >
           <TableCaption>

@@ -39,22 +39,22 @@ const computeMode = (numbers: Array<number>): number => {
 
 <template>
   <Tabs
-    v-if="props.userData"
+    v-if="props.userData && props.routeTabs"
     default-value="Moon Korner"
     class="min-w-[300px] max-w-md"
   >
     <TabsList class="grid w-full grid-cols-9">
       <TabsTrigger
-        v-for="(tab, index) in routeTabs"
-        :key="index"
+        v-for="tab in props.routeTabs"
+        :key="tab.zone"
         :value="tab.zone"
       >
         {{ tab.tabName }}
       </TabsTrigger>
     </TabsList>
     <TabsContent
-      v-for="(tab, index) in routeTabs"
-      :key="index"
+      v-for="tab in props.routeTabs"
+      :key="tab.zone"
       :value="tab.zone"
     >
       <Card>
@@ -101,7 +101,7 @@ const computeMode = (numbers: Array<number>): number => {
                     Setter's -
                     {{ row.route_grade }}
                   </div>
-                  <div :key="index">
+                  <div>
                     Comunity's -
                     {{
                       row.top_records.length > 0
@@ -119,7 +119,7 @@ const computeMode = (numbers: Array<number>): number => {
                   <div class="flex flex-row items-center gap-1 italic">
                     Rate:
                     <StarsRating
-                      :key="index"
+                      :key="row.URID"
                       :rating="
                         row.top_records.length > 0
                           ? computeMode(
@@ -136,7 +136,7 @@ const computeMode = (numbers: Array<number>): number => {
                 </div>
                 <Dialog
                   v-if="
-                    userData.top_records.some(
+                    props.userData.top_records.some(
                       record => record.URID_linked === row.URID,
                     )
                   "
@@ -180,7 +180,7 @@ const computeMode = (numbers: Array<number>): number => {
                             Setter's -
                             {{ row.route_grade }}
                           </div>
-                          <div :key="index">
+                          <div>
                             Comunity's -
                             {{
                               row.top_records.length > 0
@@ -200,7 +200,7 @@ const computeMode = (numbers: Array<number>): number => {
                           >
                             Rate:
                             <StarsRating
-                              :key="index"
+                              :key="row.URID"
                               :rating="
                                 row.top_records.length > 0
                                   ? computeMode(
