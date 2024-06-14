@@ -10,13 +10,13 @@ definePageMeta({
 type UserDataType = Tables<'users'>
 
 const { data, refresh } = await useAsyncData('userData', async () => {
-  const user = useSupabaseUser()
+  const session = useSupabaseSession()
   const supabase = useSupabaseClient()
-  if (!user.value) return
+  if (!session.value) return
   const { data: userData, error } = await supabase
     .from('users')
     .select('*')
-    .eq('UID', user.value.id)
+    .eq('UID', session.value.user.id)
   if (error) {
     console.error(error)
     return

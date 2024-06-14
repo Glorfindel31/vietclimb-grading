@@ -30,7 +30,7 @@ const data: RouteCountSetter[] = transformDataSetter(props.incomingData)
         :margin="{ left: 10, right: 10 }"
         :data="data"
         :style="{
-          'opacity': 1,
+          opacity: 1,
           '--theme-primary': `hsl(var(--primary))`,
           '--theme-text': `hsl(var(--foreground))`,
         }"

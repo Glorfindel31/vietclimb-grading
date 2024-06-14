@@ -1,7 +1,7 @@
 export default defineNuxtRouteMiddleware((_to, _from) => {
-  const user = useSupabaseUser()
+  const session = useSupabaseSession()
 
-  if (!user || !user.value || !user.value.id) {
+  if (!session || !session.value || !session.value.user.id) {
     throw createError({
       statusCode: 403,
       message: 'Access denied',

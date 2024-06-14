@@ -3,7 +3,7 @@ import { Icon } from '@iconify/vue'
 import type { UserWithTopRecordsAndRoutes } from '@/types/userTable.type'
 
 const supabase = useSupabaseClient()
-const user = useSupabaseUser()
+const session = useSupabaseSession()
 
 const userData = ref<UserWithTopRecordsAndRoutes | null>(null)
 
@@ -13,11 +13,11 @@ definePageMeta({
 })
 
 const { data, refresh } = await useAsyncData('userData', async () => {
-  if (!user.value) return
+  if (!session.value) return
   const { data, error } = await supabase
     .from('users')
     .select('*,top_records(*,routes(*))')
-    .eq('UID', user.value.id)
+    .eq('UID', session.value.user.id)
   if (error) {
     console.error(error)
     return
@@ -38,13 +38,13 @@ watchEffect(() => {
       <div class="flex flex-row items-center justify-between border-b py-2">
         <h3 class="m-0">{{ userData.displayed_name }}'s climbing stats</h3>
         <div class="flex flex-row gap-2">
-          <Button size="icon" variant="ghost" @click="refresh">
-            <Icon icon="radix-icons:reload" class="h-6w-6" />
-          </Button>
           <Button size="icon" variant="ghost" as-child>
             <NuxtLink to="/user">
-              <Icon icon="radix-icons:arrow-left" class="h-6w-6" />
+              <Icon icon="radix-icons:chevron-left" class="h-6 w-6" />
             </NuxtLink>
+          </Button>
+          <Button size="icon" variant="ghost" @click="refresh">
+            <Icon icon="radix-icons:reload" class="h-6 w-6" />
           </Button>
         </div>
       </div>

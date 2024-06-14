@@ -1,8 +1,8 @@
 export default defineNuxtRouteMiddleware((_to, _from) => {
   const admin = useRuntimeConfig().public.admin
-  const user = useSupabaseUser()
+  const session = useSupabaseSession()
 
-  if (user && user.value && user.value.id === admin) {
+  if (session && session.value && session.value.user.id === admin) {
     return
   } else {
     throw createError({

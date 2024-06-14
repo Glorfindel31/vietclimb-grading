@@ -1,37 +1,13 @@
 import { google } from 'googleapis'
-
+import type {
+  ColorReplacements,
+  Data,
+  mutatedData,
+  dataMutationResult,
+  RowData,
+  ColorCodes,
+} from '~/types/adminTable.type'
 //type definitions
-export type mutatedData = {
-  name: string
-  id: string
-  color: string
-  grade: string
-  setter: string
-  comment: string
-  date: string
-  link: string
-}
-
-export type dataMutationResult = {
-  transformedValues: mutatedData[]
-  routeNum: number
-}
-
-export type RowData = [
-  name: string,
-  id: string,
-  colorCode: string,
-  grade: string,
-  setter: string,
-  comment: string,
-  date: string,
-  link?: string,
-]
-
-type Data = RowData[]
-
-type ColorCodes = 'R' | 'G' | 'BL' | 'Y' | 'PI' | 'PR' | 'BK' | 'O' | 'W'
-type ColorReplacements = Record<ColorCodes, string>
 
 const colorReplacements: ColorReplacements = {
   R: 'red',

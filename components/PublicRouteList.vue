@@ -1,6 +1,4 @@
-<script setup
-		lang="ts"
->
+<script setup lang="ts">
 import { Card, CardContent } from '@/components/ui/card'
 import DataTable from '@/components/tableGrad/dataTable.vue'
 import { columns } from '@/components/tableGrad/columns'
@@ -23,10 +21,7 @@ const props = defineProps({
 <template>
   <Card :class="cn('border-0 sm:border ', props.class)">
     <CardContent>
-      <DataTable
-        :columns="columns"
-        :data="props.data.transformedValues"
-      />
+      <DataTable :columns="columns" :data="props.data.transformedValues" />
     </CardContent>
   </Card>
 </template>

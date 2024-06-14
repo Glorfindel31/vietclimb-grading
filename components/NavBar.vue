@@ -1,26 +1,19 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import ToggleMode from './ToggleMode.vue'
-import type { Database } from '~/types/supabase.type'
-
+const session = useSupabaseSession()
 const adminENV = useRuntimeConfig().public.admin
-const client = useSupabaseClient<Database>()
-const user = useSupabaseUser()
-
-const isAdmin = ref(adminENV === user.value?.id)
-
-const logOutHandler = async () => {
-  try {
-    await client.auth.signOut()
-    navigateTo('/')
-  } catch (error) {
-    console.error('Error logging out:', error as Error)
-  }
-}
-
-watch(user, () => {
-  isAdmin.value = adminENV === user.value?.id
+const isAdmin = ref(false)
+watchEffect(() => {
+  isAdmin.value = adminENV === session.value?.user.id
 })
+
+const navLinks = computed(() => [
+  { to: '/admin', text: 'Admin', condition: isAdmin.value },
+  { to: '/about', text: 'About' },
+  { to: '/public', text: 'Public Stats' },
+  { to: '/dashboard', text: 'Dashboard' },
+])
 </script>
 
 <template>
@@ -45,27 +38,8 @@ watch(user, () => {
       </li>
     </ul>
     <ul class="flex flex-row gap-4">
-      <li v-if="isAdmin">
-        <Button variant="link" as-child>
-          <NuxtLink to="/admin"> Admin </NuxtLink>
-        </Button>
-      </li>
-      <li>
-        <Button variant="link" as-child>
-          <NuxtLink to="/about"> About </NuxtLink>
-        </Button>
-      </li>
-      <li>
-        <Button variant="link" as-child>
-          <NuxtLink to="/public"> Public Stats </NuxtLink>
-        </Button>
-      </li>
-      <li>
-        <Button variant="link" as-child>
-          <NuxtLink to="/dashboard"> Dashboard</NuxtLink>
-        </Button>
-      </li>
-      <UserNav v-if="user" :log-out-handler="logOutHandler" />
+      <NavLink v-for="link in navLinks" :key="link.to" :link="link" />
+      <UserNav v-if="session" />
       <PublicNav v-else />
       <li>
         <ToggleMode />
@@ -111,35 +85,14 @@ watch(user, () => {
             </SheetHeader>
             <ul class="flex flex-col justify-center gap-2">
               <SheetClose>
-                <li v-if="isAdmin">
-                  <Button variant="link" as-child>
-                    <NuxtLink to="/admin"> Admin </NuxtLink>
-                  </Button>
-                </li>
-                <li>
-                  <Button variant="link" as-child class="text-md">
-                    <NuxtLink to="/about"> About </NuxtLink>
-                  </Button>
-                </li>
-                <li>
-                  <Button variant="link" as-child class="text-md">
-                    <NuxtLink to="/public"> Public Stats </NuxtLink>
-                  </Button>
-                </li>
-                <li>
-                  <Button variant="link" as-child>
-                    <NuxtLink to="/dashboard"> Dashboard</NuxtLink>
-                  </Button>
-                </li>
-                <li>
-                  <UserNav
-                    v-if="user"
-                    :log-out-handler="logOutHandler"
-                    class="text-md"
-                    mobile
-                  />
-                  <PublicNav v-else class="text-md" mobile />
-                </li>
+                <NavLink
+                  v-for="link in navLinks"
+                  :key="link.to"
+                  :link="link"
+                  mobile
+                />
+                <UserNav v-if="session" class="text-md" mobile />
+                <PublicNav v-else class="text-md" mobile />
               </SheetClose>
             </ul>
           </SheetContent>

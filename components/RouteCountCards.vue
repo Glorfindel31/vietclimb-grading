@@ -1,6 +1,4 @@
-<script setup
-		lang="ts"
->
+<script setup lang="ts">
 import { ref } from 'vue'
 import {
   Card,
@@ -34,7 +32,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="grid gap-4 mb-4 w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+  <div class="mb-4 grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
     <Card>
       <CardHeader>
         <CardTitle>Route Total</CardTitle>

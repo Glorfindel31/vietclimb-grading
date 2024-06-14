@@ -1,6 +1,11 @@
 <script setup lang="ts">
-import type { Database, Tables, TablesInsert } from '~/types/supabase.type'
-import type { dataMutationResult } from '~/server/api/googlesheet.get'
+import type { Database } from '~/types/supabase.type'
+import type {
+  dataMutationResultExtended,
+  DataBaseExtended,
+  DataBaseInsert,
+  NewGoogleRows,
+} from '~/types/adminTable.type'
 import { formatDateString } from '~/helpers/helpFunctions'
 import { Spinner } from '@/components/ui/spinner'
 import { useToast } from '@/components/ui/toast/use-toast'
@@ -10,31 +15,12 @@ definePageMeta({
   // or middleware: 'auth'
 })
 
-interface RowsAdditional {
-  identicale?: boolean
-}
-interface newGoogleRows {
-  id: number
-  RID: string
-  URID: string
-  zone_name: string
-  route_color: string | null
-  route_grade: string | null
-  route_setter: string | null
-  route_date: string | null
-  route_link: string | null
-}
-
-type dataMutationResultExtended = dataMutationResult & RowsAdditional
-type DataBaseInsert = TablesInsert<'routes'>
-type DataBaseExtended = Tables<'routes'> & RowsAdditional
-
 const { toast } = useToast()
 
 const supabase = useSupabaseClient<Database>()
 
 const {
-  pending,
+  status,
   data: allData,
   refresh,
 } = await useLazyAsyncData(
@@ -77,11 +63,11 @@ const idArrays = ref<Array<number | string>>([])
 
 const modifiedGroup = ref<{
   supabase: DataBaseExtended[]
-  google: newGoogleRows[]
+  google: NewGoogleRows[]
 }>({ supabase: [], google: [] })
 
 const isIdentical = (
-  googleData: newGoogleRows[],
+  googleData: NewGoogleRows[],
   supabaseData: DataBaseExtended[],
 ) => {
   const supabaseDataURID: DataBaseExtended[] = supabaseData.map(
@@ -98,7 +84,7 @@ const isIdentical = (
 
 const dataChanges = () => {
   checkData.value = isIdentical(
-    allData.value?.googleData || ([] as newGoogleRows[]),
+    allData.value?.googleData || ([] as NewGoogleRows[]),
     allData.value?.supabaseData || ([] as DataBaseExtended[]),
   )
 
@@ -125,7 +111,7 @@ const dataChanges = () => {
   }))
 
   modifiedGroup.value = {
-    google: allData.value?.googleData as newGoogleRows[],
+    google: allData.value?.googleData as NewGoogleRows[],
     supabase: checkData.value as DataBaseExtended[],
   }
 }
@@ -197,7 +183,7 @@ const refreshHandler = (e: Event) => {
         </div>
       </div>
       <div
-        v-if="pending"
+        v-if="status === 'pending'"
         class="flex min-h-[60vh] flex-col items-center justify-center"
       >
         <Spinner />
@@ -205,7 +191,7 @@ const refreshHandler = (e: Event) => {
       <div v-else-if="modifiedGroup" class="flex flex-col gap-2 sm:flex-row">
         <Table
           v-for="(dataList, index) in modifiedGroup"
-          :key="dataList[index].id"
+          :key="index"
           class="rounded border p-1 text-center text-xs"
         >
           <TableCaption>

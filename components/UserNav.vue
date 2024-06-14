@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { cn } from '~/lib/utils'
+const client = useSupabaseClient()
+
+const logOutHandler = async () => {
+  try {
+    await client.auth.signOut()
+    navigateTo('/')
+  } catch (error) {
+    console.error('Error logging out:', error as Error)
+  }
+}
 
 const props = defineProps({
-  logOutHandler: {
-    type: Function,
-    required: true,
-  },
   class: {
     type: String,
     default: '',
@@ -24,13 +30,8 @@ const mobileClass = cn(
 <template>
   <div :class="mobileClass">
     <li>
-      <Button
-        as-child
-        :class="buttonClass"
-      >
-        <NuxtLink to="/user">
-          Profile
-        </NuxtLink>
+      <Button as-child :class="buttonClass">
+        <NuxtLink to="/user"> Profile </NuxtLink>
       </Button>
     </li>
     <li>
@@ -38,11 +39,9 @@ const mobileClass = cn(
         as-child
         variant="secondary"
         :class="buttonClass"
-        @click="props.logOutHandler"
+        @click="logOutHandler"
       >
-        <NuxtLink to="/login">
-          LogOut
-        </NuxtLink>
+        <NuxtLink to="/login"> LogOut </NuxtLink>
       </Button>
     </li>
   </div>

@@ -15,7 +15,7 @@ definePageMeta({
 })
 
 const supabase = useSupabaseClient<Database>()
-const user = useSupabaseUser()
+const session = useSupabaseSession()
 
 const userData = ref<UserWithTopRecords | null>(null)
 const routeList = ref<RouteWithTopRecords[]>([])
@@ -24,11 +24,11 @@ const routeTabs = ref<RouteTabsDataType>(UserTableStructure)
 const { toast } = useToast()
 
 const { data, refresh } = await useAsyncData('userData', async () => {
-  if (!user.value) return
+  if (!session.value) return
   const { data: userData, error: errorUser } = await supabase
     .from('users')
     .select('*,top_records (*)')
-    .eq('UID', user.value.id)
+    .eq('UID', session.value.user.id)
   if (errorUser) {
     console.error(errorUser)
     return
