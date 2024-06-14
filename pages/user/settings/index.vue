@@ -33,17 +33,17 @@ if (data.value) {
 <template>
   <div class="page-container">
     <div class="page-card">
-      <div class="flexw-fullflex-rowitems-centerjustify-betweenpy-8">
-        <h1 class="text-2xl">ConfigurationandSettings</h1>
+      <div class="flex w-full flex-row items-center justify-between py-8">
+        <h1 class="text-2xl">Configuration and Settings</h1>
         <Button size="icon" variant="ghost" as-child>
           <NuxtLink to="/user">
-            <Icon icon="radix-icons:chevron-left" class="h-6w-6" />
+            <Icon icon="radix-icons:chevron-left" class="h-6 w-6" />
           </NuxtLink>
         </Button>
       </div>
-      <div class="gridgrid-cols-1gap-4lg:grid-cols-2">
+      <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <GeneralSettings :user-data="userData" :refresh="refresh" />
-        <PrivacySetting s:user-data="userData" :refresh="refresh" />
+        <PrivacySettings :user-data="userData" :refresh="refresh" />
       </div>
     </div>
   </div>

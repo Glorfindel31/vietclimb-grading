@@ -2,58 +2,59 @@ import type { RouteTabsDataType } from '@/types/userTable.type'
 
 export const UserTableStructure = <RouteTabsDataType>[
   {
-    zone: 'MoonKorner',
+    zone: 'Moon Korner',
     tabName: 'MK',
-    cardDescription: 'Firstzoneonyourleft!Nexttothemoonboard.',
+    cardDescription: 'First zone on your left! Next to the moonboard.',
     routes: [],
   },
   {
     zone: 'Slabber',
     tabName: 'SL',
-    cardDescription: 'Secondzoneonyourleft!NexttotheMoonKorner.',
+    cardDescription: 'Second zone on your left! Next to the Moon Korner.',
     routes: [],
   },
   {
-    zone: 'HighTension',
+    zone: 'High Tension',
     tabName: 'HT',
-    cardDescription: 'Thirdzoneonyourleft!Rightbefortheroof.',
+    cardDescription: 'Third zone on your left! Right befor the roof.',
     routes: [],
   },
   {
-    zone: 'DaRuff',
+    zone: 'Da Ruff',
     tabName: 'DR',
-    cardDescription: 'Rightinfrontofyou!Thebigroofiswaitingforyou.',
+    cardDescription: 'Right in front of you! The big roof is waiting for you.',
     routes: [],
   },
   {
-    zone: 'FlatDoor',
+    zone: 'Flat Door',
     tabName: 'FD',
-    cardDescription: "Rightnexttothebigroof,emergencydoorisonit'sright.",
+    cardDescription:
+      "Right next to the big roof, emergency door is on it's right.",
     routes: [],
   },
   {
     zone: 'Titanic',
     tabName: 'TI',
     cardDescription:
-      'Onyourright,thepartthatlookslikeaboat,couldyouhadguessed?.',
+      'On your right, the part that looks like a boat, could you had guessed?.',
     routes: [],
   },
   {
-    zone: 'HangOverCorner',
+    zone: 'Hang Over Corner',
     tabName: 'HOC',
-    cardDescription: 'Ontheright,hiddenbythebigbob.',
+    cardDescription: 'On the right, hidden by the big bob.',
     routes: [],
   },
   {
-    zone: 'BobYourUncle',
+    zone: 'Bob Your Uncle',
     tabName: 'BYU',
-    cardDescription: 'Thebigbobonyourrightpopsoutofthewall.',
+    cardDescription: 'The big bob on your right pops out of the wall.',
     routes: [],
   },
   {
-    zone: 'CircleofLife',
+    zone: 'Circle of Life',
     tabName: 'COL',
-    cardDescription: 'Onyourright,tofirstclimborbringyourkidtotry.',
+    cardDescription: 'On your right, to first climb or bring your kid to try.',
     routes: [],
   },
 ]

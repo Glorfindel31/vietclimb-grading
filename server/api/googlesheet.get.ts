@@ -112,10 +112,10 @@ const client = new google.auth.JWT(
 )
 client.authorize(function (err, _tokens) {
   if (err) {
-    console.log(err)
+    err
     return
   } else {
-    console.log('Authorized successfully')
+    console.warn('Authorized successfully')
   }
 })
 

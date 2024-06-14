@@ -98,100 +98,105 @@ const onSubmit = handleSubmit(async values => {
 </script>
 
 <template>
-  <form class="flex flex-col justify-center gap-6" @submit="onSubmit">
-    <FormField v-slot="{ value, handleChange }" type="checkbox" name="isTop">
-      <FormItem class="flex flex-row items-center justify-center gap-4">
-        <FormControl>
-          <Checkbox :checked="value" @update:checked="handleChange" />
-        </FormControl>
-        <FormLabel
-          class="text-left text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Top Check
-          <div class="pt-1 text-xs italic text-muted">
-            Route can't be rated if not topped.
-          </div>
-        </FormLabel>
-        <FormMessage class="px-4 text-xs" />
-      </FormItem>
-    </FormField>
-    <FormField v-slot="{ componentField }" type="radio" name="rate">
-      <div class="flex items-center justify-center text-center">
-        <FormItem>
-          <FormLabel>Rate the route</FormLabel>
+  <ClientOnly>
+    <form class="flex flex-col justify-center gap-6" @submit="onSubmit">
+      <FormField v-slot="{ value, handleChange }" type="checkbox" name="isTop">
+        <FormItem class="flex flex-row items-center justify-center gap-4">
           <FormControl>
-            <RadioGroup class="flex flex-row space-x-1" v-bind="componentField">
-              <FormItem class="flex flex-col items-center gap-x-3 space-y-0">
-                <FormControl>
-                  <RadioGroupItem value="1" />
-                </FormControl>
-                <FormLabel class="font-normal"> 1 </FormLabel>
-              </FormItem>
-              <FormItem class="flex flex-col items-center gap-x-3 space-y-0">
-                <FormControl>
-                  <RadioGroupItem value="2" />
-                </FormControl>
-                <FormLabel class="font-normal"> 2 </FormLabel>
-              </FormItem>
-              <FormItem class="flex flex-col items-center gap-x-3 space-y-0">
-                <FormControl>
-                  <RadioGroupItem value="3" />
-                </FormControl>
-                <FormLabel class="font-normal"> 3 </FormLabel>
-              </FormItem>
-              <FormItem class="flex flex-col items-center gap-x-3 space-y-0">
-                <FormControl>
-                  <RadioGroupItem value="4" />
-                </FormControl>
-                <FormLabel class="font-normal"> 4 </FormLabel>
-              </FormItem>
-              <FormItem class="flex flex-col items-center gap-x-3 space-y-0">
-                <FormControl>
-                  <RadioGroupItem value="5" />
-                </FormControl>
-                <FormLabel class="font-normal"> 5 </FormLabel>
-              </FormItem>
-            </RadioGroup>
+            <Checkbox :checked="value" @update:checked="handleChange" />
           </FormControl>
-          <FormMessage />
+          <FormLabel
+            class="text-left text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Top Check
+            <div class="pt-1 text-xs italic text-muted">
+              Route can't be rated if not topped.
+            </div>
+          </FormLabel>
+          <FormMessage class="px-4 text-xs" />
         </FormItem>
-      </div>
-    </FormField>
-    <FormField name="grade">
-      <FormItem
-        class="flex w-24 flex-col items-center justify-center self-center"
-      >
-        <FormLabel>Grade</FormLabel>
-        <NumberField
-          :default-value="
-            props.routeData.route_grade ? props.routeData.route_grade : 1
-          "
-          :min="1"
-          :max="7"
-          @update:model-value="
-            v => {
-              if (v) {
-                setFieldValue('grade', v)
-              } else {
-                setFieldValue('grade', 1)
-              }
-            }
-          "
+      </FormField>
+      <FormField v-slot="{ componentField }" type="radio" name="rate">
+        <div class="flex items-center justify-center text-center">
+          <FormItem>
+            <FormLabel>Rate the route</FormLabel>
+            <FormControl>
+              <RadioGroup
+                class="flex flex-row space-x-1"
+                v-bind="componentField"
+              >
+                <FormItem class="flex flex-col items-center gap-x-3 space-y-0">
+                  <FormControl>
+                    <RadioGroupItem value="1" />
+                  </FormControl>
+                  <FormLabel class="font-normal"> 1 </FormLabel>
+                </FormItem>
+                <FormItem class="flex flex-col items-center gap-x-3 space-y-0">
+                  <FormControl>
+                    <RadioGroupItem value="2" />
+                  </FormControl>
+                  <FormLabel class="font-normal"> 2 </FormLabel>
+                </FormItem>
+                <FormItem class="flex flex-col items-center gap-x-3 space-y-0">
+                  <FormControl>
+                    <RadioGroupItem value="3" />
+                  </FormControl>
+                  <FormLabel class="font-normal"> 3 </FormLabel>
+                </FormItem>
+                <FormItem class="flex flex-col items-center gap-x-3 space-y-0">
+                  <FormControl>
+                    <RadioGroupItem value="4" />
+                  </FormControl>
+                  <FormLabel class="font-normal"> 4 </FormLabel>
+                </FormItem>
+                <FormItem class="flex flex-col items-center gap-x-3 space-y-0">
+                  <FormControl>
+                    <RadioGroupItem value="5" />
+                  </FormControl>
+                  <FormLabel class="font-normal"> 5 </FormLabel>
+                </FormItem>
+              </RadioGroup>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        </div>
+      </FormField>
+      <FormField name="grade">
+        <FormItem
+          class="flex w-24 flex-col items-center justify-center self-center"
         >
-          <NumberFieldContent>
-            <NumberFieldDecrement />
-            <NumberFieldInput />
-            <NumberFieldIncrement />
-          </NumberFieldContent>
-        </NumberField>
-      </FormItem>
-    </FormField>
-    <DrawerClose as-child>
-      <Button class="self-center" type="submit" variant="outline" size="icon">
-        <Icon icon="radix-icons:check" class="h-6 w-6" />
-      </Button>
-    </DrawerClose>
-  </form>
+          <FormLabel>Grade</FormLabel>
+          <NumberField
+            :default-value="
+              props.routeData.route_grade ? props.routeData.route_grade : 1
+            "
+            :min="1"
+            :max="7"
+            @update:model-value="
+              v => {
+                if (v) {
+                  setFieldValue('grade', v)
+                } else {
+                  setFieldValue('grade', 1)
+                }
+              }
+            "
+          >
+            <NumberFieldContent>
+              <NumberFieldDecrement />
+              <NumberFieldInput />
+              <NumberFieldIncrement />
+            </NumberFieldContent>
+          </NumberField>
+        </FormItem>
+      </FormField>
+      <DrawerClose as-child>
+        <Button class="self-center" type="submit" variant="outline" size="icon">
+          <Icon icon="radix-icons:check" class="h-6 w-6" />
+        </Button>
+      </DrawerClose>
+    </form>
+  </ClientOnly>
 </template>
 
 <style lang="css" scoped></style>

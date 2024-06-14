@@ -13,8 +13,7 @@ export const transformData = (incomingData: Route[]): RouteCount[] => {
     const existing = gradeCounts.find(d => d.level === route.grade)
     if (existing) {
       existing.amount++
-    }
-    else {
+    } else {
       gradeCounts.push({
         level: route.grade,
         amount: 1,
@@ -35,8 +34,7 @@ export const transformDataSetter = (
     const existing = nameCount.find(d => d.name === route.setter)
     if (existing) {
       existing.amount++
-    }
-    else {
+    } else {
       nameCount.push({
         name: route.setter,
         amount: 1,
@@ -87,10 +85,10 @@ export function valueUpdater<T, U extends Updater<T>>(
   updaterOrValue: U,
   ref: Ref<T>,
 ) {
-  ref.value
-		= typeof updaterOrValue === 'function'
-		  ? updaterOrValue(ref.value)
-		  : updaterOrValue
+  ref.value =
+    typeof updaterOrValue === 'function'
+      ? updaterOrValue(ref.value)
+      : updaterOrValue
 }
 
 export function stringCompressor(input: string) {
@@ -100,13 +98,14 @@ export function stringCompressor(input: string) {
   }
 
   function shuffle(array: Array<string>, seed: number) {
-    let currentIndex = array.length,
-      temporaryValue,
-      randomIndex
+    let temporaryValue, randomIndex
 
-    while (0 !== currentIndex) {
-      randomIndex = Math.floor(seededRandom(seed) * currentIndex)
-      currentIndex -= 1
+    for (
+      let currentIndex = array.length - 1;
+      currentIndex > 0;
+      currentIndex--
+    ) {
+      randomIndex = Math.floor(seededRandom(seed) * (currentIndex + 1))
 
       temporaryValue = array[currentIndex]
       array[currentIndex] = array[randomIndex]
@@ -115,6 +114,7 @@ export function stringCompressor(input: string) {
 
     return array
   }
+
   const inputString = input.toString()
   const array = inputString
     .toLowerCase()
@@ -125,5 +125,5 @@ export function stringCompressor(input: string) {
     .filter(char => /[0-9]/.test(char))
     .reduce((acc, curr) => acc + parseInt(curr), 0)
 
-  return shuffle(array, seed).slice(0, 30).join('') as string
+  return shuffle(array, seed).slice(0, 40).join('') as string
 }

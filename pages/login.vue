@@ -2,16 +2,6 @@
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
-
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { imageListLink, getRandomImage } from '~/helpers/image'
 
 const supabase = useSupabaseClient()
@@ -29,7 +19,7 @@ const form = useForm({
   validationSchema: formSchema,
 })
 
-const onSubmit = form.handleSubmit(async (values) => {
+const onSubmit = form.handleSubmit(async values => {
   isLoading.value = true
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -44,11 +34,9 @@ const onSubmit = form.handleSubmit(async (values) => {
     if (error) {
       throw new Error('Error signing in:', error as Error)
     }
-  }
-  catch (error) {
+  } catch (error) {
     console.error(error)
-  }
-  finally {
+  } finally {
     isLoading.value = false
   }
 })
@@ -71,10 +59,7 @@ const index = getRandomImage()
       <div class="flex flex-col justify-center bg-background px-10">
         <h2>Login with email</h2>
         <form @submit="onSubmit">
-          <FormField
-            v-slot="{ componentField }"
-            name="email"
-          >
+          <FormField v-slot="{ componentField }" name="email">
             <FormItem class="py-2">
               <FormLabel>Email</FormLabel>
               <FormControl>
@@ -90,10 +75,7 @@ const index = getRandomImage()
               <FormMessage />
             </FormItem>
           </FormField>
-          <FormField
-            v-slot="{ componentField }"
-            name="password"
-          >
+          <FormField v-slot="{ componentField }" name="password">
             <FormItem class="py-2">
               <FormLabel>Password</FormLabel>
               <FormControl>
@@ -106,19 +88,13 @@ const index = getRandomImage()
               <FormMessage />
             </FormItem>
           </FormField>
-          <Button
-            type="submit"
-            class="mt-4 w-full py-2"
-          >
-            Login
-          </Button>
+          <Button type="submit" class="mt-4 w-full py-2"> Login </Button>
         </form>
         <div class="mt-4 text-sm text-primary">
           No Account yet?
-          <NuxtLink
-            to="/register"
-            class="inline font-bold hover:underline"
-          >Register</NuxtLink>
+          <NuxtLink to="/register" class="inline font-bold hover:underline"
+            >Register</NuxtLink
+          >
         </div>
       </div>
     </div>

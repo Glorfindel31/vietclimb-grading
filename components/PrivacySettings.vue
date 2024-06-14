@@ -67,15 +67,15 @@ setFieldValue('showArms', props.userData?.show_arms ?? true)
 setFieldValue('showRank', props.userData?.show_rank ?? true)
 setFieldValue('showTops', props.userData?.show_tops ?? true)
 
-const onSubmitPrivacy = handleSubmitPrivacy(async (values) => {
+const onSubmitPrivacy = handleSubmitPrivacy(async values => {
   if (!props.userData?.UID)
     throw new Error('No user data found, Cant update user data.')
   if (
-    values.showBirthdate === props.userData?.show_birthdate
-    && values.showHeight === props.userData?.show_height
-    && values.showArms === props.userData?.show_arms
-    && values.showRank === props.userData?.show_rank
-    && values.showTops === props.userData?.show_tops
+    values.showBirthdate === props.userData?.show_birthdate &&
+    values.showHeight === props.userData?.show_height &&
+    values.showArms === props.userData?.show_arms &&
+    values.showRank === props.userData?.show_rank &&
+    values.showTops === props.userData?.show_tops
   ) {
     toast({
       title: 'You have no changes to save  🤷‍♂️',
@@ -104,8 +104,7 @@ const onSubmitPrivacy = handleSubmitPrivacy(async (values) => {
       title: 'Your profile has been updated ✅',
       description: `updated at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} - ${now.getDate()}:${now.getMonth() + 1}:${now.getFullYear()}`,
     })
-  }
-  else {
+  } else {
     useForm().resetForm()
     props.refresh()
     isUpdating.value = false
@@ -131,9 +130,7 @@ const onSubmitPrivacy = handleSubmitPrivacy(async (values) => {
     class="flex max-w-[1400px] flex-col gap-4 rounded-lg border bg-background p-8"
   >
     <div class="flex flex-col">
-      <h3 class="m-0 p-0 pb-8 font-thin">
-        Privacy Settings
-      </h3>
+      <h3 class="m-0 p-0 pb-8 font-thin">Privacy Settings</h3>
 
       <form
         class="flex flex-col gap-4 lg:justify-between lg:gap-2"
@@ -157,23 +154,13 @@ const onSubmitPrivacy = handleSubmitPrivacy(async (values) => {
               </FormDescription>
             </div>
             <FormControl>
-              <Switch
-                :checked="value"
-                @update:checked="handleChange"
-              />
+              <Switch :checked="value" @update:checked="handleChange" />
             </FormControl>
           </FormItem>
         </FormField>
 
-        <Button
-          type="submit"
-          class="w-24"
-          :disabled="isUpdating"
-        >
-          <Loader2
-            v-if="isUpdating"
-            class="mr-2 h-4 w-4 animate-spin"
-          />
+        <Button type="submit" class="w-24" :disabled="isUpdating">
+          <Loader2 v-if="isUpdating" class="mr-2 h-4 w-4 animate-spin" />
           Save
         </Button>
       </form>

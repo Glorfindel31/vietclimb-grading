@@ -17,6 +17,8 @@ const props = defineProps({
   },
 })
 
+console.warn(props.incomingData)
+
 const data: RouteCount[] = transformData(props.incomingData)
 </script>
 
@@ -30,7 +32,7 @@ const data: RouteCount[] = transformData(props.incomingData)
         :margin="{ left: 10, right: 10 }"
         :data="data"
         :style="{
-          'opacity': 1,
+          opacity: 1,
           '--theme-primary': `hsl(var(--primary))`,
           '--theme-text': `hsl(var(--foreground))`,
         }"
@@ -45,10 +47,7 @@ const data: RouteCount[] = transformData(props.incomingData)
         <VisAxis
           type="x"
           :num-ticks="data.length"
-          :tick-format="
-            (index: number) =>
-              'Lvl' + ' ' + data[index]?.level
-          "
+          :tick-format="(index: number) => 'Lvl' + ' ' + data[index]?.level"
           tick-text-color="var(--theme-text)"
           :grid-line="false"
           :tick-line="true"

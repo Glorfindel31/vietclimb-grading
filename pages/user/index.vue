@@ -51,24 +51,21 @@ watchEffect(() => {
       .filter(route => route.route_grade !== null)
       .sort((a, b) => a.id - b.id)
 
-    const hasChanged
-               = routeList.value.length !== newRouteList.length
-               || !routeList.value.every(
-                 (route, index) => route.id === newRouteList[index].id,
-               )
-               || !routeList.value.every(
-                 (route, index) =>
-                   route.top_records.length
-                   !== newRouteList[index].top_records.length,
-               )
+    const hasChanged =
+      routeList.value.length !== newRouteList.length ||
+      !routeList.value.every(
+        (route, index) => route.id === newRouteList[index].id,
+      ) ||
+      !routeList.value.every(
+        (route, index) =>
+          route.top_records.length !== newRouteList[index].top_records.length,
+      )
 
     if (hasChanged) {
       routeList.value = newRouteList
-      routeTabs.value.forEach(tab =>
-        tab.routes.splice(0, tab.routes.length),
-      )
+      routeTabs.value.forEach(tab => tab.routes.splice(0, tab.routes.length))
 
-      routeTabs.value.forEach((tab) => {
+      routeTabs.value.forEach(tab => {
         const matchingRoutes = newRouteList.filter(
           route => route.zone_name === tab.zone,
         )
@@ -77,14 +74,9 @@ watchEffect(() => {
     }
   }
 })
-const test = ref('test')
-console.log(test.value)
 
 const handleRemoveRecord = async (TUID: string) => {
-  const { error } = await supabase
-    .from('top_records')
-    .delete()
-    .eq('TUID', TUID)
+  const { error } = await supabase.from('top_records').delete().eq('TUID', TUID)
   if (error) {
     console.error(error)
     toast({
@@ -93,8 +85,7 @@ const handleRemoveRecord = async (TUID: string) => {
       variant: 'destructive',
     })
     return
-  }
-  else {
+  } else {
     refresh()
     toast({
       title: 'Ascent removed',
@@ -106,10 +97,7 @@ const handleRemoveRecord = async (TUID: string) => {
 </script>
 
 <template>
-  <div
-    v-if="userData"
-    class="page-container"
-  >
+  <div v-if="userData" class="page-container">
     <div class="page-card sm:rounded-lg sm:border sm:shadow-lg">
       <div class="w-full py-6">
         <div
@@ -118,34 +106,25 @@ const handleRemoveRecord = async (TUID: string) => {
           <h1 class="text-3xl">
             Welcome back
             <span class="capitalize italic text-primary">
-              {{ userData?.displayed_name ?? "" }}
+              {{ userData?.displayed_name ?? '' }}
             </span>
           </h1>
-          <NuxtLink to="/user/statistics">
-            stats
-          </NuxtLink>
-          <Button
-            size="icon"
-            variant="ghost"
-            as-child
-          >
+          <NuxtLink to="/user/statistics"> stats </NuxtLink>
+          <Button size="icon" variant="ghost" as-child>
             <NuxtLink to="/user/settings">
-              <Icon
-                icon="radix-icons:gear"
-                class="h-6 w-6"
-              />
+              <Icon icon="radix-icons:gear" class="h-6 w-6" />
             </NuxtLink>
           </Button>
         </div>
         <p class="text-sm italic">
-          Log your accents, rate the routes and give a rate to
-          the route you climbed.
+          Log your accents, rate the routes and give a rate to the route you
+          climbed.
         </p>
       </div>
       <div class="flex flex-row flex-wrap justify-evenly">
         <UserRoutesRegistration
           :route-tabs="routeTabs"
-          :user-data="user - data"
+          :user-data="userData"
           :refresh="refresh"
           :handle-remove-record="handleRemoveRecord"
         />
@@ -154,9 +133,7 @@ const handleRemoveRecord = async (TUID: string) => {
   </div>
   <div v-else>
     <div class="page-container">
-      <div
-        class="page-card items-center justify-center rounded-lg border"
-      >
+      <div class="page-card items-center justify-center rounded-lg border">
         <h1>Something went wrong... 😵‍💫</h1>
       </div>
     </div>

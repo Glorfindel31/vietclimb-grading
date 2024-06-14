@@ -13,8 +13,7 @@ const logOutHandler = async () => {
   try {
     await client.auth.signOut()
     navigateTo('/')
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Error logging out:', error as Error)
   }
 }
@@ -47,39 +46,21 @@ watch(user, () => {
     </ul>
     <ul class="flex flex-row gap-4">
       <li v-if="isAdmin">
-        <Button
-          variant="link"
-          as-child
-        >
-          <NuxtLink to="/admin">
-            Admin
-          </NuxtLink>
+        <Button variant="link" as-child>
+          <NuxtLink to="/admin"> Admin </NuxtLink>
         </Button>
       </li>
       <li>
-        <Button
-          variant="link"
-          as-child
-        >
-          <NuxtLink to="/about">
-            About
-          </NuxtLink>
+        <Button variant="link" as-child>
+          <NuxtLink to="/about"> About </NuxtLink>
         </Button>
       </li>
       <li>
-        <Button
-          variant="link"
-          as-child
-        >
-          <NuxtLink to="/public">
-            Public Stats
-          </NuxtLink>
+        <Button variant="link" as-child>
+          <NuxtLink to="/public"> Public Stats </NuxtLink>
         </Button>
       </li>
-      <UserNav
-        v-if="user"
-        :log-out-handler="logOutHandler"
-      />
+      <UserNav v-if="user" :log-out-handler="logOutHandler" />
       <PublicNav v-else />
       <li>
         <ToggleMode />
@@ -111,10 +92,7 @@ watch(user, () => {
       <li>
         <Sheet>
           <SheetTrigger as-child>
-            <Button
-              variant="ghost"
-              size="icon"
-            >
+            <Button variant="ghost" size="icon">
               <Icon
                 icon="radix-icons:hamburger-menu"
                 class="h-[1.2rem] w-[1rem]"
@@ -124,58 +102,33 @@ watch(user, () => {
           <SheetContent side="top">
             <SheetHeader>
               <SheetTitle>Menu</SheetTitle>
-              <SheetDescription hidden>
-                Navigation menu
-              </SheetDescription>
+              <SheetDescription hidden> Navigation menu </SheetDescription>
             </SheetHeader>
             <ul class="flex flex-col justify-center gap-2">
               <SheetClose>
                 <li v-if="isAdmin">
-                  <Button
-                    variant="link"
-                    as-child
-                  >
-                    <NuxtLink to="/admin">
-                      Admin
-                    </NuxtLink>
+                  <Button variant="link" as-child>
+                    <NuxtLink to="/admin"> Admin </NuxtLink>
                   </Button>
                 </li>
                 <li>
-                  <Button
-                    variant="link"
-                    as-child
-                    class="text-md"
-                  >
-                    <NuxtLink to="/about">
-                      About
-                    </NuxtLink>
+                  <Button variant="link" as-child class="text-md">
+                    <NuxtLink to="/about"> About </NuxtLink>
                   </Button>
                 </li>
                 <li>
-                  <Button
-                    variant="link"
-                    as-child
-                    class="text-md"
-                  >
-                    <NuxtLink to="/public">
-                      Public Stats
-                    </NuxtLink>
+                  <Button variant="link" as-child class="text-md">
+                    <NuxtLink to="/public"> Public Stats </NuxtLink>
                   </Button>
                 </li>
                 <li>
                   <UserNav
                     v-if="user"
-                    :log-out-handler="
-                      logOutHandler
-                    "
+                    :log-out-handler="logOutHandler"
                     class="text-md"
                     mobile
                   />
-                  <PublicNav
-                    v-else
-                    class="text-md"
-                    mobile
-                  />
+                  <PublicNav v-else class="text-md" mobile />
                 </li>
               </SheetClose>
             </ul>

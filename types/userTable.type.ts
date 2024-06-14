@@ -27,3 +27,45 @@ export type RouteTabsDataType = Array<{
   cardDescription: string
   routes: RouteWithTopRecords[]
 }>
+
+export type UserWithTopRecordsAndRoutes = {
+  id: number
+  created_at: Date
+  email: string
+  displayed_name: string
+  role: string
+  UID: string
+  show_rank: boolean
+  show_height: boolean
+  show_tops: boolean
+  height: number
+  arms: number
+  birthdate: Date
+  show_arms: boolean
+  show_name: boolean
+  show_birthdate: boolean
+  top_records: TopRecord[]
+}
+
+export type TopRecord = {
+  id: number
+  TUID: string
+  routes: Routes
+  user_rate: number
+  UID_linked: string
+  created_at: Date
+  user_grade: number
+  URID_linked: string
+}
+
+export type Routes = {
+  id: number
+  RID: number
+  URID: string
+  zone_name: string
+  route_date: Date
+  route_link: null | string
+  route_color: string
+  route_grade: number
+  route_setter: string
+}
