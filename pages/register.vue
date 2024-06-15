@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import confetti from 'canvas-confetti'
+
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
@@ -58,7 +60,7 @@ const onSubmit = form.handleSubmit(async values => {
       isRegisterDialogOpen.value = true
       isSignUpSuccess.value = true
       form.resetForm()
-      window.confetti({
+      confetti({
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },

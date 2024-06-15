@@ -46,11 +46,6 @@ export default defineNuxtConfig({
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       ],
-      script: [
-        {
-          src: 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js',
-        },
-      ],
       noscript: [
         // <noscript>JavaScript is required</noscript>
         { children: 'JavaScript is required' },

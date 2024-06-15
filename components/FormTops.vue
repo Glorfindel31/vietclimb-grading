@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import confetti from 'canvas-confetti'
+
 import { Icon } from '@iconify/vue'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
@@ -11,13 +13,6 @@ import {
 import { useToast } from '@/components/ui/toast/use-toast'
 import { stringCompressor } from '~/helpers/helpFunctions'
 import { congratsMessages } from '~/pages/user/CongratsMessages'
-
-declare global {
-  interface Window {
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    confetti: Function
-  }
-}
 
 const { toast } = useToast()
 
@@ -70,7 +65,7 @@ const onSubmit = handleSubmit(async values => {
           congratsMessages[Math.floor(Math.random() * congratsMessages.length)],
       })
       props.refresh()
-      window.confetti({
+      confetti({
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
