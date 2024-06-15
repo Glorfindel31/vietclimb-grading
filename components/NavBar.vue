@@ -39,7 +39,7 @@ const navLinks = computed(() => [
     </ul>
     <ul class="flex flex-row gap-4">
       <NavLink v-for="link in navLinks" :key="link.to" :link="link" />
-      <UserNav v-if="session" />
+      <UserNav v-if="session?.user" />
       <PublicNav v-else />
       <li>
         <ToggleMode />
@@ -91,7 +91,7 @@ const navLinks = computed(() => [
                   :link="link"
                   mobile
                 />
-                <UserNav v-if="session" class="text-md" mobile />
+                <UserNav v-if="session?.user" class="text-md" mobile />
                 <PublicNav v-else class="text-md" mobile />
               </SheetClose>
             </ul>

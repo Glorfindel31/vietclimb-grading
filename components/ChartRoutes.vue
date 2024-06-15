@@ -17,8 +17,6 @@ const props = defineProps({
   },
 })
 
-console.warn(props.incomingData)
-
 const data: RouteCount[] = transformData(props.incomingData)
 </script>
 

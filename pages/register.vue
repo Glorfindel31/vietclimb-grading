@@ -21,7 +21,7 @@ const isLoading = ref(false)
 const isRegisterDialogOpen = ref(false)
 const isSignUpSuccess = ref(false)
 const username = ref('')
-const errorMessage = ref('Ya une erreur mec reveil toi')
+const errorMessage = ref('Oops! Something went wrong. Please try again.')
 
 const formSchema = toTypedSchema(
   z.object({
@@ -90,7 +90,7 @@ const index = getRandomImage()
   <ClientOnly>
     <div class="page-container" :class="{ 'blur-sm': isRegisterDialogOpen }">
       <div
-        class="grid max-h-[80vh] max-w-7xl grid-rows-[20%,80%] justify-center overflow-hidden rounded-lg border align-middle sm:max-h-none sm:grid-cols-2 sm:grid-rows-none"
+        class="mx-4 grid max-h-[80vh] max-w-7xl grid-rows-[20%,80%] justify-center overflow-hidden rounded-lg border align-middle sm:max-h-none sm:grid-cols-2 sm:grid-rows-none"
       >
         <div class="h-[80vh] w-auto">
           <NuxtImg

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { moreConfetti } from '~/helpers/confetti'
 declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/ban-types
@@ -6,6 +7,7 @@ declare global {
   }
 }
 const emit = defineEmits(['update:isRegisterDialogOpen'])
+
 const props = defineProps({
   isSignUpSuccess: Boolean,
   isRegisterDialogOpen: Boolean,
@@ -18,43 +20,6 @@ const props = defineProps({
     default: '',
   },
 })
-
-const moreConfetti = () => {
-  const duration = 10 * 500
-  const animationEnd = Date.now() + duration
-  const defaults = {
-    startVelocity: 30,
-    spread: 360,
-    ticks: 60,
-    zIndex: 200,
-  }
-
-  function randomInRange(min: number, max: number) {
-    return Math.random() * (max - min) + min
-  }
-
-  const interval = setInterval(() => {
-    const timeLeft = animationEnd - Date.now()
-
-    if (timeLeft <= 0) {
-      clearInterval(interval)
-      return
-    }
-
-    const particleCount = 50 * (timeLeft / duration)
-    // since particles fall down, start a bit higher than random
-    window.confetti({
-      ...defaults,
-      particleCount,
-      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-    })
-    window.confetti({
-      ...defaults,
-      particleCount,
-      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-    })
-  }, 250)
-}
 </script>
 
 <template>

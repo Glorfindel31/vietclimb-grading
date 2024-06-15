@@ -12,9 +12,9 @@ const index = getRandomImage()
 </script>
 
 <template>
-  <div class="page-container px-1">
+  <div class="page-container">
     <div
-      class="grid max-h-[80vh] max-w-7xl grid-rows-[20%,80%] justify-center overflow-hidden rounded-lg border align-middle sm:max-h-none sm:grid-cols-2 sm:grid-rows-none"
+      class="m-2 grid max-h-[80vh] max-w-7xl grid-rows-[20%,80%] justify-center overflow-hidden rounded-lg border align-middle sm:max-h-none sm:grid-cols-2 sm:grid-rows-none"
     >
       <div class="h-auto w-auto sm:h-[80vh]">
         <NuxtImg
@@ -42,16 +42,24 @@ const index = getRandomImage()
           This will help you visualize your climbing journey and set new goals.
           Register now and embark on a new climbing adventure at Vietclimb.
         </p>
-        <div class="flex flex-row-reverse gap-4 py-4">
-          <Button variant="secondary" as-child>
-            <NuxtLink to="/public">Route List</NuxtLink>
-          </Button>
-          <Button v-if="session" as-child>
-            <NuxtLink to="/user"> Your Profil </NuxtLink>
-          </Button>
-          <Button v-else as-child>
-            <NuxtLink to="/register"> Register </NuxtLink>
-          </Button>
+        <div class="py-8">
+          <div class="flex flex-row-reverse gap-2">
+            <Button variant="secondary" as-child>
+              <NuxtLink to="/public">Route List</NuxtLink>
+            </Button>
+            <Button v-if="session" as-child>
+              <NuxtLink to="/user"> Your Profile </NuxtLink>
+            </Button>
+            <Button v-else as-child>
+              <NuxtLink to="/register"> Register </NuxtLink>
+            </Button>
+          </div>
+          <div class="flex items-center justify-end text-xs">
+            Have an account already?
+            <Button class="p-1" variant="link" as-child>
+              <NuxtLink to="/login">Login</NuxtLink>
+            </Button>
+          </div>
         </div>
       </div>
     </div>

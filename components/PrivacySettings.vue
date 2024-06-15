@@ -21,7 +21,7 @@ const { toast } = useToast()
 
 const privacySetting = toTypedSchema(
   z.object({
-    showBirthdate: z.boolean().default(true),
+    showBirthDate: z.boolean().default(true),
     showHeight: z.boolean().default(true),
     showArms: z.boolean().default(true),
     showRank: z.boolean().default(true),
@@ -31,9 +31,9 @@ const privacySetting = toTypedSchema(
 
 const privacyForm = [
   {
-    name: 'showBirthdate',
-    label: 'Birthdate Visibility',
-    description: 'Your birthdate will be displayed to other users.',
+    name: 'showBirthDate',
+    label: 'BirthDate Visibility',
+    description: 'Your birth date will be displayed to other users.',
   },
   {
     name: 'showHeight',
@@ -48,7 +48,7 @@ const privacyForm = [
   {
     name: 'showRank',
     label: 'Rank Visibility',
-    description: 'You will apear in the ranking dashboard.',
+    description: 'You will appear in the ranking dashboard.',
   },
   {
     name: 'showTops',
@@ -61,7 +61,7 @@ const { handleSubmit: handleSubmitPrivacy, setFieldValue } = useForm({
   validationSchema: privacySetting,
 })
 
-setFieldValue('showBirthdate', props.userData?.show_birthdate ?? true)
+setFieldValue('showBirthDate', props.userData?.show_birthdate ?? true)
 setFieldValue('showHeight', props.userData?.show_height ?? true)
 setFieldValue('showArms', props.userData?.show_arms ?? true)
 setFieldValue('showRank', props.userData?.show_rank ?? true)
@@ -71,7 +71,7 @@ const onSubmitPrivacy = handleSubmitPrivacy(async values => {
   if (!props.userData?.UID)
     throw new Error('No user data found, Cant update user data.')
   if (
-    values.showBirthdate === props.userData?.show_birthdate &&
+    values.showBirthDate === props.userData?.show_birthdate &&
     values.showHeight === props.userData?.show_height &&
     values.showArms === props.userData?.show_arms &&
     values.showRank === props.userData?.show_rank &&
@@ -88,7 +88,7 @@ const onSubmitPrivacy = handleSubmitPrivacy(async values => {
   const { data, error } = await supabase
     .from('users')
     .update({
-      show_birthdate: values.showBirthdate,
+      show_birthdate: values.showBirthDate,
       show_height: values.showHeight,
       show_arms: values.showArms,
       show_rank: values.showRank,
@@ -110,8 +110,8 @@ const onSubmitPrivacy = handleSubmitPrivacy(async values => {
     isUpdating.value = false
     const now = new Date()
     toast({
-      title: 'Your profile wasnt updated ❌',
-      description: `An error occured at 
+      title: "Your profile wasn't updated ❌",
+      description: `An error occurred at 
 								${now.getHours()}:
 								${now.getMinutes()}:
 								${now.getSeconds()} - 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { Video } from 'lucide-vue-next'
 import type {
   UserWithTopRecords,
   RouteTabsDataType,
@@ -43,7 +44,7 @@ const computeMode = (numbers: Array<number>): number => {
     default-value="Moon Korner"
     class="min-w-[300px] max-w-md"
   >
-    <TabsList class="grid w-full grid-cols-9">
+    <TabsList class="m-0 grid w-full grid-cols-9">
       <TabsTrigger
         v-for="tab in props.routeTabs"
         :key="tab.zone"
@@ -57,7 +58,7 @@ const computeMode = (numbers: Array<number>): number => {
       :key="tab.zone"
       :value="tab.zone"
     >
-      <Card>
+      <Card class="pb-10">
         <CardHeader>
           <CardTitle>{{ tab.zone }}</CardTitle>
           <CardDescription>
@@ -79,22 +80,26 @@ const computeMode = (numbers: Array<number>): number => {
               :key="row.URID"
               class="flex flex-row justify-between"
             >
-              <TableCell class="flex flex-col justify-center gap-1 px-2 py-3">
-                <div class="px-2 py-1 text-sm font-bold">
+              <TableCell
+                class="flex w-2/5 flex-col justify-center gap-1 px-4 py-3"
+              >
+                <div class="py-1 text-sm font-bold">
                   {{ row.zone_name }}
                 </div>
                 <div
-                  class="p-1 text-center text-xs"
+                  class="w-fit px-2 py-1 text-center text-xs"
                   :class="`bg-${row.route_color?.toString()} text-${row.route_color?.toString()}-foreground rounded-full`"
                 >
                   {{ row.route_color?.toUpperCase() }}
                 </div>
-                <div class="pl-2 text-xs italic">
+                <div class="border-l-4 border-foreground pl-2 text-xs italic">
                   Set by:
                   <span class="capitalize">{{ row.route_setter }}</span>
                 </div>
               </TableCell>
-              <TableCell class="flex flex-row items-center gap-4 px-2 py-3">
+              <TableCell
+                class="flex w-3/5 flex-row items-center justify-between px-4 py-3"
+              >
                 <div class="flex flex-col gap-1 text-xs">
                   <div>Grade:</div>
                   <div>
@@ -102,7 +107,7 @@ const computeMode = (numbers: Array<number>): number => {
                     {{ row.route_grade }}
                   </div>
                   <div>
-                    Comunity's -
+                    Community's -
                     {{
                       row.top_records.length > 0
                         ? computeMode(
@@ -134,6 +139,21 @@ const computeMode = (numbers: Array<number>): number => {
                     />
                   </div>
                 </div>
+
+                <Button
+                  v-if="row.route_link && row.route_link !== ''"
+                  size="icon"
+                  variant="outline"
+                  as-child
+                >
+                  <NuxtLink :to="row.route_link" target="_blank">
+                    <Video class="h-6 w-6" />
+                  </NuxtLink>
+                </Button>
+                <Button v-else disabled size="icon" variant="outline">
+                  <Video class="h-6 w-6" />
+                </Button>
+
                 <Dialog
                   v-if="
                     props.userData.top_records.some(
@@ -181,7 +201,7 @@ const computeMode = (numbers: Array<number>): number => {
                             {{ row.route_grade }}
                           </div>
                           <div>
-                            Comunity's -
+                            Community's -
                             {{
                               row.top_records.length > 0
                                 ? computeMode(

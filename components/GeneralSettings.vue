@@ -102,8 +102,8 @@ const onSubmitGeneral = handleSubmitGeneral(async values => {
     isUpdating.value = false
     const now = new Date()
     toast({
-      title: 'Your profile wasnt updated ❌',
-      description: `An error occured at 
+      title: "Your profile wasn't updated ❌",
+      description: `An error occurred at 
 								${now.getHours()}:
 								${now.getMinutes()}:
 								${now.getSeconds()} - 

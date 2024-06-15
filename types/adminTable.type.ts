@@ -1,7 +1,7 @@
 import type { Tables, TablesInsert } from '~/types/supabase.type'
 
 export interface RowsAdditional {
-  identicale?: boolean
+  identical?: boolean
 }
 export interface NewGoogleRows {
   id: number

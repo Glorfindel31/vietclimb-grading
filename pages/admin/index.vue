@@ -60,6 +60,7 @@ const {
 const checkData = ref<DataBaseExtended[]>([])
 const dataToUpdate = ref<DataBaseInsert[]>([])
 const idArrays = ref<Array<number | string>>([])
+const oldData = ref<Array<string>>([])
 
 const modifiedGroup = ref<{
   supabase: DataBaseExtended[]
@@ -72,10 +73,10 @@ const isIdentical = (
 ) => {
   const supabaseDataURID: DataBaseExtended[] = supabaseData.map(
     (route, index) => {
-      const identicale = googleData[index].URID === route.URID ? true : false
+      const identical = googleData[index].URID === route.URID ? true : false
       return {
         ...route,
-        identicale: identicale,
+        identical: identical,
       }
     },
   )
@@ -89,9 +90,15 @@ const dataChanges = () => {
   )
 
   idArrays.value = checkData.value
-    .filter(route => route.identicale === false)
+    .filter(route => route.identical === false)
     .map(route => [route.id])
     .flat()
+
+  // oldData is = to allData.supabaseData URID's if allData.supabaseData.id is inclued in idArrays
+  oldData.value =
+    allData.value?.supabaseData
+      .filter(route => idArrays.value.includes(route.id))
+      .map(route => route.URID) || []
 
   dataToUpdate.value = (
     allData.value?.googleData.filter(route =>
@@ -125,6 +132,8 @@ watchEffect(() => {
 const updateHandler = async (e: Event) => {
   e.preventDefault()
   const array = await JSON.parse(JSON.stringify(dataToUpdate.value))
+  const oldDataArray = await JSON.parse(JSON.stringify(oldData.value))
+
   if (array.length === 0) {
     toast({
       title: 'No data to update',
@@ -134,6 +143,20 @@ const updateHandler = async (e: Event) => {
     return
   }
   try {
+    const { data: dataRemoved, error: errorRemoved } = await supabase
+      .from('top_records')
+      .delete()
+      .in('URID_linked', oldDataArray)
+      .select()
+    if (errorRemoved) {
+      throw new Error('Failed to delete records')
+    } else {
+      toast({
+        title: 'Records deleted',
+        description: `Records have been deleted successfully ${dataRemoved}`,
+        variant: 'destructive',
+      })
+    }
     const { data, error } = await supabase.from('routes').upsert(array).select()
     if (data) {
       toast({
@@ -141,7 +164,8 @@ const updateHandler = async (e: Event) => {
         description: 'Data has been updated successfully',
       })
     } else if (error) {
-      console.error('Error updating data', error)
+      console.error('Error updating data 01', error)
+      console.warn(array)
       toast({
         title: 'Error updating data',
         description: `error updating data${error}`,
@@ -149,7 +173,7 @@ const updateHandler = async (e: Event) => {
       })
     }
   } catch (error) {
-    console.error('Error updating data', error)
+    console.error('Error updating data 02', error)
   } finally {
     refresh()
   }
@@ -171,7 +195,7 @@ const refreshHandler = (e: Event) => {
       <div class="h-full">
         <h2>Admin</h2>
         <div class="flex flex-row justify-between py-4 align-middle">
-          <p class="italic">Welcome into the database synchronisation tool.</p>
+          <p class="italic">Welcome into the database synchronization tool.</p>
           <div class="flex gap-2">
             <Button size="sm" variant="outline" @click="refreshHandler">
               Refresh
@@ -236,9 +260,7 @@ const refreshHandler = (e: Event) => {
               v-for="route in dataList"
               :key="route.id"
               :class="
-                index === 'supabase' &&
-                'identicale' in route &&
-                !route.identicale
+                index === 'supabase' && 'identical' in route && !route.identical
                   ? 'bg-destructive'
                   : ''
               "

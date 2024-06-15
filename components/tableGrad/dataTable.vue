@@ -14,15 +14,6 @@ import {
 } from '@tanstack/vue-table'
 import { valueUpdater } from '~/helpers/helpFunctions'
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-
 const sorting = ref<SortingState>([])
 const columnFilters = ref<ColumnFiltersState>([])
 
@@ -62,12 +53,8 @@ const table = useVueTable({
       <Input
         class="max-w-sm"
         placeholder="Filter zone..."
-        :model-value="
-          table.getColumn('name')?.getFilterValue() as string
-        "
-        @update:model-value="
-          table.getColumn('name')?.setFilterValue($event)
-        "
+        :model-value="table.getColumn('name')?.getFilterValue() as string"
+        @update:model-value="table.getColumn('name')?.setFilterValue($event)"
       />
     </div>
     <Table class="w-full">
@@ -94,9 +81,7 @@ const table = useVueTable({
           <TableRow
             v-for="row in table.getRowModel().rows"
             :key="row.id"
-            :data-state="
-              row.getIsSelected() ? 'selected' : undefined
-            "
+            :data-state="row.getIsSelected() ? 'selected' : undefined"
           >
             <TableCell
               v-for="cell in row.getVisibleCells()"
@@ -112,10 +97,7 @@ const table = useVueTable({
         </template>
         <template v-else>
           <TableRow>
-            <TableCell
-              :col-span="columns.length"
-              class="h-24 text-center"
-            >
+            <TableCell :col-span="columns.length" class="h-24 text-center">
               No results.
             </TableCell>
           </TableRow>
