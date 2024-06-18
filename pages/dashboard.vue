@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// import { Icon } from '@iconify/vue'
+import { Icon } from '@iconify/vue'
 import type { UserListRecordsRoutes } from '~/types/dashboard.type'
 import type { Database } from '~/types/supabase.type'
 // import type {} from '@/types/userTable.type'
@@ -7,7 +7,7 @@ import type { Database } from '~/types/supabase.type'
 
 const supabase = useSupabaseClient<Database>()
 
-const { data } = await useAsyncData('topRecords', async () => {
+const { data, refresh, status } = await useAsyncData('topRecords', async () => {
   const { data, error } = await supabase
     .from('users')
     .select('*,top_records (*,routes(*))')
@@ -24,9 +24,20 @@ watchEffect(() => {})
 <template>
   <div class="page-container">
     <div class="page-card gap-4">
-      <h1>Dashboard</h1>
-      <div v-if="data">
+      <div class="flex flex-row justify-between">
+        <h1>Dashboard</h1>
+        <Button size="icon" variant="ghost" @click="refresh">
+          <Icon icon="radix-icons:reload" class="h-6 w-6" />
+        </Button>
+      </div>
+      <div v-if="data && status !== 'pending'">
         <StatisticsOne :data="data" />
+      </div>
+      <div
+        v-else
+        class="flex min-h-[40vh] flex-col items-center justify-center"
+      >
+        <Spinner />
       </div>
     </div>
   </div>

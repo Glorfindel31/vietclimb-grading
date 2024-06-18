@@ -2,6 +2,7 @@
 
 - [x] add the video button on user page
 - [x] index and register margin on mobile
+- [ ] add the privacy setting to hide the name
 - [ ] add utilization rules and privacy
 - [ ] hide user that don't want to be show
 - [ ] show users profile to others

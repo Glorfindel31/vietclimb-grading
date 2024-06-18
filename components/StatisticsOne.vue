@@ -27,6 +27,11 @@ const topToPoints = (records: TopRecordsRoutes[]) => {
   })
   return points
 }
+
+const hideData = (input: string | null) => {
+  if (!input) return '****'
+  return input.toString().replace(/./g, '*')
+}
 </script>
 
 <template>
@@ -42,8 +47,18 @@ const topToPoints = (records: TopRecordsRoutes[]) => {
     </TableHeader>
     <TableBody>
       <TableRow v-for="user in props.data" :key="user.id">
-        <TableCell>{{ user.displayed_name }}</TableCell>
-        <TableCell>{{ user.top_records.length }}</TableCell>
+        <TableCell v-if="user.show_name === true">
+          {{ user.displayed_name }}
+        </TableCell>
+        <TableCell v-else>{{ hideData(user.displayed_name) }}</TableCell>
+
+        <TableCell v-if="user.show_tops === true">
+          {{ user.top_records.length }}
+        </TableCell>
+        <TableCell v-else>
+          {{ hideData(user.top_records.length.toString()) }}
+        </TableCell>
+
         <TableCell>{{ higherGrade(user.top_records) }}</TableCell>
         <TableCell>{{ topToPoints(user.top_records) }}</TableCell>
       </TableRow>
