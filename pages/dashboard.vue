@@ -9,11 +9,18 @@ import type {
 import type { Database } from '~/types/supabase.type'
 
 type UserTablesType = ReturnType<typeof getUsersTablesStats>
+type TopsTableChartType = ReturnType<typeof getRoutesStats>
+interface GroupedRoutes {
+  [key: string]: {
+    record: TopRecordsRoutes['routes']
+    count: number
+  }
+}
 
 const supabase = useSupabaseClient<Database>()
 const session = useSupabaseSession()
 
-const topStats = ref<TopRecordsRoutes[]>([])
+const topStats = ref<TopsTableChartType>()
 const usersTablesStats = ref<UserTablesType>()
 
 const getUsersTablesStats = (users: UserListRecordsRoutes[]) => {
@@ -45,6 +52,39 @@ const getUsersTablesStats = (users: UserListRecordsRoutes[]) => {
     }
   })
   return usersTablesStats
+}
+
+const getRoutesStats = (top_record: TopRecordsRoutes[]) => {
+  if (!top_record) return []
+  const grades: Record<number, number> = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+    7: 0,
+  }
+  const groupedRoutes = top_record.reduce<GroupedRoutes>(
+    (acc, route: TopRecordsRoutes) => {
+      const key: string = route.URID_linked
+      if (!acc[key]) {
+        acc[key] = { record: route.routes, count: 0 }
+      }
+      acc[key].count++
+      return acc
+    },
+    {},
+  )
+  const topFive = Object.values(groupedRoutes)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5)
+
+  top_record.forEach(route => {
+    route.routes?.route_grade ? (grades[route.routes.route_grade] += 1) : 0
+  })
+
+  return { grades: grades, topFive: topFive }
 }
 
 const { data, refresh, status } = await useAsyncData(
@@ -86,7 +126,7 @@ const { data, refresh, status } = await useAsyncData(
     }) => {
       return {
         users: getUsersTablesStats(users),
-        tops: tops,
+        tops: getRoutesStats(tops),
       }
     },
   },
@@ -116,7 +156,33 @@ watchEffect(() => {
           </Button>
         </div>
       </div>
-      <div v-if="data && status !== 'pending'"></div>
+      <div v-if="data && status !== 'pending'">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Tops</TableCell>
+              <TableCell>Points</TableCell>
+              <TableCell>Height</TableCell>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow v-for="(user, index) in usersTablesStats" :key="index">
+              <TableCell> {{ user?.displayed_name }} </TableCell>
+              <TableCell>{{ user?.tops }} </TableCell>
+              <TableCell>{{ user?.points }} </TableCell>
+              <TableCell>{{ user?.height }} </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+        <!-- <BarChart
+          :data="topStats?.grades"
+          :categories="['grades']"
+          :rounded-corners="5"
+          :show-legend="false"
+          index="grades"
+        /> -->
+      </div>
       <div
         v-else
         class="flex min-h-[40vh] flex-col items-center justify-center"
