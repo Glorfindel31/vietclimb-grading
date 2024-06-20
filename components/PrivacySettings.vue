@@ -26,10 +26,16 @@ const privacySetting = toTypedSchema(
     showArms: z.boolean().default(true),
     showRank: z.boolean().default(true),
     showTops: z.boolean().default(true),
+    showName: z.boolean().default(true),
   }),
 )
 
 const privacyForm = [
+  {
+    name: 'showName',
+    label: 'Name Visibility',
+    description: 'Your name will be displayed to other users.',
+  },
   {
     name: 'showBirthDate',
     label: 'BirthDate Visibility',
@@ -61,6 +67,7 @@ const { handleSubmit: handleSubmitPrivacy, setFieldValue } = useForm({
   validationSchema: privacySetting,
 })
 
+setFieldValue('showName', props.userData?.show_name ?? true)
 setFieldValue('showBirthDate', props.userData?.show_birthdate ?? true)
 setFieldValue('showHeight', props.userData?.show_height ?? true)
 setFieldValue('showArms', props.userData?.show_arms ?? true)
@@ -75,7 +82,8 @@ const onSubmitPrivacy = handleSubmitPrivacy(async values => {
     values.showHeight === props.userData?.show_height &&
     values.showArms === props.userData?.show_arms &&
     values.showRank === props.userData?.show_rank &&
-    values.showTops === props.userData?.show_tops
+    values.showTops === props.userData?.show_tops &&
+    values.showName === props.userData?.show_name
   ) {
     toast({
       title: 'You have no changes to save  🤷‍♂️',
@@ -93,6 +101,7 @@ const onSubmitPrivacy = handleSubmitPrivacy(async values => {
       show_arms: values.showArms,
       show_rank: values.showRank,
       show_tops: values.showTops,
+      show_name: values.showName,
     })
     .eq('UID', props.userData?.UID)
     .select()
@@ -111,13 +120,13 @@ const onSubmitPrivacy = handleSubmitPrivacy(async values => {
     const now = new Date()
     toast({
       title: "Your profile wasn't updated ❌",
-      description: `An error occurred at 
+      description: `An error occurred at
 								${now.getHours()}:
 								${now.getMinutes()}:
-								${now.getSeconds()} - 
+								${now.getSeconds()} -
 								${now.getDate()}:
 								${now.getMonth() + 1}:
-								${now.getFullYear()} 
+								${now.getFullYear()}
 								Error message: ${error}`,
       variant: 'destructive',
     })

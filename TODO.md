@@ -2,17 +2,23 @@
 
 - [x] add the video button on user page
 - [x] index and register margin on mobile
-- [ ] add the privacy setting to hide the name
+- [x] add the privacy setting to hide the name
 - [ ] add utilization rules and privacy
-- [ ] hide user that don't want to be show
+- [x] hide user that don't want to be show
 - [ ] show users profile to others
 - [ ] reforge the public data sheet
 
-## Dashboard
+## What data should be on dashboard
 
-- [ ] add filters and ranks
-- [ ] add general gym level
-- [ ] add route base statistics
+- [x] ranking of the user by number of top
+- [x] ranking by number of points, grade being the numbers of points
+- [x] ranking by heights
+
+# Statistics about Routes
+
+- [ ] chart about level the most topped
+- [ ] top 5 of the routes the most topped after level 3
+- [ ] chart of the mode of the gym's grade
 
 ## Potential Issues
 
