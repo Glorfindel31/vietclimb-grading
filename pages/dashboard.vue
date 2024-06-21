@@ -10,6 +10,7 @@ import type { Database } from '~/types/supabase.type'
 
 type UserTablesType = ReturnType<typeof getUsersTablesStats>
 type TopsTableChartType = ReturnType<typeof getRoutesStats>
+
 interface GroupedRoutes {
   [key: string]: {
     record: TopRecordsRoutes['routes']
@@ -20,10 +21,8 @@ interface GroupedRoutes {
 const supabase = useSupabaseClient<Database>()
 const session = useSupabaseSession()
 
-const topStats = ref<TopsTableChartType>()
-const usersTablesStats = ref<UserTablesType>()
-
 const getUsersTablesStats = (users: UserListRecordsRoutes[]) => {
+  if (!users) return
   const getPoints = (top_records: TopRecordsRoutes[]) => {
     const pointsPerRoute = top_records.reduce(
       (acc, record: TopRecordsRoutes) => {
@@ -55,7 +54,7 @@ const getUsersTablesStats = (users: UserListRecordsRoutes[]) => {
 }
 
 const getRoutesStats = (top_record: TopRecordsRoutes[]) => {
-  if (!top_record) return []
+  if (!top_record) return
   const grades: Record<number, number> = {
     1: 0,
     2: 0,
@@ -65,6 +64,7 @@ const getRoutesStats = (top_record: TopRecordsRoutes[]) => {
     6: 0,
     7: 0,
   }
+
   const groupedRoutes = top_record.reduce<GroupedRoutes>(
     (acc, route: TopRecordsRoutes) => {
       const key: string = route.URID_linked
@@ -84,7 +84,14 @@ const getRoutesStats = (top_record: TopRecordsRoutes[]) => {
     route.routes?.route_grade ? (grades[route.routes.route_grade] += 1) : 0
   })
 
-  return { grades: grades, topFive: topFive }
+  const gradeMutation = Object.entries(grades).map(([gradeKey, gradeValue]) => {
+    return {
+      name: parseInt(gradeKey),
+      value: gradeValue,
+    }
+  })
+
+  return { grades: gradeMutation, topFive: topFive }
 }
 
 const { data, refresh, status } = await useAsyncData(
@@ -125,19 +132,12 @@ const { data, refresh, status } = await useAsyncData(
       tops: TopRecordsRoutes[]
     }) => {
       return {
-        users: getUsersTablesStats(users),
-        tops: getRoutesStats(tops),
+        users: getUsersTablesStats(users) as UserTablesType,
+        tops: getRoutesStats(tops) as TopsTableChartType,
       }
     },
   },
 )
-
-watchEffect(() => {
-  if (data?.value) {
-    topStats.value = data.value.tops
-    usersTablesStats.value = data.value.users
-  }
-})
 </script>
 
 <template>
@@ -167,7 +167,7 @@ watchEffect(() => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow v-for="(user, index) in usersTablesStats" :key="index">
+            <TableRow v-for="(user, index) in data.users" :key="index">
               <TableCell> {{ user?.displayed_name }} </TableCell>
               <TableCell>{{ user?.tops }} </TableCell>
               <TableCell>{{ user?.points }} </TableCell>
@@ -175,13 +175,46 @@ watchEffect(() => {
             </TableRow>
           </TableBody>
         </Table>
-        <!-- <BarChart
-          :data="topStats?.grades"
-          :categories="['grades']"
-          :rounded-corners="5"
-          :show-legend="false"
-          index="grades"
-        /> -->
+        <div v-if="data?.tops?.grades">
+          <BarChart
+            :data="data?.tops?.grades"
+            :categories="['value']"
+            :rounded-corners="5"
+            :show-legend="false"
+            :show-grid-line="false"
+            index="value"
+          />
+        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableCell>Top 5 of the most repeated routes</TableCell>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow
+              v-for="(record, index) in data.tops?.topFive"
+              :key="index"
+            >
+              <TableCell>
+                <div class="flex flex-col">
+                  <span>{{ record.record.zone_name }}</span>
+                  <span>{{ record.record.route_color }}</span>
+                  <span>{{ record.record.route_setter }}</span>
+                </div>
+              </TableCell>
+              <TableCell>
+                <div class="flex flex-col">
+                  <span>grade: {{ record.record.route_grade }}</span>
+                  <span>date: {{ record.record.route_date }}</span>
+                </div>
+              </TableCell>
+              <TableCell>
+                {{ record.count }}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </div>
       <div
         v-else

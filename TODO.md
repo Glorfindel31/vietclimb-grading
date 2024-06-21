@@ -16,9 +16,9 @@
 
 # Statistics about Routes
 
-- [ ] chart about level the most topped
-- [ ] top 5 of the routes the most topped after level 3
-- [ ] chart of the mode of the gym's grade
+- [x] chart about level the most topped
+- [x] top 5 of the routes the most topped after level 3
+- [x] chart of the mode of the gym's grade
 
 ## Potential Issues
 

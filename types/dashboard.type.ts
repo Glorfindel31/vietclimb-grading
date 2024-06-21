@@ -10,7 +10,3 @@ export interface TopRecordsRoutes extends TopRecords {
 export interface UserListRecordsRoutes extends UserList {
   top_records: TopRecordsRoutes[]
 }
-
-export interface TopRecordsRoutes extends TopRecords {
-  routes: Routes
-}
