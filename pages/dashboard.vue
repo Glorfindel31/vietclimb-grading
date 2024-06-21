@@ -5,11 +5,12 @@ import type {
   UserListRecordsRoutes,
   TopRecordsRoutes,
 } from '~/types/dashboard.type'
-
+import { columns } from '~/components/dashboardRankingTable/columns'
 import type { Database } from '~/types/supabase.type'
+import { formatDateString } from '~/helpers/helpFunctions'
 
-type UserTablesType = ReturnType<typeof getUsersTablesStats>
-type TopsTableChartType = ReturnType<typeof getRoutesStats>
+export type UserTablesType = ReturnType<typeof getUsersTablesStats>
+export type TopsTableChartType = ReturnType<typeof getRoutesStats>
 
 interface GroupedRoutes {
   [key: string]: {
@@ -132,7 +133,7 @@ const { data, refresh, status } = await useAsyncData(
       tops: TopRecordsRoutes[]
     }) => {
       return {
-        users: getUsersTablesStats(users) as UserTablesType,
+        users: getUsersTablesStats(users) as UserTablesType[],
         tops: getRoutesStats(tops) as TopsTableChartType,
       }
     },
@@ -156,65 +157,91 @@ const { data, refresh, status } = await useAsyncData(
           </Button>
         </div>
       </div>
-      <div v-if="data && status !== 'pending'">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Tops</TableCell>
-              <TableCell>Points</TableCell>
-              <TableCell>Height</TableCell>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow v-for="(user, index) in data.users" :key="index">
-              <TableCell> {{ user?.displayed_name }} </TableCell>
-              <TableCell>{{ user?.tops }} </TableCell>
-              <TableCell>{{ user?.points }} </TableCell>
-              <TableCell>{{ user?.height }} </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-        <div v-if="data?.tops?.grades">
-          <BarChart
-            :data="data?.tops?.grades"
-            :categories="['value']"
-            :rounded-corners="5"
-            :show-legend="false"
-            :show-grid-line="false"
-            index="value"
-          />
-        </div>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableCell>Top 5 of the most repeated routes</TableCell>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow
-              v-for="(record, index) in data.tops?.topFive"
-              :key="index"
-            >
-              <TableCell>
-                <div class="flex flex-col">
-                  <span>{{ record.record.zone_name }}</span>
-                  <span>{{ record.record.route_color }}</span>
-                  <span>{{ record.record.route_setter }}</span>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div class="flex flex-col">
-                  <span>grade: {{ record.record.route_grade }}</span>
-                  <span>date: {{ record.record.route_date }}</span>
-                </div>
-              </TableCell>
-              <TableCell>
-                {{ record.count }}
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+      <div v-if="data && status !== 'pending'" class="page-card gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle> Ranking </CardTitle>
+            <CardDescription>Check out your rank</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <DashboardRankingTableDataTable
+              :columns="columns"
+              :data="data.users"
+            />
+          </CardContent>
+          <CardFooter>Something to say here</CardFooter>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle> Ranking </CardTitle>
+            <CardDescription>Check out your rank</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div v-if="data?.tops?.grades">
+              <BarChart
+                :data="data?.tops?.grades"
+                :categories="['value']"
+                :rounded-corners="5"
+                :show-legend="false"
+                :show-grid-line="false"
+                index="name"
+              />
+            </div>
+          </CardContent>
+          <CardFooter>Something to say here</CardFooter>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle> Ranking </CardTitle>
+            <CardDescription>Check out your rank</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableCell>Top 5 of the most repeated routes</TableCell>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow
+                  v-for="(record, index) in data.tops?.topFive"
+                  :key="index"
+                >
+                  <TableCell>
+                    <div class="flex flex-col gap-1">
+                      <span>{{ record.record.zone_name }}</span>
+                      <span
+                        class="w-fit px-2 py-1 text-center text-xs uppercase"
+                        :class="`bg-${record?.record?.route_color?.toString()} text-${record?.record?.route_color?.toString()}-foreground rounded-full`"
+                        >{{ record.record.route_color }}</span
+                      >
+                      <span class="text-xs capitalize italic"
+                        >Set by: {{ record.record.route_setter }}</span
+                      >
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div class="flex flex-col gap-1">
+                      <span>grade: {{ record.record.route_grade }}</span>
+                      <span
+                        >Date:
+                        {{
+                          record?.record?.route_date
+                            ? formatDateString(record?.record?.route_date)
+                            : 'no date'
+                        }}</span
+                      >
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {{ record.count }}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </CardContent>
+          <CardFooter>Something to say here</CardFooter>
+        </Card>
       </div>
       <div
         v-else
