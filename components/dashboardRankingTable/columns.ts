@@ -2,7 +2,7 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 import { ArrowUpDown } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
-import type { UserTablesType } from '~/pages/dashboard.vue'
+import type { UserTablesType } from '~/pages/dashboard/index.vue'
 
 export const columns: ColumnDef<UserTablesType>[] = [
   {

@@ -5,7 +5,7 @@
 - [x] add the privacy setting to hide the name
 - [ ] add utilization rules and privacy
 - [x] hide user that don't want to be show
-- [ ] show users profile to others
+- [ ] show users profil to others
 - [ ] reforge the public data sheet
 
 ## What data should be on dashboard

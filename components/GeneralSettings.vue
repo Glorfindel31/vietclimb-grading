@@ -93,7 +93,7 @@ const onSubmitGeneral = handleSubmitGeneral(async values => {
     isUpdating.value = false
     const now = new Date()
     toast({
-      title: 'Your profile has been updated ✅',
+      title: 'Your profil has been updated ✅',
       description: `updated at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} - ${now.getDate()}:${now.getMonth() + 1}:${now.getFullYear()}`,
     })
   } else {
@@ -102,7 +102,7 @@ const onSubmitGeneral = handleSubmitGeneral(async values => {
     isUpdating.value = false
     const now = new Date()
     toast({
-      title: "Your profile wasn't updated ❌",
+      title: "Your profil wasn't updated ❌",
       description: `An error occurred at 
 								${now.getHours()}:
 								${now.getMinutes()}:
