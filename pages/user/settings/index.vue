@@ -33,14 +33,16 @@ if (data.value) {
 <template>
   <div class="page-container">
     <div class="page-card">
-      <div class="flex w-full flex-row items-center justify-between py-8">
-        <h1 class="text-2xl">Configuration and Settings</h1>
-        <Button size="icon" variant="ghost" as-child>
-          <NuxtLink to="/user">
-            <Icon icon="radix-icons:chevron-left" class="h-6 w-6" />
-          </NuxtLink>
-        </Button>
-      </div>
+      <PageTopWrap>
+        <PageTopTitle>Configuration and Settings</PageTopTitle>
+        <PageTopBtnWraps>
+          <Button size="icon" variant="ghost" as-child>
+            <NuxtLink to="/user">
+              <Icon icon="radix-icons:chevron-left" class="h-6 w-6" />
+            </NuxtLink>
+          </Button>
+        </PageTopBtnWraps>
+      </PageTopWrap>
       <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <GeneralSettings :user-data="userData" :refresh="refresh" />
         <PrivacySettings :user-data="userData" :refresh="refresh" />

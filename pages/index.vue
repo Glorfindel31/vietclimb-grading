@@ -35,7 +35,7 @@ const index = getRandomImage()
           your progress, and rate your favorite routes.
         </p>
         <p>
-          View charts in your profil that show the grades you've completed most
+          View charts in your profile that show the grades you've completed most
           frequently and other climbing stats.
         </p>
         <p>
@@ -48,7 +48,7 @@ const index = getRandomImage()
               <NuxtLink to="/public">Route List</NuxtLink>
             </Button>
             <Button v-if="session" as-child>
-              <NuxtLink to="/user"> Your profil </NuxtLink>
+              <NuxtLink to="/user"> Your Profile </NuxtLink>
             </Button>
             <Button v-else as-child>
               <NuxtLink to="/register"> Register </NuxtLink>

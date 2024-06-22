@@ -98,43 +98,36 @@ const handleRemoveRecord = async (TUID: string) => {
 
 <template>
   <div v-if="userData" class="page-container">
-    <div class="page-card sm:rounded-lg sm:border sm:shadow-lg">
-      <div class="w-full py-6">
-        <div
-          class="flex w-full flex-row items-center justify-between border-b py-2"
+    <div class="page-card">
+      <PageTopWrap>
+        <PageTopTitle
+          subtitle="Log your accents, rate the routes and give a rate to the route you
+              climbed."
         >
-          <h1 class="text-3xl">
-            Welcome back
-            <span class="capitalize italic text-primary">
-              {{ userData?.displayed_name ?? '' }}
-            </span>
-          </h1>
-          <div class="flex flex-row gap-2">
-            <Button size="icon" variant="ghost" as-child>
-              <NuxtLink to="/user/statistics">
-                <Icon icon="radix-icons:bar-chart" class="h-6 w-6" />
-              </NuxtLink>
-            </Button>
-            <Button size="icon" variant="ghost" as-child>
-              <NuxtLink to="/user/settings">
-                <Icon icon="radix-icons:gear" class="h-6 w-6" />
-              </NuxtLink>
-            </Button>
-          </div>
-        </div>
-        <p class="text-sm italic">
-          Log your accents, rate the routes and give a rate to the route you
-          climbed.
-        </p>
-      </div>
-      <div class="flex flex-row flex-wrap justify-evenly">
-        <UserRoutesRegistration
-          :route-tabs="routeTabs"
-          :user-data="userData"
-          :refresh="refresh"
-          :handle-remove-record="handleRemoveRecord"
-        />
-      </div>
+          Welcome back
+          <span class="capitalize italic text-primary">
+            {{ userData?.displayed_name ?? '' }}
+          </span>
+        </PageTopTitle>
+        <PageTopBtnWraps>
+          <Button size="icon" variant="ghost" as-child>
+            <NuxtLink to="/user/statistics">
+              <Icon icon="radix-icons:bar-chart" class="h-6 w-6" />
+            </NuxtLink>
+          </Button>
+          <Button size="icon" variant="ghost" as-child>
+            <NuxtLink to="/user/settings">
+              <Icon icon="radix-icons:gear" class="h-6 w-6" />
+            </NuxtLink>
+          </Button>
+        </PageTopBtnWraps>
+      </PageTopWrap>
+      <UserRoutesRegistration
+        :route-tabs="routeTabs"
+        :user-data="userData"
+        :refresh="refresh"
+        :handle-remove-record="handleRemoveRecord"
+      />
     </div>
   </div>
   <div v-else>

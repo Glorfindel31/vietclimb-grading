@@ -66,9 +66,9 @@ const { data, refresh, status } = await useAsyncData(
 <template>
   <div class="page-container">
     <div class="page-card gap-4 py-8">
-      <div class="flex flex-row justify-between p-2">
-        <h1>Dashboard</h1>
-        <div class="flex flex-row gap-2">
+      <PageTopWrap>
+        <PageTopTitle> Dashboard </PageTopTitle>
+        <PageTopBtnWraps>
           <Button v-if="session?.user" size="icon" variant="ghost" as-child>
             <NuxtLink to="/user">
               <Icon icon="radix-icons:person" class="h-6 w-6" />
@@ -77,9 +77,11 @@ const { data, refresh, status } = await useAsyncData(
           <Button size="icon" variant="ghost" @click="refresh">
             <Icon icon="radix-icons:reload" class="h-6 w-6" />
           </Button>
-        </div>
-      </div>
-      <div class="page-card gap-4">
+        </PageTopBtnWraps>
+      </PageTopWrap>
+      <div
+        class="grid grid-cols-1 grid-rows-4 gap-4 md:grid-cols-2 md:grid-rows-2"
+      >
         <DashboardUsersRanking v-if="data" :data="data" :status="status" />
         <DashboardUsersRankingBySize
           v-if="data"

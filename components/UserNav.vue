@@ -31,7 +31,7 @@ const mobileClass = cn(
   <div :class="mobileClass">
     <li>
       <Button as-child :class="buttonClass">
-        <NuxtLink to="/user"> profil </NuxtLink>
+        <NuxtLink to="/user"> Profile </NuxtLink>
       </Button>
     </li>
     <li>

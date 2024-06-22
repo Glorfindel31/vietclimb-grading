@@ -42,7 +42,7 @@ const computeMode = (numbers: Array<number>): number => {
   <Tabs
     v-if="props.userData && props.routeTabs"
     default-value="Moon Korner"
-    class="min-w-[300px] max-w-md"
+    class="min-w-[300px]"
   >
     <TabsList class="m-0 grid w-full grid-cols-9">
       <TabsTrigger
@@ -146,9 +146,9 @@ const computeMode = (numbers: Array<number>): number => {
                   variant="outline"
                   as-child
                 >
-                  <NuxtLink :to="row.route_link" target="_blank">
+                  <a :src="row.route_link" target="_blank" rel="noreferrer">
                     <Video class="h-6 w-6" />
-                  </NuxtLink>
+                  </a>
                 </Button>
                 <Button v-else disabled size="icon" variant="outline">
                   <Video class="h-6 w-6" />

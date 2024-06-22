@@ -33,7 +33,7 @@ const onSubmit = form.handleSubmit(async values => {
       form.resetForm()
       toast({
         title: 'Welcome Back!',
-        description: `Bring you back to your profil page.`,
+        description: `Bring you back to your profile page.`,
       })
       navigateTo('/user')
     }

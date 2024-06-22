@@ -17,17 +17,14 @@ const props = defineProps({
 })
 
 const sizeCategories = [
-  { value: 'N/A', label: 'N/A' },
-  { value: '<130', label: '< 130' },
-  { value: '131-140', label: '131/140' },
-  { value: '141-150', label: '141/150' },
-  { value: '151-160', label: '151/160' },
-  { value: '161-170', label: '161/170' },
-  { value: '171-180', label: '171/180' },
-  { value: '181-190', label: '181/190' },
-  { value: '191-200', label: '191/200' },
-  { value: '201-210', label: '201/210' },
-  { value: '>210', label: '> 220' },
+  { value: 'N/A', label: 'N / A' },
+  { value: '<140', label: '< 140' },
+  { value: '141-150', label: '141 to 150' },
+  { value: '151-160', label: '151 to 160' },
+  { value: '161-170', label: '161 to 170' },
+  { value: '171-180', label: '171 to 180' },
+  { value: '181-190', label: '181 to 190' },
+  { value: '>190', label: '> 190' },
 ]
 
 const filteredData = (
@@ -50,18 +47,18 @@ const filteredData = (
     return (data as UserTablesType[]).filter(
       user => hasHeightProperty(user) && user.height === 'N/A',
     )
-  } else if (selectedSize === '<130') {
+  } else if (selectedSize === '<140') {
     return (data as UserTablesType[]).filter(
       user =>
         hasHeightProperty(user) &&
         Number(user.height) >= 0 &&
-        Number(user.height) <= 130,
+        Number(user.height) <= 140,
     )
-  } else if (selectedSize === '>210') {
+  } else if (selectedSize === '>190') {
     return (data as UserTablesType[]).filter(
       user =>
         hasHeightProperty(user) &&
-        Number(user.height) >= 210 &&
+        Number(user.height) >= 190 &&
         Number(user.height) <= 300,
     )
   } else {
@@ -78,17 +75,21 @@ const filteredData = (
 <template>
   <Card>
     <CardHeader>
-      <CardTitle> Ranking </CardTitle>
-      <CardDescription>Check out your rank</CardDescription>
+      <CardTitle>Ranking by height</CardTitle>
+      <CardDescription>
+        Click on the tab from the height you would like to see
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <Tabs default-value="N/A">
-        <TabsList class="flex w-fit flex-row flex-wrap">
+        <TabsList
+          class="flex w-fit flex-row flex-wrap justify-between rounded-lg"
+        >
           <TabsTrigger
             v-for="category in sizeCategories"
             :key="category.value"
             :value="category.value"
-            class="border-1 hover:border-1 border-secondary hover:border-primary"
+            class="w-auto p-2"
           >
             {{ category.label }}
           </TabsTrigger>

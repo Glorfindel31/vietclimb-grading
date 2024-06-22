@@ -110,7 +110,7 @@ const onSubmitPrivacy = handleSubmitPrivacy(async values => {
     isUpdating.value = false
     const now = new Date()
     toast({
-      title: 'Your profil has been updated ✅',
+      title: 'Your profile has been updated ✅',
       description: `updated at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} - ${now.getDate()}:${now.getMonth() + 1}:${now.getFullYear()}`,
     })
   } else {
@@ -119,7 +119,7 @@ const onSubmitPrivacy = handleSubmitPrivacy(async values => {
     isUpdating.value = false
     const now = new Date()
     toast({
-      title: "Your profil wasn't updated ❌",
+      title: "Your profile wasn't updated ❌",
       description: `An error occurred at
 								${now.getHours()}:
 								${now.getMinutes()}:
