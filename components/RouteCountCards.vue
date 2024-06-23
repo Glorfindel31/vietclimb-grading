@@ -36,28 +36,30 @@ const props = defineProps({
     <Card>
       <CardHeader>
         <CardTitle>Route Total</CardTitle>
-        <CardDescription>Today:{{ formatDate(currentDate) }}</CardDescription>
+        <CardDescription
+          >Irreversible{{ formatDate(currentDate) }}</CardDescription
+        >
       </CardHeader>
       <CardContent>{{ props.routeNum }} Routes</CardContent>
     </Card>
     <Card>
       <CardHeader>
         <CardTitle>Easy Routes</CardTitle>
-        <CardDescription>From 1 to 3</CardDescription>
+        <CardDescription>Irreversible</CardDescription>
       </CardHeader>
       <CardContent> {{ props.easyRouteCount }} Routes</CardContent>
     </Card>
     <Card>
       <CardHeader>
         <CardTitle>Normal Routes</CardTitle>
-        <CardDescription>From 4 to 5</CardDescription>
+        <CardDescription>Irreversible</CardDescription>
       </CardHeader>
       <CardContent> {{ props.normalRouteCount }} Routes</CardContent>
     </Card>
     <Card>
       <CardHeader>
         <CardTitle>Hard Routes</CardTitle>
-        <CardDescription>From 6 to 7</CardDescription>
+        <CardDescription>Irreversible</CardDescription>
       </CardHeader>
       <CardContent> {{ props.hardRouteCount }} Routes</CardContent>
     </Card>

@@ -17,7 +17,7 @@ const props = defineProps({
   <Card>
     <CardHeader>
       <CardTitle>Level Repetition</CardTitle>
-      <CardDescription>From grade 1 to 7</CardDescription>
+      <CardDescription>Irreversible</CardDescription>
     </CardHeader>
     <CardContent v-if="props.data?.tops?.grades && props.status !== 'pending'">
       <div v-if="props.data?.tops?.grades">

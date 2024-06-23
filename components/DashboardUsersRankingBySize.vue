@@ -76,9 +76,7 @@ const filteredData = (
   <Card>
     <CardHeader>
       <CardTitle>Ranking by height</CardTitle>
-      <CardDescription>
-        Click on the tab from the height you would like to see
-      </CardDescription>
+      <CardDescription>Irreversible</CardDescription>
     </CardHeader>
     <CardContent>
       <Tabs default-value="N/A">

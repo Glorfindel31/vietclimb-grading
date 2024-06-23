@@ -25,7 +25,7 @@ const toBarData = (data: UserWithTopRecordsAndRoutes) => {
   <Card>
     <CardHeader>
       <CardTitle>Grade chart</CardTitle>
-      <CardDescription hidden>Grade chart</CardDescription>
+      <CardDescription hidden>Irreversible</CardDescription>
     </CardHeader>
     <CardContent class="space-y-2">
       <BarChart

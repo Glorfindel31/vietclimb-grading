@@ -18,7 +18,7 @@ const props = defineProps({
   <Card>
     <CardHeader>
       <CardTitle>Routes Top 5</CardTitle>
-      <CardDescription>Here are the 5 most repeated routes</CardDescription>
+      <CardDescription>Irreversible</CardDescription>
     </CardHeader>
     <CardContent v-if="props.data?.tops?.topFive && props.status !== 'pending'">
       <Table>

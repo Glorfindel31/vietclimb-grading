@@ -21,7 +21,7 @@ const formatDate = (isoDateString: Date) => {
   <Card>
     <CardHeader>
       <CardTitle>YourTops</CardTitle>
-      <CardDescription> Here is the list of all your tops. </CardDescription>
+      <CardDescription>Irreversible</CardDescription>
     </CardHeader>
     <CardContent class="space-y-2">
       <Table class="w-full">

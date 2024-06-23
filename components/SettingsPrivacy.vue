@@ -135,14 +135,14 @@ const onSubmitPrivacy = handleSubmitPrivacy(async values => {
 </script>
 
 <template>
-  <div
-    class="flex max-w-[1400px] flex-col gap-4 rounded-lg border bg-background p-8"
-  >
-    <div class="flex flex-col">
-      <h3 class="m-0 p-0 pb-8 font-thin">Privacy Settings</h3>
-
+  <Card>
+    <CardHeader>
+      <CardTitle>Privacy Settings</CardTitle>
+      <CardDescription>Irreversible</CardDescription>
+    </CardHeader>
+    <CardContent>
       <form
-        class="flex flex-col gap-4 lg:justify-between lg:gap-2"
+        class="flex h-full flex-col justify-between gap-4"
         @submit="onSubmitPrivacy"
       >
         <FormField
@@ -167,14 +167,11 @@ const onSubmitPrivacy = handleSubmitPrivacy(async values => {
             </FormControl>
           </FormItem>
         </FormField>
-
         <Button type="submit" class="w-24" :disabled="isUpdating">
           <Loader2 v-if="isUpdating" class="mr-2 h-4 w-4 animate-spin" />
           Save
         </Button>
       </form>
-    </div>
-  </div>
+    </CardContent>
+  </Card>
 </template>
-
-<style scoped></style>

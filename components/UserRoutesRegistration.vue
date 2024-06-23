@@ -61,9 +61,7 @@ const computeMode = (numbers: Array<number>): number => {
       <Card class="pb-10">
         <CardHeader>
           <CardTitle>{{ tab.zone }}</CardTitle>
-          <CardDescription>
-            {{ tab.cardDescription }}
-          </CardDescription>
+          <CardDescription> Irreversible </CardDescription>
         </CardHeader>
         <Table class="w-full">
           <TableHeader>

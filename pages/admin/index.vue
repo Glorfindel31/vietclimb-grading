@@ -94,7 +94,6 @@ const dataChanges = () => {
     .map(route => [route.id])
     .flat()
 
-  // oldData is = to allData.supabaseData URID's if allData.supabaseData.id is inclued in idArrays
   oldData.value =
     allData.value?.supabaseData
       .filter(route => idArrays.value.includes(route.id))
@@ -314,5 +313,3 @@ const refreshHandler = (e: Event) => {
     </div>
   </div>
 </template>
-
-<style scoped></style>

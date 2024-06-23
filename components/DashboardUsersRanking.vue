@@ -18,7 +18,7 @@ const props = defineProps({
   <Card>
     <CardHeader>
       <CardTitle> Ranking </CardTitle>
-      <CardDescription>Check out your rank</CardDescription>
+      <CardDescription>Irreversible</CardDescription>
     </CardHeader>
     <CardContent v-if="props.data.users && props.status !== 'pending'">
       <DashboardRankingTableDataTable

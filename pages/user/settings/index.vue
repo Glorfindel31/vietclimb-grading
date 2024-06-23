@@ -4,7 +4,6 @@ import type { Tables } from '~/types/supabase.type'
 
 definePageMeta({
   middleware: ['auth'],
-  //ormiddleware:'auth'
 })
 
 type UserDataType = Tables<'users'>
@@ -43,12 +42,13 @@ if (data.value) {
           </Button>
         </PageTopBtnWraps>
       </PageTopWrap>
-      <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <GeneralSettings :user-data="userData" :refresh="refresh" />
-        <PrivacySettings :user-data="userData" :refresh="refresh" />
+      <div class="flex flex-col gap-4">
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <SettingsGeneral :user-data="userData" :refresh="refresh" />
+          <SettingsPrivacy :user-data="userData" :refresh="refresh" />
+        </div>
+        <SettingsDanger />
       </div>
     </div>
   </div>
 </template>
-
-<style scoped></style>
