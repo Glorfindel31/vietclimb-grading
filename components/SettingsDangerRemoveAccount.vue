@@ -3,6 +3,16 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
+import { useToast } from '@/components/ui/toast/use-toast'
+
+import type { Database } from '~/types/supabase.type'
+
+const { toast } = useToast()
+const isLoading = ref<boolean>(false)
+
+const supabase = useSupabaseClient<Database>()
+const session = useSupabaseSession()
+
 const formSchema = toTypedSchema(
   z.object({
     confirmation: z.literal('DELETE ACCOUNT'),
@@ -13,8 +23,33 @@ const form = useForm({
   validationSchema: formSchema,
 })
 
-const onSubmit = form.handleSubmit(values => {
-  console.warn('Form submitted!', values)
+const onSubmit = form.handleSubmit(async () => {
+  if (session.value) {
+    isLoading.value = true
+    const { error: errorDB } = await supabase
+      .from('users')
+      .delete()
+      .eq('UID', session.value?.user.id)
+      .select('*')
+
+    const { error: errorLogout } = await supabase.auth.signOut()
+
+    if (errorDB || errorLogout) {
+      toast({
+        title: 'Account not removed',
+        description: 'There was an error removing your account.',
+      })
+      console.error(errorDB, errorLogout)
+      isLoading.value = false
+    } else {
+      isLoading.value = false
+      navigateTo('/')
+      toast({
+        title: 'Account removed',
+        description: 'Your account has been removed.',
+      })
+    }
+  }
 })
 </script>
 
@@ -66,7 +101,12 @@ const onSubmit = form.handleSubmit(values => {
               field.
             </DialogDescription>
             <DialogFooter>
-              <Button type="submit" variant="destructive">Confirm</Button>
+              <Button
+                type="submit"
+                variant="destructive"
+                :class="isLoading ? 'hidden' : 'block'"
+                >Confirm</Button
+              >
             </DialogFooter>
           </form>
         </DialogContent>
