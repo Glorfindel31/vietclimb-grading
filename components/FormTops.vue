@@ -94,27 +94,33 @@ const onSubmit = handleSubmit(async values => {
 
 <template>
   <ClientOnly>
-    <form class="flex flex-col justify-center gap-6" @submit="onSubmit">
+    <form class="flex flex-col justify-center gap-2" @submit="onSubmit">
       <FormField v-slot="{ value, handleChange }" type="checkbox" name="isTop">
-        <FormItem class="flex flex-row items-center justify-center gap-4">
-          <FormControl>
-            <Checkbox :checked="value" @update:checked="handleChange" />
-          </FormControl>
-          <FormLabel
-            class="text-left text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            Top Check
-            <div class="pt-1 text-xs italic text-muted">
-              Route can't be rated if not topped.
-            </div>
-          </FormLabel>
-          <FormMessage class="px-4 text-xs" />
+        <FormItem class="flex flex-col items-center justify-center gap-2">
+          <div class="flex items-center justify-center gap-4">
+            <FormControl>
+              <Checkbox
+                :checked="value"
+                class="h-6 w-6"
+                @update:checked="handleChange"
+              />
+            </FormControl>
+            <FormLabel
+              class="text-left text-lg font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Top Check
+              <div class="pt-1 text-sm italic">
+                Route can't be rated if not topped.
+              </div>
+            </FormLabel>
+          </div>
+          <FormMessage class="px-4 text-left text-xs" />
         </FormItem>
       </FormField>
       <FormField v-slot="{ componentField }" type="radio" name="rate">
         <div class="flex items-center justify-center text-center">
           <FormItem>
-            <FormLabel>Rate the route</FormLabel>
+            <FormLabel class="text-lg">Rate the route</FormLabel>
             <FormControl>
               <RadioGroup
                 class="flex flex-row space-x-1"
@@ -122,31 +128,31 @@ const onSubmit = handleSubmit(async values => {
               >
                 <FormItem class="flex flex-col items-center gap-x-3 space-y-0">
                   <FormControl>
-                    <RadioGroupItem value="1" />
+                    <RadioGroupItem value="1" class="mb-1 h-6 w-6" />
                   </FormControl>
                   <FormLabel class="font-normal"> 1 </FormLabel>
                 </FormItem>
                 <FormItem class="flex flex-col items-center gap-x-3 space-y-0">
                   <FormControl>
-                    <RadioGroupItem value="2" />
+                    <RadioGroupItem value="2" class="mb-1 h-6 w-6" />
                   </FormControl>
                   <FormLabel class="font-normal"> 2 </FormLabel>
                 </FormItem>
                 <FormItem class="flex flex-col items-center gap-x-3 space-y-0">
                   <FormControl>
-                    <RadioGroupItem value="3" />
+                    <RadioGroupItem value="3" class="mb-1 h-6 w-6" />
                   </FormControl>
                   <FormLabel class="font-normal"> 3 </FormLabel>
                 </FormItem>
                 <FormItem class="flex flex-col items-center gap-x-3 space-y-0">
                   <FormControl>
-                    <RadioGroupItem value="4" />
+                    <RadioGroupItem value="4" class="mb-1 h-6 w-6" />
                   </FormControl>
                   <FormLabel class="font-normal"> 4 </FormLabel>
                 </FormItem>
                 <FormItem class="flex flex-col items-center gap-x-3 space-y-0">
                   <FormControl>
-                    <RadioGroupItem value="5" />
+                    <RadioGroupItem value="5" class="mb-1 h-6 w-6" />
                   </FormControl>
                   <FormLabel class="font-normal"> 5 </FormLabel>
                 </FormItem>
@@ -160,7 +166,7 @@ const onSubmit = handleSubmit(async values => {
         <FormItem
           class="flex w-24 flex-col items-center justify-center self-center"
         >
-          <FormLabel>Grade</FormLabel>
+          <FormLabel class="text-lg">Grade</FormLabel>
           <NumberField
             :default-value="
               props.routeData.route_grade ? props.routeData.route_grade : 1
